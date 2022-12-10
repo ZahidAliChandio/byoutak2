@@ -7,6 +7,7 @@ import Input from "../../components/UI/Input";
 import Button from "../../components/UI/FormButton";
 import { useForm } from "../../hooks/form-hook";
 import FormButton from "../../components/UI/FormButton";
+import { Fragment } from "react";
 
 function AddProperty(props) {
   const [checkboxesList, setCheckboxesList] = useState([]);
@@ -100,9 +101,7 @@ function AddProperty(props) {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    // const inputs = formState.inputs;
     console.log(formState);
-    // console.log(...inputs, { selectedFile: e.target.files[0] });
   };
 
   return (
@@ -188,12 +187,7 @@ function AddProperty(props) {
                         name="attachedBahtroom"
                         id="attachedBathroom"
                         value={"Attached Bathroom"}
-                        onChange={
-                          // e.target.checked
-                          //   ? inputHandler("attachedBathroom", e.target.value)
-                          //   : undefined
-                          handleCheck
-                        }
+                        onChange={handleCheck}
                         className="w-[0.6rem]"
                       />
                       <span>Attached Bathroom</span>
@@ -207,13 +201,7 @@ function AddProperty(props) {
                         name="garage"
                         value={"garage"}
                         id="garage"
-                        onChange={
-                          handleCheck
-                          // (e) =>
-                          // e.target.checked
-                          //   ? inputHandler("garage", e.target.value)
-                          //   : undefined
-                        }
+                        onChange={handleCheck}
                         className="w-[0.6rem]"
                       />
                       <span>Garage</span>
@@ -227,7 +215,7 @@ function AddProperty(props) {
                       type="file"
                       accept=".png, .jpg, .jpeg"
                       multiple
-                      onChange={e=>inputHandler("image",e.target.files[0])}
+                      onChange={(e) => inputHandler("image", e.target.files[0])}
                       className="form-control border border-gray-300 bg-gray-50 rounded-l-sm"
                     />
                   </div>
@@ -240,7 +228,11 @@ function AddProperty(props) {
                   />
                 </div>
                 <div className="flex items-end md:gap-8 lg:gap-16 xl:gap-24 px-1 sm:px-4 md:px-10 lg:px-16 mb-4">
-                  <div className="flex flex-col gap-4 mt-4">{unitForm}</div>
+                  <div className="flex flex-col gap-4 mt-4">
+                    {unitForm.map((form, index) => (
+                      <Fragment key={index}>{form}</Fragment>
+                    ))}
+                  </div>
 
                   <FormButton
                     buttonClass="!px-2"

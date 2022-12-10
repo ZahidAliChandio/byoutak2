@@ -1,15 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-
-// import {
-//   deleteFromTable,
-//   insertIntoTable,
-//   editTableRow,
-//   openDialog,
-// } from "../../Helpers/TableHelpers";
-// import { changeHandler } from "../../Helpers/ChangeHandler";
-// import axios from "axios";
-// import { ATLAS_URI } from "../../Constants";
-// import stateContext from "../../context/StateContext";
+import React, { useState, useEffect} from "react";
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -20,8 +9,6 @@ import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
 
 function AddDeveloper() {
-  //   const contextState = useContext(stateContext);
-  //   const { configToken, operator } = contextState.state;
 
   const [state, setState] = useState({
     tableBodyList: [],
@@ -34,88 +21,8 @@ function AddDeveloper() {
 
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(20);
-  // const mounted = React.useRef(true);
-  // useEffect(() => () => { mounted.current = false; }, []);
-  useEffect(() => {
-    // console.log("mounted")
-    // axios.get(`${ATLAS_URI}/getProperties/`, configToken)
-    //     .then(response => {
-    //         const propertiesData = response.data;
-    //         if (typeof propertiesData !== 'undefined' && mounted.current) {
-    //             setState(prevState => ({
-    //                 ...prevState,
-    //                 tableBodyList: propertiesData
-    //             }))
-    //         }
-    //     }).catch(err => console.log(err))
-  }, []);
-
-  //   const [state, setState] = useState({
-  //     resetNewRow: {
-  //       CreatedBy: operator.Username,
-  //       Amenity: "",
-  //     },
-  //     newTableRow: {
-  //       CreatedBy: operator.Username,
-  //       Amenity: "",
-  //     },
-  //     tableBodyList: [],
-  //     editingActivated: false,
-  //     editingID: "",
-  //     APIs: {
-  //       AddData: "addAmenity",
-  //       UpdateData: "updateAmenity",
-  //       DeleteData: "deleteAmenity",
-  //     },
-  //     dialogInfo: {
-  //       isOpened: false,
-  //       text: "",
-  //       type: "",
-  //     },
-  //   });
-
-  //   const mounted = React.useRef(true);
-  //   useEffect(
-  //     () => () => {
-  //       mounted.current = false;
-  //     },
-  //     []
-  //   );
-  //   useEffect(() => {
-  //     axios
-  //       .get(`${ATLAS_URI}/getAmenities/`, configToken)
-  //       .then((response) => {
-  //         const responseData = response.data;
-  //         if (
-  //           typeof responseData !== "undefined" &&
-  //           responseData !== null &&
-  //           mounted.current
-  //         ) {
-  //           setState({
-  //             ...state,
-  //             tableBodyList: responseData,
-  //             newTableRow: state.resetNewRow,
-  //           });
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }, []);
+    
   function deleteFromTable(e) {
-    // const delID = state.dialogInfo.delID;
-    // console.log(state.tableBodyList)
-    // axios.delete(`${ATLAS_URI}/deleteProperty/` + delID, configToken)
-    //     .then(() => {
-    //         state.tableBodyList.filter(data => data.id.toString() === delID)[0].Images.forEach((image) => {
-    //             axios.delete(`${ATLAS_URI}/file/${image}`, configToken);
-    //         })
-    //         const newTableBodyList = state.tableBodyList.filter(data => data.id.toString() !== delID);
-    //         setState(prevState => ({
-    //             ...prevState,
-    //             tableBodyList: newTableBodyList,
-    //             dialogInfo: { isOpened: false, text: "", delID: "" }
-    //         }))
-    //     })
-    //     .catch(err => alert(err))
   }
   const [tableHeaders, setTableHeaders] = useState([
     { id: "createdAt", label: "Sale Date", sorting: "desc" },
@@ -131,32 +38,27 @@ function AddDeveloper() {
     { id: "closerName", label: "Closer Name" },
   ]);
 
+  const inputHandler=()=>{
+
+  }
+
   return (
     <section className="content">
       <MainHeader type="Masters" subtype="Add Developer" />
-      <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
-        {/* {typeof state.dialogInfo !== 'undefined' &&
-                    <Dialog
-                        onFalse={(e) => setState(...state, { dialogInfo: { isOpened: false, text: "" } })}
-                        onTrue={(e) => deleteFromTable(contextState, state, setState)}
-                        dialogInfo={state.dialogInfo}
-                    />} */}
+      <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">        
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            {/* <BoxHeader
-              title={`${state.editingActivated ? "Edit" : "Add"} Amenity`}
-            /> */}
+            
             <BoxHeader title="Add Developer" />
 
-            {/* <form onSubmit={(e) => insertIntoTable(e, contextState, state, setState)}> */}
+            
             <form onSubmit={undefined} className="pt-2 px-2">
               <div className="box-body bozero">
                 <div className="form-group">
                   <Input
                     label={"Name"}
                     name={"DeveloperName"}
-                    // value={state.newTableRow.PropertyTitle}
-                    // onChange={changeHandler}
+                    onInput={inputHandler}
                     required
                   />
                 </div>

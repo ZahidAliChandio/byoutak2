@@ -49,8 +49,7 @@ const NavLinks = (props) => {
     {
       content: [
         { title: "Add Location", linkTo: "addLocation" },
-        { title: "Add Amenities", linkTo: "addAmenities" },
-        { title: "Add Unit", linkTo: "addUnit" },
+        { title: "Add Amenities", linkTo: "addAmenities" },        
         { title: "Add Unity Type", linkTo: "addUnitType" },
         { title: "Add Developer", linkTo: "addDeveloper" },
       ],
