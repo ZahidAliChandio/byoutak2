@@ -227,6 +227,7 @@ function AddProperty(props) {
                       type="file"
                       accept=".png, .jpg, .jpeg"
                       multiple
+                      onChange={e=>inputHandler("image",e.target.files[0])}
                       className="form-control border border-gray-300 bg-gray-50 rounded-l-sm"
                     />
                   </div>
