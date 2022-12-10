@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import BoxHeader from "../../components/UI/BoxHeader";
 import MainHeader from "../../components/Navigation/MainHeader";
@@ -9,6 +9,8 @@ import { useForm } from "../../hooks/form-hook";
 import FormButton from "../../components/UI/FormButton";
 
 function AddProperty(props) {
+  const [checkboxesList, setCheckboxesList] = useState([]);
+
   const [formState, inputHandler] = useForm({
     propertyTitle: "",
     propertyType: "",
@@ -19,12 +21,15 @@ function AddProperty(props) {
     selectedFile: "",
   });
 
-  let counter=-1;
+  let counter = -1;
 
   const FormComponent = () => {
-    counter+=1;
+    counter += 1;
     return (
-      <div className="grid grid-cols-5 items-center justify-center gap-1 sm:gap-2 md:gap-6 lg:gap-8 xl:gap-16 w-full" key={counter}>
+      <div
+        className="grid grid-cols-5 items-center justify-center gap-1 sm:gap-2 md:gap-6 lg:gap-8 xl:gap-16 w-full"
+        key={counter}
+      >
         <Input
           type="select"
           items={[
@@ -77,6 +82,17 @@ function AddProperty(props) {
   };
 
   const [unitForm, setUnitForm] = useState([<FormComponent />]);
+
+  const handleCheck = (e) => {
+    let updatedList = [...checkboxesList];
+    if (e.target.checked) {
+      updatedList = [...checkboxesList, e.target.value];
+    } else {
+      updatedList.splice(checkboxesList.indexOf(e.target.value), 1);
+    }
+    setCheckboxesList(updatedList);
+    inputHandler("amenities", updatedList);
+  };
 
   const addUnitFormHandler = () => {
     setUnitForm(unitForm.concat([<FormComponent />]));
@@ -164,13 +180,20 @@ function AddProperty(props) {
                       Amenities
                     </label>
                     <label
-                      htmlFor="bathrooms"
+                      htmlFor="attachedBathroom"
                       className="flex gap-1 font-semibold"
                     >
                       <input
                         type="checkbox"
-                        name="bahtrooms"
-                        id="bathrooms"
+                        name="attachedBahtroom"
+                        id="attachedBathroom"
+                        value={"Attached Bathroom"}
+                        onChange={
+                          // e.target.checked
+                          //   ? inputHandler("attachedBathroom", e.target.value)
+                          //   : undefined
+                          handleCheck
+                        }
                         className="w-[0.6rem]"
                       />
                       <span>Attached Bathroom</span>
@@ -182,7 +205,15 @@ function AddProperty(props) {
                       <input
                         type="checkbox"
                         name="garage"
+                        value={"garage"}
                         id="garage"
+                        onChange={
+                          handleCheck
+                          // (e) =>
+                          // e.target.checked
+                          //   ? inputHandler("garage", e.target.value)
+                          //   : undefined
+                        }
                         className="w-[0.6rem]"
                       />
                       <span>Garage</span>
@@ -215,7 +246,7 @@ function AddProperty(props) {
                     containerClass="!border-none !p-0 !w-fit"
                     onClick={addUnitFormHandler}
                   >
-                    <i className="fa-regular fa-plus flex items-center justify-center text-3xl h-5 w-5 -translate-y-1"></i>
+                    <i className="fa-regular fa-plus flex items-center justify-center text-3xl h-5 w-5"></i>
                   </FormButton>
                 </div>
                 <FormButton>Save</FormButton>

@@ -5,14 +5,12 @@ const formReducer = (state, action) => {
     case "INPUT_CHANGE":
       return {
         ...state,
-        inputs: {
-          ...state.inputs,
-          [action.inputId]: action.value,
-        },
+        [action.inputId]: action.value,
       };
     case "SET_DATA":
       return {
-        inputs: action.inputs,
+        ...state,
+        action,
       };
     default:
       return state;
@@ -21,9 +19,8 @@ const formReducer = (state, action) => {
 
 export const useForm = (initialInputs) => {
   const [formState, dispatch] = useReducer(formReducer, {
-    inputs: initialInputs,
   });
-  
+
   const inputHandler = useCallback((id, value) => {
     dispatch({
       type: "INPUT_CHANGE",
