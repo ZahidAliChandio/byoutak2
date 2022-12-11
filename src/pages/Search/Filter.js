@@ -33,7 +33,7 @@ const Filter = (props) => {
     <Modal
       className="!left-0 !translate-x-0 !rounded-none !w-[70%] shadow-none !h-screen border border-gray-300 !z-[10000] !overflow-scroll search-modal"
       onClose={() => props.setShowAll()}
-      backdropClass="!overflow-scroll"
+      backdropclassName="!overflow-scroll"
     >
       <FilterHeader />
       <FilterAccordion items={components} />

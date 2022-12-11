@@ -26,16 +26,14 @@ const DataTable = ({
 
   function getColumnComponent(id, row) {
     const col = tableHeaders.filter((x) => x.id === id.id)[0];
-    console.log(col)
-    return col && (col.component ? col.component(row, setTableBody) : row[id?.id]);
+    return (
+      col && (col.component ? col.component(row, setTableBody) : row[id?.id])
+    );
   }
-
-
 
   return (
     <>
       <div className="min-h-[40wh] rounded-lg bg-white pt-6 shadow-md mb-[60px]">
-        {console.log(tableBodyData)}
         <div className="flex flex-col">
           <div className="overflow-x-auto min-h-[22rem]">
             <div className="flex flex-col">
@@ -45,19 +43,18 @@ const DataTable = ({
                   id="data-table"
                 >
                   <thead className="bg-gray-100 w-full ">
-                      {tableHeaders &&
+                    {tableHeaders &&
                       tableHeaders.map((header, index) => (
-                            <th                              
-                              scope="col"
+                        <th
+                          scope="col"
                           className="items-center py-3.5 px-4 text-left text-xs font-semibold text-gray-700 uppercase"
-                            >
-                              {header.label}
+                        >
+                          {header.label}
                         </th>
                       ))}
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {/* <!-- Selected: "bg-gray-50" --> */}
-
                     {!isLoading
                       ? tableBody &&
                         tableBody.map((row, index) => (
@@ -69,20 +66,18 @@ const DataTable = ({
                           >
                             {tableHeaders &&
                               tableHeaders.map((col, index) => (
-                                <Fragment key={index}> 
+                                <Fragment key={index}>
                                   {rowClickEnabled ? (
-                                    
-                                      <td
-                                        key={index}
-                                        onClick={() => onRowClick(row)}
-                                        className="cursor-pointer whitespace-nowrap py-4 pr-3 text-xs font-medium text-gray-900"
-                                      >
-                                        {getColumnComponent(col, row)}
-                                      </td>
-                                    
+                                    <td
+                                      key={index}
+                                      onClick={() => onRowClick(row)}
+                                      className="cursor-pointer whitespace-nowrap py-4 pr-3 text-xs font-medium text-gray-900"
+                                    >
+                                      {getColumnComponent(col, row)}
+                                    </td>
                                   ) : (
                                     <>
-                                        <td className="whitespace-nowrap py-4 px-4 text-xs font-medium text-gray-900">
+                                      <td className="whitespace-nowrap py-4 px-4 text-xs font-medium text-gray-900">
                                         {getColumnComponent(col, row)}
                                       </td>
                                     </>
@@ -94,7 +89,7 @@ const DataTable = ({
                       : [...Array(8)].map((val, index) => (
                           <tr className={` animate-pulse p-2`} key={index}>
                             <td className="p-1 flex gap-x-3 ml-2">
-                              <div className="h-4 bg-gray-200 mt-1 mb-1 rounded-lg w-5"></div>
+                              <div className="h-4 bg-gray-200 mt-1 mb-1 rounded-lg w-5 border"></div>
                               <div className="h-4 bg-gray-200 mt-1 mb-1 rounded-lg w-[70%]"></div>
                             </td>
 

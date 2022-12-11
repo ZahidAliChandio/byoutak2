@@ -18,16 +18,20 @@ function AddAmenities() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
+  const [edit, setEdit] = useState(false);
   const [resetForm, setResetForm] = useState(false);
+  const [updateName, setUpdateName] = useState("");
+  const [updateDescription, setUpdateDescription] = useState("");
+  const [updateForm, setUpdateForm] = useState(false);
 
-  const [formState, inputHandler, setFormData] = useForm({
+  const [formState, inputHandler] = useForm({
     Name: "",
     Description: "",
   });
 
-  const getUnitTypes = useCallback(() => {
+  const getAmenities = () => {
     axios
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getAmenities/`, {
         params: {
           page: page + 1,
           limit: limit,
@@ -41,7 +45,7 @@ function AddAmenities() {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  }, [limit, page]);
+  };
 
   const [state, setState] = useState({
     tableBodyList: [],
@@ -52,33 +56,84 @@ function AddAmenities() {
     },
   });
 
-  function deleteFromTable(e) {}
-  const [tableHeaders, setTableHeaders] = useState([
-    { id: "createdAt", label: "Sale Date", sorting: "desc" },
-    { id: "contactJoined", label: "Contact Created" },
-    { id: "productName", label: "Product Name" },
-    { id: "productTag", label: "Product Tag" },
-    { id: "recurring", label: "Recurring" },
-    { id: "value", label: "Sale" },
-    { id: "transactionType", label: "Transaction Type" },
-    { id: "contactPhone", label: "Contact Phone#" },
-    { id: "contactName", label: "Contact Name" },
-    { id: "closerEmail", label: "Closer Email" },
-    { id: "closerName", label: "Closer Name" },
-  ]);
+  function deleteFromTable(data) {
+    axios
+      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteAmenity/${data._id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          getAmenities();
+          toast.success(response?.data);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }
+
+  const editHandler = (data) => {
+    setUpdateForm(true);
+    setUpdateName(data.Name);
+    setUpdateDescription(data.Description);
+    setEdit(true);
+  };
+  const editCancelHandler = () => {
+    if (edit) setEdit(false);
+  };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    setResetForm(true);
+    axios
+      .post(
+        `${process.env.REACT_APP_ATLAS_URI}/addAmenity/`,
+        formState /*, configToken*/
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          getAmenities();
+          toast.success(response?.data?.message);
+        } else toast.error(response.data.error.message);
+        setResetForm(true);
+      })
+      .catch((err) => toast.error(err.message));
   };
+  useEffect(() => {
+    getAmenities();
+  }, [getAmenities, limit, page]);
 
-  console.log(formState);
+  const [tableHeaders, setTableHeaders] = useState([
+    { id: "_id", label: "ID" },
+    { id: "Name", label: "Name" },
+    { id: "Description", label: "Description" },
+    {
+      id: "actions",
+      label: "",
+      component: (data, setData) => (
+        <div className="space-x-3 !text-right">
+          <button
+            className=" no-focus"
+            title="Edit"
+            onClick={() => {
+              editHandler(data);
+            }}
+          >
+            <i className="fas fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button
+            className=" no-focus"
+            title="Delete"
+            onClick={(e) => deleteFromTable(data)}
+          >
+            <i className="fas fa-times text-red-500" aria-hidden="true"></i>
+          </button>
+        </div>
+      ),
+    },
+  ]);
+
   return (
     <section className="content">
       <MainHeader type="Masters" subtype="Add Amenity" />
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
-          <BoxHeader title="Add Amenity" />
+          <BoxHeader title={`${edit ? "Update" : "Add"} Amenity`} />
           <form
             onSubmit={onSubmitHandler}
             className="flex flex-col gap-4 pt-2 px-2"
@@ -87,6 +142,9 @@ function AddAmenities() {
               label={"Name"}
               id="Name"
               name={"AmenityName"}
+              updateForm={updateForm}
+              setUpdateForm={setUpdateForm}
+              updateValue={updateName}
               resetForm={resetForm}
               setResetForm={setResetForm}
               onInput={inputHandler}
@@ -97,11 +155,16 @@ function AddAmenities() {
               label={"Description"}
               id="Description"
               name={"AmenityName"}
+              updateForm={updateForm}
+              setUpdateForm={setUpdateForm}
+              updateValue={updateDescription}
               resetForm={resetForm}
               setResetForm={setResetForm}
               onInput={inputHandler}
             />
-            <FormButton>Save</FormButton>
+            <FormButton onClick={editCancelHandler}>
+              {edit ? "Update" : "Save"}
+            </FormButton>
           </form>
         </AdminCard>
 
@@ -127,10 +190,10 @@ function AddAmenities() {
                     <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
                       <div>
                         <DataTable
-                          // isLoading={loading}
+                          isLoading={loading}
                           tableHeadersData={tableHeaders}
                           setTableHeadersData={setTableHeaders}
-                          tableBodyData={[]}
+                          tableBodyData={tableBodyList || []}
                         />
                       </div>
                     </div>
@@ -140,7 +203,7 @@ function AddAmenities() {
                         setPage={setPage}
                         limit={limit}
                         setLimit={setLimit}
-                        total={0}
+                        total={count}
                       />
                     </div>
                   </div>

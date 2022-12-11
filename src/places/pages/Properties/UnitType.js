@@ -33,7 +33,7 @@ const UnitTypeForm = (props) => {
         id={"unitType"}
         label={"Unit Type"}
         name={"UnitType"}
-        containerClass="w-full"
+        containerclassName="w-full"
         onInput={unitTypeInputHandler}
         unitIndex={props.index}
         required
@@ -74,8 +74,8 @@ const UnitTypeForm = (props) => {
         required
       />
       <FormButton
-        buttonClass="!px-2"
-        containerClass="!border-none !p-0 !w-fit justify-self-center"
+        buttonclassName="!px-2"
+        containerclassName="!border-none !p-0 !w-fit justify-self-center"
         // disabled={props.unitFormLength > 0 ? false : true}
         onClick={() => props.removeUnitFormHandler(props.index)}
       >

@@ -19,7 +19,10 @@ function AddUnitType() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
+  const [edit, setEdit] = useState(false);
   const [resetForm, setResetForm] = useState(false);
+  const [updateName, setUpdateName] = useState("");
+  const [updateForm, setUpdateForm] = useState(false);
 
   const [formState, inputHandler] = useForm({
     Name: "",
@@ -54,10 +57,18 @@ function AddUnitType() {
       })
       .catch((err) => toast.error(err.message));
   }
+
+  const editHandler = (data) => {
+    updateForm(true);
+    setUpdateName(data.Name);
+    setEdit(true);
+  };
+  const editCancelHandler = () => {
+    if (edit) setEdit(false);
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    setResetForm(true);
-
     axios
       .post(
         `${process.env.REACT_APP_ATLAS_URI}/addUnitType/`,
@@ -66,6 +77,7 @@ function AddUnitType() {
       .then((response) => {
         if (response.status === 200) {
           setTableBodyList((prevState) => [response?.data?.data, ...prevState]);
+          setResetForm(true);
           toast.success(response?.data?.message);
         } else toast.error(response.data.error.message);
       })
@@ -83,7 +95,13 @@ function AddUnitType() {
       label: "",
       component: (data, setData) => (
         <div className="space-x-3 !text-right">
-          <button className=" no-focus" title="Edit" onClick={() => {}}>
+          <button
+            className=" no-focus"
+            title="Edit"
+            onClick={() => {
+              editHandler(data);
+            }}
+          >
             <i className="fas fa-pencil" aria-hidden="true"></i>
           </button>
           <button
@@ -105,19 +123,23 @@ function AddUnitType() {
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            <BoxHeader title="Add Unit Type" />
+            <BoxHeader title={`${edit ? "Update" : "Add"} Unit Type`} />
             <form onSubmit={onSubmitHandler} className="pt-2 px-2">
               <Input
                 label={"Name"}
                 id={"Name"}
                 name={"Name"}
+                updateValue={updateName}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}
                 required
               />
-
-              <FormButton>Save</FormButton>
+              <FormButton onClick={editCancelHandler}>
+                {edit ? "Update" : "Save"}
+              </FormButton>
             </form>
           </div>
         </AdminCard>

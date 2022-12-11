@@ -21,7 +21,16 @@ const InputField = (props) => {
     value: props.initialValue || "",
   });
 
-  const { id, onInput, unitIndex, resetForm, setResetForm } = props;
+  const {
+    id,
+    onInput,
+    unitIndex,
+    resetForm,
+    setResetForm,
+    updateForm,
+    updateValue,
+    setUpdateForm,
+  } = props;
   const { value } = inputState;
 
   useEffect(() => {
@@ -29,9 +38,25 @@ const InputField = (props) => {
       dispatch({ type: "RESET" });
       setResetForm(false);
     }
-
+    if (updateForm) {
+      dispatch({
+        type: "CHANGE",
+        val: updateValue,
+      });
+      setUpdateForm(false);
+    }
     onInput(id, value);
-  }, [id, value, onInput, unitIndex, resetForm, setResetForm]);
+  }, [
+    id,
+    value,
+    onInput,
+    unitIndex,
+    resetForm,
+    setResetForm,
+    updateForm,
+    setUpdateForm,
+    updateValue,
+  ]);
 
   const onChangeHandler = (e) => {
     dispatch({
@@ -47,6 +72,7 @@ const InputField = (props) => {
         rows={props.rows || 4}
         className={`${props.className} py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
         value={props.value || inputState.value}
+        required={props.required}
         onChange={props.onChange || onChangeHandler}
       />
     ) : props.type === "select" ? (

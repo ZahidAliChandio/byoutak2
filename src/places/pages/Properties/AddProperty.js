@@ -236,8 +236,8 @@ function AddProperty(props) {
                   <div className="flex flex-col gap-4 w-full">{unitForm}</div>
                   <FormButton
                     type="button"
-                    buttonClass="!px-2"
-                    containerClass="!border-none !p-0 !w-fit md:mr-4 place-self-start mt-4"
+                    buttonclassName="!px-2"
+                    containerclassName="!border-none !p-0 !w-fit md:mr-4 place-self-start mt-4"
                     onClick={addUnitFormHandler}
                   >
                     <i className="fa-regular fa-plus flex items-center justify-center text-3xl h-5 w-5"></i>

@@ -1,12 +1,18 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 import { useEffect, useState } from "react";
 
 const Paginator = ({ limit = 20, setLimit, page = 0, setPage, total = 20 }) => {
-  const [pageNumbers, setPageNumbers] = useState([...Array(Math.ceil(total / limit))])
+  const [pageNumbers, setPageNumbers] = useState([
+    ...Array(Math.ceil(total / limit)),
+  ]);
 
   useEffect(() => {
-    setPageNumbers([...Array(Math.ceil(total / limit))])
-  }, [limit, page, total])
+    setPageNumbers([...Array(Math.ceil(total / limit))]);
+  }, [limit, page, total]);
+
+  const pageChangeHandler = (e) => {
+    setLimit(e.target.value);
+  };
 
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
@@ -24,19 +30,36 @@ const Paginator = ({ limit = 20, setLimit, page = 0, setPage, total = 20 }) => {
           Next
         </a>
       </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div className="hidden sm:flex sm:items-center sm:justify-between w-full">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">{((page) * limit) + 1}</span> - <span className="font-medium">
-              {page + 1 !== pageNumbers.length ? ((page) * limit) + limit : total} </span> of{" "}
-            <span className="font-medium">{total}</span> results
+            Showing <span className="font-medium">{page * limit + 1}</span> -{" "}
+            <span className="font-medium">
+              {page + 1 !== pageNumbers.length ? page * limit + limit : total}{" "}
+            </span>{" "}
+            of <span className="font-medium">{total}</span> results
           </p>
         </div>
         <div>
-          <nav className="isolate inline-flex  rounded-md" aria-label="Pagination">
-            <div className="relative inline-flex items-center">
-              <span className="text-sm font-medium text-gray-500">Rows per page:</span>
-
+          <nav
+            className="isolate inline-flex rounded-md w-full"
+            aria-label="Pagination"
+          >
+            <div className="relative inline-flex items-center gap-2 mr-4">
+              <span className="text-sm font-medium text-gray-500">
+                Rows per page:
+              </span>
+              <select
+                id="countries"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block p-2.5 w-fit"
+                onChange={pageChangeHandler}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
 
               {/* <Menu as="div" className="relative inline-block text-left">
                 <div>
@@ -100,24 +123,36 @@ const Paginator = ({ limit = 20, setLimit, page = 0, setPage, total = 20 }) => {
             </div>
             <div
               onClick={() => page !== 0 && setPage(page - 1)}
-              className={`${page <= 0 ? 'cursor-not-allowed' : 'cursor-pointer'} relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20`}
+              className={`${
+                page <= 0 ? "cursor-not-allowed" : "cursor-pointer"
+              } relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20`}
             >
               <span className="">Previous</span>
             </div>
-            {pageNumbers && pageNumbers.map((currentPage, index) => {
-              return (
-                <a
-                  onClick={() => page !== index && setPage(index)}
-                  className={`cursor-pointer relative z-10 inline-flex items-center border ${index === page ? 'border-blue-500 text-blue-600 bg-blue-50 !cursor-not-allowed' : 'border-gray-300 text-gray-500 bg-white hover:bg-gray-50'} px-4 py-2 text-sm font-medium focus:z-20`}
-                >
-                  {index + 1}
-                </a>
-              )
-            })}
+            {pageNumbers &&
+              pageNumbers.map((currentPage, index) => {
+                return (
+                  <a
+                    onClick={() => page !== index && setPage(index)}
+                    className={`cursor-pointer relative z-10 inline-flex items-center border ${
+                      index === page
+                        ? "border-blue-500 text-blue-600 bg-blue-50 !cursor-not-allowed"
+                        : "border-gray-300 text-gray-500 bg-white hover:bg-gray-50"
+                    } px-4 py-2 text-sm font-medium focus:z-20`}
+                  >
+                    {index + 1}
+                  </a>
+                );
+              })}
             <div
-              onClick={() => page + 1 !== pageNumbers.length && setPage(page + 1)}
-              className={`${page + 1 !== pageNumbers.length ? 'cursor-pointer' : 'cursor-not-allowed'} relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20`}
-
+              onClick={() =>
+                page + 1 !== pageNumbers.length && setPage(page + 1)
+              }
+              className={`${
+                page + 1 !== pageNumbers.length
+                  ? "cursor-pointer"
+                  : "cursor-not-allowed"
+              } relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20`}
             >
               <span className="">Next</span>
               {/* <ChevronRightIcon className="h-5 w-5" aria-hidden="true" /> */}

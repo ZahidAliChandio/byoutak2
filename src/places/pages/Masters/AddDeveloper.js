@@ -19,6 +19,13 @@ function AddDeveloper() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
+  const [edit, setEdit] = useState(false);
+  const [resetForm, setResetForm] = useState(false);
+  const [updateName, setUpdateName] = useState("");
+  const [updateIcon, setUpdateIcon] = useState("");
+  const [updateDescription, setUpdateDescription] = useState("");
+  const [updateForm, setUpdateForm] = useState(false);
+
   const [state, setState] = useState({
     tableBodyList: [],
     dialogInfo: {
@@ -32,7 +39,7 @@ function AddDeveloper() {
     name: "",
   });
 
-  const getDevelopers = useCallback(() => {
+  const getDevelopers = () => {
     axios
       .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
         params: {
@@ -48,7 +55,7 @@ function AddDeveloper() {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  }, [page, limit]);
+  };
 
   function deleteFromTable(data) {
     axios
@@ -61,6 +68,17 @@ function AddDeveloper() {
       })
       .catch((err) => toast.error(err.message));
   }
+
+  const editHandler = (data) => {
+    setUpdateForm(true);
+    setUpdateName(data.Name);
+    setUpdateIcon(data.Icon);
+    setUpdateDescription(data.Desctiption);
+    setEdit(true);
+  };
+  const editCancelHandler = () => {
+    if (edit) setEdit(false);
+  };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -79,17 +97,25 @@ function AddDeveloper() {
   };
   useEffect(() => {
     getDevelopers();
-  }, [getDevelopers]);
+  }, [getDevelopers, limit, page]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
     { id: "Name", label: "Name" },
+    { id: "Description", label: "Description" },
+    { id: "Icon", label: "Icon" },
     {
       id: "actions",
       label: "",
       component: (data, setData) => (
         <div className="space-x-3 !text-right">
-          <button className=" no-focus" title="Edit" onClick={() => {}}>
+          <button
+            className=" no-focus"
+            title="Edit"
+            onClick={() => {
+              editHandler(data);
+            }}
+          >
             <i className="fas fa-pencil" aria-hidden="true"></i>
           </button>
           <button
@@ -103,25 +129,6 @@ function AddDeveloper() {
       ),
     },
   ]);
-
-  // const [tableHeaders, setTableHeaders] = useState([
-  //   { id: "createdAt", label: "Sale Date", sorting: "desc" },
-  //   { id: "contactJoined", label: "Contact Created" },
-  //   { id: "productName", label: "Product Name" },
-  //   { id: "productTag", label: "Product Tag" },
-  //   { id: "recurring", label: "Recurring" },
-  //   { id: "value", label: "Sale" },
-  //   { id: "transactionType", label: "Transaction Type" },
-  //   { id: "contactPhone", label: "Contact Phone#" },
-  //   { id: "contactName", label: "Contact Name" },
-  //   { id: "closerEmail", label: "Closer Email" },
-  //   { id: "closerName", label: "Closer Name" },
-  // ]);
-
-  // const onSubmitHandler = (e) => {
-  //   e.preventDefault();
-  //   console.log(formState);
-  // };
 
   return (
     <section className="content">
@@ -156,7 +163,9 @@ function AddDeveloper() {
                 onInput={inputHandler}
               />
 
-              <FormButton>Save</FormButton>
+              <FormButton onClick={editCancelHandler}>
+                {edit ? "Update" : "Save"}
+              </FormButton>
             </form>
           </div>
         </AdminCard>
