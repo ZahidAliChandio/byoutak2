@@ -11,6 +11,12 @@ import Paginator from "../../components/UI/paginator";
 import { useForm } from "../../hooks/form-hook";
 
 function AddAmenities() {
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(5);
+  const [tableBodyList, setTableBodyList] = useState([]);
+  const [count, setCount] = useState(0);
+
   const [state, setState] = useState({
     tableBodyList: [],
     dialogInfo: {
@@ -23,9 +29,6 @@ function AddAmenities() {
   const [formState, inputHandler] = useForm({
     name: "",
   });
-
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(20);
 
   function deleteFromTable(e) {}
   const [tableHeaders, setTableHeaders] = useState([
@@ -55,17 +58,14 @@ function AddAmenities() {
           <div className="box box-primary">
             <BoxHeader title="Add Amenity" />
             <form onSubmit={onSubmitHandler} className="pt-2 px-2">
-              <div className="box-body bozero">
-                <div className="form-group">
-                  <Input
-                    label={"Name"}
-                    id="amenityName"
-                    name={"AmenityName"}
-                    onInput={inputHandler}
-                    required
-                  />
-                </div>
-              </div>
+              <Input
+                label={"Name"}
+                id="amenityName"
+                name={"AmenityName"}
+                onInput={inputHandler}
+                required
+              />
+
               <FormButton>Save</FormButton>
             </form>
           </div>

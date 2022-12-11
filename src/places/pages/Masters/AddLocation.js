@@ -11,6 +11,12 @@ import Paginator from "../../components/UI/paginator";
 import { useForm } from "../../hooks/form-hook";
 
 function AddLocation() {
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(5);
+  const [tableBodyList, setTableBodyList] = useState([]);
+  const [count, setCount] = useState(0);
+
   const [formState, inputHandler] = useForm({
     name: "",
   });
@@ -23,9 +29,6 @@ function AddLocation() {
       type: "",
     },
   });
-
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(20);
 
   function deleteFromTable(e) {}
   const [tableHeaders, setTableHeaders] = useState([
@@ -55,17 +58,13 @@ function AddLocation() {
           <div className="box box-primary">
             <BoxHeader title="Add Location" />
             <form onSubmit={onSubmitHandler} className="pt-2 px-2">
-              <div className="box-body bozero">
-                <div className="form-group">
-                  <Input
-                    label={"Name"}
-                    id={"locationName"}
-                    name={"LocationName"}
-                    onInput={inputHandler}
-                    required
-                  />
-                </div>
-              </div>
+              <Input
+                label={"Name"}
+                id={"locationName"}
+                name={"LocationName"}
+                onInput={inputHandler}
+                required
+              />
               <FormButton type="submit">Save</FormButton>
             </form>
           </div>
@@ -74,7 +73,6 @@ function AddLocation() {
         <AdminCard className="relative">
           <div className="box box-primary">
             <BoxHeader title="Added Locations" />
-
             <div className="content">
               <div className="row">
                 <Dialog

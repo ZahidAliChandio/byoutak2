@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
+import toast from "react-hot-toast";
+
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -9,12 +11,12 @@ import FormButton from "../../components/UI/FormButton";
 import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
 import { useForm } from "../../hooks/form-hook";
-import toast from 'react-hot-toast'
+import { useCallback } from "react";
 
 function AddUnitType() {
-  const [loading, setLoading] = useState(false)
-  const [page, setPage] = useState(0)
-  const [limit, setLimit] = useState(5)
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
 
@@ -22,61 +24,74 @@ function AddUnitType() {
     Name: "",
   });
 
-  const getUnitTypes = () => {
-    axios.get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
-      params: {
-        page: page + 1,
-        limit: limit
-      }
-    })
-      .then(response => {
-        if (response.status === 200) {
-          setTableBodyList(response?.data?.results)
-          setCount(response?.data?.count)
-          setLoading(false)
-        } else toast.error(response?.data?.error?.message)
+  const getUnitTypes = useCallback(() => {
+    axios
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
+        params: {
+          page: page + 1,
+          limit: limit,
+        },
       })
-      .catch(err => toast.error(err.message))
-  }
+      .then((response) => {
+        if (response.status === 200) {
+          setTableBodyList(response?.data?.results);
+          setCount(response?.data?.count);
+          setLoading(false);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, [limit, page]);
 
   function deleteFromTable(data) {
-    axios.delete(`${process.env.REACT_APP_ATLAS_URI}/deleteUnitType/${data._id}`)
-      .then(response => {
+    axios
+      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteUnitType/${data._id}`)
+      .then((response) => {
         if (response.status === 200) {
-          getUnitTypes()
+          getUnitTypes();
           toast.success(response?.data);
-        } else toast.error(response?.data?.error?.message)
+        } else toast.error(response?.data?.error?.message);
       })
-      .catch(err => toast.error(err.message))
+      .catch((err) => toast.error(err.message));
   }
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    axios.post(`${process.env.REACT_APP_ATLAS_URI}/addUnitType/`, formState/*, configToken*/)
-      .then(response => {
+    axios
+      .post(
+        `${process.env.REACT_APP_ATLAS_URI}/addUnitType/`,
+        formState /*, configToken*/
+      )
+      .then((response) => {
         if (response.status === 200) {
-          setTableBodyList(prevState => ([response?.data?.data, ...prevState]))
+          setTableBodyList((prevState) => [response?.data?.data, ...prevState]);
           toast.success(response?.data?.message);
-        } else toast.error(response.data.error.message)
+        } else toast.error(response.data.error.message);
       })
-      .catch(err => toast.error(err.message))
+      .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
-    getUnitTypes()
-  }, [page, limit])
+    getUnitTypes();
+  }, [getUnitTypes]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
     { id: "Name", label: "Name" },
     {
-      id: "actions", label: "", component: (data, setData) =>
+      id: "actions",
+      label: "",
+      component: (data, setData) => (
         <div className="space-x-3 !text-right">
-          <button className=" no-focus" title="Edit" onClick={() => { }}>
+          <button className=" no-focus" title="Edit" onClick={() => {}}>
             <i className="fas fa-pencil" aria-hidden="true"></i>
           </button>
-          <button className=" no-focus" title="Delete" onClick={(e) => deleteFromTable(data)}>
+          <button
+            className=" no-focus"
+            title="Delete"
+            onClick={(e) => deleteFromTable(data)}
+          >
             <i className="fas fa-times text-red-500" aria-hidden="true"></i>
           </button>
         </div>
+      ),
     },
   ]);
 
