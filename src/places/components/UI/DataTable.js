@@ -3,7 +3,6 @@ const DataTable = ({
   tableHeadersData,
   tableBodyData,
   reference,
-  fixedColumn,
   onRowClick,
   rowClickEnabled,
   isLoading,
@@ -26,78 +25,35 @@ const DataTable = ({
   }
 
   function getColumnComponent(id, row) {
-    const col = tableHeaders.filter((x) => x.id === id)[0];
-    return col && (col.component ? col.component(row, setTableBody) : row[id]);
+    const col = tableHeaders.filter((x) => x.id === id.id)[0];
+    console.log(col)
+    return col && (col.component ? col.component(row, setTableBody) : row[id?.id]);
   }
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const handleScroll = (e) => {
-    const x = e.currentTarget.scrollLeft;
-    if (x === positionRef.current) setIsScrolled(false);
-    if (x !== positionRef.current && !isScrolled) setIsScrolled(true);
-  };
-  const positionRef = useRef(0);
+
 
   return (
     <>
-      <div className="min-h-[40wh] rounded-lg bg-white pt-6 shadow-md">
+      <div className="min-h-[40wh] rounded-lg bg-white pt-6 shadow-md mb-[60px]">
+        {console.log(tableBodyData)}
         <div className="flex flex-col">
-          <div
-            className="overflow-x-scroll min-h-[22rem]"
-            ref={reference}
-            onScroll={handleScroll}
-            // style={{ 'MsOverflowStyle': 'none', 'scrollbarWidth': 'none' }}
-            id="data-table-p"
-          >
+          <div className="overflow-x-auto min-h-[22rem]">
             <div className="flex flex-col">
               <div className="shadow-table rounded-lg z-11">
                 <table
                   className="min-w-full divide-y divide-gray-300 border-separate border-spacing-y-0"
                   id="data-table"
                 >
-                  <thead className="bg-gray-50">
-                    <tr className="inline-flex w-full  justify-between">
-                      {fixedColumn && (
-                        <th
-                          scope="col"
-                          className={`${
-                            fixedColumn
-                              ? `sticky left-0 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer bg-gray-50 z-20 ${
-                                  isScrolled ? "border-r" : ""
-                                }`
-                              : "relative w-12 px-6"
-                          }`}
-                        >
-                          {!hideCheckboxes && (
-                            <input
-                              type="checkbox"
-                              className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-200 text-blue-500 focus:ring-blue-500 sm:left-6"
-                            />
-                          )}
-                          {fixedColumn && (
-                            <span
-                              className={`${
-                                hideCheckboxes ? "pl-4" : "pl-[4rem]"
-                              }`}
-                            >
-                              {fixedColumn.label}
-                            </span>
-                          )}
-                        </th>
-                      )}
-                      {!fixedColumn && <th className="pl-3"></th>}
+                  <thead className="bg-gray-100 w-full ">
                       {tableHeaders &&
-                        tableHeaders.map((header, index) => (
-                          <Fragment key={index}>
+                      tableHeaders.map((header, index) => (
                             <th                              
                               scope="col"
-                              className="relative inline-flex items-center py-3.5 pr-3 text-left text-xs font-medium text-gray-500 uppercase"
+                          className="items-center py-3.5 px-4 text-left text-xs font-semibold text-gray-700 uppercase"
                             >
                               {header.label}
-                            </th>
-                          </Fragment>
-                        ))}
-                    </tr>
+                        </th>
+                      ))}
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {/* <!-- Selected: "bg-gray-50" --> */}
@@ -111,39 +67,6 @@ const DataTable = ({
                               index % 2 === 0 ? "bg-[#ffffff]" : "bg-gray-50"
                             }`}
                           >
-                            {fixedColumn && (
-                              <td
-                                className={`${
-                                  fixedColumn
-                                    ? `sticky left-0 whitespace-nowrap min-w-[100px]  ${
-                                        isScrolled ? "border-r" : ""
-                                      }`
-                                    : "relative w-16 px-8"
-                                } z-30`}
-                              >
-                                {/* <div className="absolute inset-y-0 left-0 w-0.5 bg-blue-500"></div> */}
-                                {!hideCheckboxes && (
-                                  <input
-                                    type="checkbox"
-                                    className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500 sm:left-6"
-                                  />
-                                )}
-                                {fixedColumn && (
-                                  <div
-                                    className={`${
-                                      index % 2 === 0
-                                        ? "bg-[#ffffff]"
-                                        : "bg-gray-50"
-                                    } ${
-                                      hideCheckboxes ? "pl-4" : "pl-[4rem]"
-                                    } whitespace-nowrap py-4 pr-4 text-sm font-medium text-gray-900`}
-                                  >
-                                    {fixedColumn.component(row, setTableBody)}
-                                  </div>
-                                )}
-                              </td>
-                            )}
-                            {!fixedColumn && <th className="pl-3"></th>}
                             {tableHeaders &&
                               tableHeaders.map((col, index) => (
                                 <Fragment key={index}> 
@@ -159,7 +82,7 @@ const DataTable = ({
                                     
                                   ) : (
                                     <>
-                                      <td className="whitespace-nowrap py-4 pr-3 text-xs font-medium text-gray-900">
+                                        <td className="whitespace-nowrap py-4 px-4 text-xs font-medium text-gray-900">
                                         {getColumnComponent(col, row)}
                                       </td>
                                     </>
