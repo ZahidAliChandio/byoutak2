@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
@@ -16,6 +18,30 @@ function AddAmenities() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
+  const [resetForm, setResetForm] = useState(false);
+
+  const [formState, inputHandler, setFormData] = useForm({
+    Name: "",
+    Description: "",
+  });
+
+  const getUnitTypes = useCallback(() => {
+    axios
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
+        params: {
+          page: page + 1,
+          limit: limit,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setTableBodyList(response?.data?.results);
+          setCount(response?.data?.count);
+          setLoading(false);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, [limit, page]);
 
   const [state, setState] = useState({
     tableBodyList: [],
@@ -24,10 +50,6 @@ function AddAmenities() {
       text: "",
       type: "",
     },
-  });
-
-  const [formState, inputHandler] = useForm({
-    name: "",
   });
 
   function deleteFromTable(e) {}
@@ -47,28 +69,40 @@ function AddAmenities() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(formState);
+    setResetForm(true);
   };
 
+  console.log(formState);
   return (
     <section className="content">
       <MainHeader type="Masters" subtype="Add Amenity" />
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
-          <div className="box box-primary">
-            <BoxHeader title="Add Amenity" />
-            <form onSubmit={onSubmitHandler} className="pt-2 px-2">
-              <Input
-                label={"Name"}
-                id="amenityName"
-                name={"AmenityName"}
-                onInput={inputHandler}
-                required
-              />
-
-              <FormButton>Save</FormButton>
-            </form>
-          </div>
+          <BoxHeader title="Add Amenity" />
+          <form
+            onSubmit={onSubmitHandler}
+            className="flex flex-col gap-4 pt-2 px-2"
+          >
+            <Input
+              label={"Name"}
+              id="Name"
+              name={"AmenityName"}
+              resetForm={resetForm}
+              setResetForm={setResetForm}
+              onInput={inputHandler}
+              required
+            />
+            <Input
+              type="textarea"
+              label={"Description"}
+              id="Description"
+              name={"AmenityName"}
+              resetForm={resetForm}
+              setResetForm={setResetForm}
+              onInput={inputHandler}
+            />
+            <FormButton>Save</FormButton>
+          </form>
         </AdminCard>
 
         <AdminCard className="relative">
