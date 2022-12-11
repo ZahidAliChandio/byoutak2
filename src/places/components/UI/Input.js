@@ -8,6 +8,10 @@ const InputField = (props) => {
           ...state,
           value: action.val,
         };
+      case "RESET":
+        return {
+          value: "",
+        };
       default:
         return state;
     }
@@ -17,12 +21,17 @@ const InputField = (props) => {
     value: props.initialValue || "",
   });
 
-  const { id, onInput, unitIndex } = props;
+  const { id, onInput, unitIndex, resetForm, setResetForm } = props;
   const { value } = inputState;
 
   useEffect(() => {
-    unitIndex ? onInput(id, value, unitIndex) : onInput(id, value);
-  }, [id, value, onInput, unitIndex]);
+    if (resetForm) {
+      dispatch({ type: "RESET" });
+      setResetForm(false);
+    }
+
+    onInput(id, value);
+  }, [id, value, onInput, unitIndex, resetForm, setResetForm]);
 
   const onChangeHandler = (e) => {
     dispatch({
@@ -37,15 +46,15 @@ const InputField = (props) => {
         id={props.id}
         rows={props.rows || 4}
         className={`${props.className} py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
-        value={inputState.value}
-        onChange={onChangeHandler}
+        value={props.value || inputState.value}
+        onChange={props.onChange || onChangeHandler}
       />
     ) : props.type === "select" ? (
       <select
         className={`${props.className} py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
         name="PropertyType"
-        value={inputState.value}
-        onChange={onChangeHandler}
+        value={props.value || inputState.value}
+        onChange={props.onChange || onChangeHandler}
       >
         {props.items.map((classData, index) => (
           <option key={index} value={classData.id}>
@@ -59,8 +68,8 @@ const InputField = (props) => {
         type="text"
         className={`${props.className} py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)]`}
         required={props.required}
-        value={inputState.value}
-        onChange={onChangeHandler}
+        value={props.value || inputState.value}
+        onChange={props.onChange || onChangeHandler}
         placeholder={props.placeholder}
       />
     );

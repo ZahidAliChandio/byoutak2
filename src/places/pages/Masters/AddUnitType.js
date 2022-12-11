@@ -19,6 +19,7 @@ function AddUnitType() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
+  const [resetForm, setResetForm] = useState(false);
 
   const [formState, inputHandler] = useForm({
     Name: "",
@@ -55,6 +56,8 @@ function AddUnitType() {
   }
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    setResetForm(true);
+
     axios
       .post(
         `${process.env.REACT_APP_ATLAS_URI}/addUnitType/`,
@@ -108,6 +111,8 @@ function AddUnitType() {
                 label={"Name"}
                 id={"Name"}
                 name={"Name"}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
                 onInput={inputHandler}
                 required
               />

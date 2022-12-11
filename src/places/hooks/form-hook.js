@@ -9,8 +9,7 @@ const formReducer = (state, action) => {
       };
     case "SET_DATA":
       return {
-        ...state,
-        action,
+        state: action.value,
       };
     default:
       return state;

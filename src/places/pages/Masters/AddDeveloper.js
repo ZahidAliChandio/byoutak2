@@ -136,14 +136,14 @@ function AddDeveloper() {
             >
               <Input
                 label={"Name"}
-                id={"developerName"}
+                id={"Name"}
                 name={"DeveloperName"}
                 onInput={inputHandler}
                 required
               />
               <Input
                 label={"Icon"}
-                id={"developerIcon"}
+                id={"Icon"}
                 name={"DeveloperIcon"}
                 onInput={inputHandler}
                 required
@@ -151,7 +151,7 @@ function AddDeveloper() {
               <Input
                 type="textarea"
                 label={"Description"}
-                id={"developerDescription"}
+                id={"Description"}
                 name={"DeveloperDescription"}
                 onInput={inputHandler}
               />
