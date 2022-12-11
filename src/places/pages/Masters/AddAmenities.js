@@ -96,7 +96,7 @@ function AddAmenities() {
   };
   useEffect(() => {
     getAmenities();
-  }, [getAmenities, limit, page]);
+  }, [limit, page]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },

@@ -11,7 +11,6 @@ import FormButton from "../../components/UI/FormButton";
 import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
 import { useForm } from "../../hooks/form-hook";
-import { useCallback } from "react";
 
 function AddDeveloper() {
   const [loading, setLoading] = useState(false);
@@ -39,9 +38,9 @@ function AddDeveloper() {
     name: "",
   });
 
-  const getDevelopers = () => {
+  const getProjectDevelopers = () => {
     axios
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProjectDevelopers/`, {
         params: {
           page: page + 1,
           limit: limit,
@@ -59,10 +58,12 @@ function AddDeveloper() {
 
   function deleteFromTable(data) {
     axios
-      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteDeveloper/${data._id}`)
+      .delete(
+        `${process.env.REACT_APP_ATLAS_URI}/deleteProjectDeveloper/${data._id}`
+      )
       .then((response) => {
         if (response.status === 200) {
-          getDevelopers();
+          getProjectDevelopers();
           toast.success(response?.data);
         } else toast.error(response?.data?.error?.message);
       })
@@ -73,7 +74,7 @@ function AddDeveloper() {
     setUpdateForm(true);
     setUpdateName(data.Name);
     setUpdateIcon(data.Icon);
-    setUpdateDescription(data.Desctiption);
+    setUpdateDescription(data.Description);
     setEdit(true);
   };
   const editCancelHandler = () => {
@@ -84,20 +85,20 @@ function AddDeveloper() {
     e.preventDefault();
     axios
       .post(
-        `${process.env.REACT_APP_ATLAS_URI}/addDevelopers/`,
+        `${process.env.REACT_APP_ATLAS_URI}/addProjectDeveloper/`,
         formState /*, configToken*/
       )
       .then((response) => {
         if (response.status === 200) {
           setTableBodyList((prevState) => [response?.data?.data, ...prevState]);
-          toast.success(response?.data?.message);
+          setResetForm(true);
         } else toast.error(response.data.error.message);
       })
       .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
-    getDevelopers();
-  }, [getDevelopers, limit, page]);
+    getProjectDevelopers();
+  }, [page, limit]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
@@ -136,7 +137,7 @@ function AddDeveloper() {
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            <BoxHeader title="Add Developer" />
+            <BoxHeader title={`${edit ? "Update" : "Add"} Developer`} />
             <form
               onSubmit={onSubmitHandler}
               className="flex flex-col gap-4 pt-2 px-2"
@@ -145,6 +146,11 @@ function AddDeveloper() {
                 label={"Name"}
                 id={"Name"}
                 name={"DeveloperName"}
+                updateValue={updateName}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
                 onInput={inputHandler}
                 required
               />
@@ -152,6 +158,11 @@ function AddDeveloper() {
                 label={"Icon"}
                 id={"Icon"}
                 name={"DeveloperIcon"}
+                updateValue={updateIcon}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
                 onInput={inputHandler}
                 required
               />
@@ -160,6 +171,11 @@ function AddDeveloper() {
                 label={"Description"}
                 id={"Description"}
                 name={"DeveloperDescription"}
+                updateValue={updateDescription}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
                 onInput={inputHandler}
               />
 
@@ -192,10 +208,10 @@ function AddDeveloper() {
                     <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
                       <div>
                         <DataTable
-                          // isLoading={loading}
+                          isLoading={loading}
                           tableHeadersData={tableHeaders}
                           setTableHeadersData={setTableHeaders}
-                          tableBodyData={[]}
+                          tableBodyData={tableBodyList || []}
                         />
                       </div>
                     </div>
@@ -205,7 +221,7 @@ function AddDeveloper() {
                         setPage={setPage}
                         limit={limit}
                         setLimit={setLimit}
-                        total={0}
+                        total={count}
                       />
                     </div>
                   </div>

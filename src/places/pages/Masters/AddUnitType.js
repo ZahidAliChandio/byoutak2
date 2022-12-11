@@ -28,7 +28,7 @@ function AddUnitType() {
     Name: "",
   });
 
-  const getUnitTypes = useCallback(() => {
+  const getUnitTypes = () => {
     axios
       .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
         params: {
@@ -44,7 +44,7 @@ function AddUnitType() {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  }, [limit, page]);
+  };
 
   function deleteFromTable(data) {
     axios
@@ -85,7 +85,7 @@ function AddUnitType() {
   };
   useEffect(() => {
     getUnitTypes();
-  }, [getUnitTypes]);
+  }, [page, limit]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
@@ -118,7 +118,6 @@ function AddUnitType() {
 
   return (
     <section className="content">
-      {console.log(tableBodyList)}
       <MainHeader type="Masters" subtype="Add Unit Type" />
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
