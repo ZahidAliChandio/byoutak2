@@ -11,25 +11,22 @@ import UnitTypeForm from "./UnitType";
 
 function AddProperty(props) {
   const [checkboxesList, setCheckboxesList] = useState([]);
-  const [unitTypes, setUnitTypes] = useState(
-    [
-      {
-        unitType: "",
-        name: "",
-        areaFrom: "",
-        areaTo: "",
-        price: "",
-      },
-    ],
-    0
-  );
+  const [unitTypes, setUnitTypes] = useState([
+    {
+      unitType: "",
+      name: "",
+      areaFrom: "",
+      areaTo: "",
+      price: "",
+      index: 0,
+    },
+  ]);
 
   const removeUnitFormHandler = (formIndex) => {
     const newUnitForm = unitForm.filter(
       (unitForm, index) => index !== formIndex
     );
     setUnitForm(newUnitForm);
-    // setUnitFormIndices([unitFormIndices[unitFormIndices.length - 1] - 1]);
   };
 
   const [unitForm, setUnitForm] = useState([
@@ -51,6 +48,7 @@ function AddProperty(props) {
         areaFrom: "",
         areaTo: "",
         price: "",
+        index: unitTypes.length,
       })
     );
 
@@ -64,12 +62,7 @@ function AddProperty(props) {
         />,
       ])
     );
-
-    // setUnitFormIndices(
-    //   unitFormIndices.concat([unitFormIndices[unitFormIndices.length - 1] + 1])
-    // );
   };
-  // console.log(unitForm);
   const [formState, inputHandler] = useForm({
     propertyTitle: "",
     propertyType: "",
@@ -242,6 +235,7 @@ function AddProperty(props) {
                   {/* <div className="flex flex-col gap-4 w-full">{unitForm}</div> */}
                   <div className="flex flex-col gap-4 w-full">{unitForm}</div>
                   <FormButton
+                    type="button"
                     buttonClass="!px-2"
                     containerClass="!border-none !p-0 !w-fit md:mr-4 place-self-start mt-4"
                     onClick={addUnitFormHandler}
@@ -249,7 +243,7 @@ function AddProperty(props) {
                     <i className="fa-regular fa-plus flex items-center justify-center text-3xl h-5 w-5"></i>
                   </FormButton>
                 </div>
-                <FormButton type="submit">Save</FormButton>
+                <FormButton>Save</FormButton>
               </form>
             </div>
           </div>

@@ -77,7 +77,7 @@ const UnitTypeForm = (props) => {
         buttonClass="!px-2"
         containerClass="!border-none !p-0 !w-fit justify-self-center"
         // disabled={props.unitFormLength > 0 ? false : true}
-        onClick={props.removeUnitFormHandler}
+        onClick={() => props.removeUnitFormHandler(props.index)}
       >
         <i className="fas fa-minus flex items-center justify-center text-xl h-5 w-5"></i>
       </FormButton>

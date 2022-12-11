@@ -1,9 +1,9 @@
 import { useCallback, useReducer } from "react";
 
 const unitReducer = (state, action) => {
-  console.log(state);
+  console.log(state.unitTypes.unitTypes[1]);
   // console.log(action.index);
-  console.log(state.unitTypes.index);
+  // console.log(state.unitTypes.index);
   switch (action.type) {
     case "INPUT_CHANGE":
       // const index = state.unitTypes.findIndex(
@@ -36,8 +36,8 @@ const unitReducer = (state, action) => {
 
 export const useUnitTypeForm = (unitTypes) => {
   const [unitType, dispatch] = useReducer(unitReducer, {
-    unitTypes: unitTypes.unitTypes,
-    index: unitTypes.index,
+    unitTypes,
+    // index: unitTypes,
   });
   const unitTypeInputHandler = useCallback((id, value, index) => {
     dispatch({
