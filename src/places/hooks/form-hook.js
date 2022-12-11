@@ -18,8 +18,7 @@ const formReducer = (state, action) => {
 };
 
 export const useForm = (initialInputs) => {
-  const [formState, dispatch] = useReducer(formReducer, {
-  });
+  const [formState, dispatch] = useReducer(formReducer, {});
 
   const inputHandler = useCallback((id, value) => {
     dispatch({
@@ -32,7 +31,7 @@ export const useForm = (initialInputs) => {
   const setFormData = useCallback((inputData) => {
     dispatch({
       type: "SET_DATA",
-      inputData,
+      value: inputData,
     });
   }, []);
 

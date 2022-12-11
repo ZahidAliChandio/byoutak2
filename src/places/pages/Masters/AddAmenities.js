@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -7,6 +8,7 @@ import Input from "../../components/UI/Input";
 import FormButton from "../../components/UI/FormButton";
 import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
+import { useForm } from "../../hooks/form-hook";
 
 function AddAmenities() {
   const [state, setState] = useState({
@@ -16,6 +18,10 @@ function AddAmenities() {
       text: "",
       type: "",
     },
+  });
+
+  const [formState, inputHandler] = useForm({
+    name: "",
   });
 
   const [page, setPage] = useState(0);
@@ -35,9 +41,11 @@ function AddAmenities() {
     { id: "closerEmail", label: "Closer Email" },
     { id: "closerName", label: "Closer Name" },
   ]);
-  const inputHandler=()=>{
 
-  }
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formState);
+  };
 
   return (
     <section className="content">
@@ -46,13 +54,14 @@ function AddAmenities() {
         <AdminCard className="h-fit">
           <div className="box box-primary">
             <BoxHeader title="Add Amenity" />
-            <form onSubmit={undefined} className="pt-2 px-2">
+            <form onSubmit={onSubmitHandler} className="pt-2 px-2">
               <div className="box-body bozero">
                 <div className="form-group">
                   <Input
                     label={"Name"}
+                    id="amenityName"
                     name={"AmenityName"}
-                    onInput={inputHandler}                
+                    onInput={inputHandler}
                     required
                   />
                 </div>

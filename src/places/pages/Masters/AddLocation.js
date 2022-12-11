@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -7,8 +8,13 @@ import Input from "../../components/UI/Input";
 import FormButton from "../../components/UI/FormButton";
 import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
+import { useForm } from "../../hooks/form-hook";
 
 function AddLocation() {
+  const [formState, inputHandler] = useForm({
+    name: "",
+  });
+
   const [state, setState] = useState({
     tableBodyList: [],
     dialogInfo: {
@@ -36,9 +42,10 @@ function AddLocation() {
     { id: "closerName", label: "Closer Name" },
   ]);
 
-  const inputHandler=()=>{
-
-  }
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formState);
+  };
 
   return (
     <section className="content">
@@ -46,19 +53,20 @@ function AddLocation() {
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            <BoxHeader title="Add Location" />            
-            <form onSubmit={undefined} className="pt-2 px-2">
+            <BoxHeader title="Add Location" />
+            <form onSubmit={onSubmitHandler} className="pt-2 px-2">
               <div className="box-body bozero">
                 <div className="form-group">
                   <Input
                     label={"Name"}
-                    name={"LocationName"}                    
+                    id={"locationName"}
+                    name={"LocationName"}
                     onInput={inputHandler}
                     required
                   />
                 </div>
               </div>
-              <FormButton>Save</FormButton>
+              <FormButton type="submit">Save</FormButton>
             </form>
           </div>
         </AdminCard>
@@ -84,7 +92,7 @@ function AddLocation() {
                   <div className="box box-primary">
                     <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
                       <div>
-                        <DataTable                          
+                        <DataTable
                           tableHeadersData={tableHeaders}
                           setTableHeadersData={setTableHeaders}
                           tableBodyData={[]}

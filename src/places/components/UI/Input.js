@@ -17,12 +17,12 @@ const InputField = (props) => {
     value: props.initialValue || "",
   });
 
-  const { id, onInput } = props;
+  const { id, onInput, unitIndex } = props;
   const { value } = inputState;
 
   useEffect(() => {
-    onInput(id, value);
-  }, [id, value, onInput]);
+    unitIndex ? onInput(id, value, unitIndex) : onInput(id, value);
+  }, [id, value, onInput, unitIndex]);
 
   const onChangeHandler = (e) => {
     dispatch({
@@ -66,7 +66,9 @@ const InputField = (props) => {
     );
 
   return (
-    <div className={`${props.containerClass} flex flex-col gap-[0.18rem] text-[0.7rem]`}>
+    <div
+      className={`${props.containerClass} flex flex-col gap-[0.18rem] text-[0.7rem]`}
+    >
       {" "}
       <label
         className={`${

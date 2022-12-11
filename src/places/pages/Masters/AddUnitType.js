@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -7,9 +8,9 @@ import Input from "../../components/UI/Input";
 import FormButton from "../../components/UI/FormButton";
 import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
+import { useForm } from "../../hooks/form-hook";
 
 function AddUnitType() {
-
   const [state, setState] = useState({
     tableBodyList: [],
     dialogInfo: {
@@ -19,13 +20,14 @@ function AddUnitType() {
     },
   });
 
+  const [formState, inputHandler] = useForm({
+    name: "",
+  });
+
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(20);
 
-  
-  function deleteFromTable(e) {
-    
-  }
+  function deleteFromTable(e) {}
   const [tableHeaders, setTableHeaders] = useState([
     { id: "createdAt", label: "Sale Date", sorting: "desc" },
     { id: "contactJoined", label: "Contact Created" },
@@ -40,29 +42,27 @@ function AddUnitType() {
     { id: "closerName", label: "Closer Name" },
   ]);
 
-  const inputHander=()=>{
-
-  }
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formState);
+  };
 
   return (
     <section className="content">
       <MainHeader type="Masters" subtype="Add Unit Type" />
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
-        
         <AdminCard className="h-fit">
-          <div className="box box-primary">            
-            <BoxHeader title="Add Unit Type" />            
-            <form onSubmit={undefined} className="pt-2 px-2">
-              <div className="box-body bozero">
-                <div className="form-group">
-                  <Input
-                    label={"Name"}
-                    name={"UnitTypeName"}
-                    onInput={inputHander}
-                    required
-                  />
-                </div>
-              </div>
+          <div className="box box-primary">
+            <BoxHeader title="Add Unit Type" />
+            <form onSubmit={onSubmitHandler} className="pt-2 px-2">
+              <Input
+                label={"Name"}
+                id={"unitTypeName"}
+                name={"UnitTypeName"}
+                onInput={inputHandler}
+                required
+              />
+
               <FormButton>Save</FormButton>
             </form>
           </div>
