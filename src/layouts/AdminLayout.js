@@ -1,8 +1,7 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import SideBar from "../places/components/Navigation/SideBar";
-import MainHeader from "../places/components/Navigation/MainHeader";
-import { Toaster } from 'react-hot-toast';
 
 export default function AdminLayout() {
   return (
@@ -15,19 +14,19 @@ export default function AdminLayout() {
         containerStyle={{}}
         toastOptions={{
           // Define default options
-          className: '',
+          className: "",
           duration: 5000,
           style: {
-            background: '#363636',
-            color: '#fff',
+            background: "#363636",
+            color: "#fff",
           },
 
           // Default options for specific types
           success: {
             duration: 3000,
             theme: {
-              primary: 'green',
-              secondary: 'black',
+              primary: "green",
+              secondary: "black",
             },
           },
         }}
