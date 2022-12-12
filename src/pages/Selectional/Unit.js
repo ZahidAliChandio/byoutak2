@@ -4,12 +4,12 @@ const Unit = () => {
   const content = {
     id: 4,
     title: "WHAT IS THE PRICE RANGE YOU HAVE IN MIND",
-    lis: ["3 Million", "4Million", "5 Million"],
+    lis: ["3 Million", "4 Million", "5 Million"],
     nextLink: "/price",
   };
   return (
     <Fragment>
-       <SlidingContent content={content}></SlidingContent>
+      <SlidingContent content={content}></SlidingContent>
     </Fragment>
   );
 };

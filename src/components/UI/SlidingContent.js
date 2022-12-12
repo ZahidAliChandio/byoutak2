@@ -1,17 +1,31 @@
-import { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 import RightAngle from "../UI/RightAngle";
+import { useEffect } from "react";
 
 const SlidingContent = (props) => {
+  // const [previousData, setPrivousData] = useState([""]);
   const [isVisible, setIsVisible] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const content = props.content;
 
   const toggleContent = () => {
     setIsVisible((prev) => !prev);
   };
+
+  const onClickHandler = (link, data) => {
+    navigate(`/${link}`, { state: data });
+  };
+
+  useEffect(() => {
+    // console.log(location.state);
+    // if (location) setPrivousData([previousData.concat(location.state)]);
+    // console.log(previousData);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -94,33 +108,39 @@ const SlidingContent = (props) => {
             </svg>
           </button>
           {/* Dropdown menu  */}
-          <div
-            id="dropdown"
-            className={`${
-              isVisible ? "visible" : "invisible"
-            } font-bold mt-2 z-10 bg-white overflow-hidden rounded-xl divide-y divide-gray-100 w-full`}
-          >
-            <ul
-              className="py-1 text-sm text-gray-700"
-              aria-labelledby="dropdownDefault"
+
+          {content.lis.length > 0 && (
+            <div
+              id="dropdown"
+              className={`${
+                isVisible ? "visible" : "invisible"
+              } font-bold mt-2 z-10 bg-white overflow-hidden rounded-xl divide-y divide-gray-100 w-full`}
             >
-              {content.lis.map((item, index) => {
-                return (
-                  <li key={index} className="my-1 md:my-2">
-                    <Link
-                      to={content.nextLink}
-                      className="block py-2 px-4 hover:text-red-600 cursor-pointer"
-                    >
-                      {item}
-                      {/* navigate("/sdfksdf",{
+              <ul
+                className="py-1 text-sm text-gray-700"
+                aria-labelledby="dropdownDefault"
+              >
+                {content.lis.map((item, index) => {
+                  return (
+                    <li key={index} className="my-1 md:my-2">
+                      <button
+                        value={item}
+                        onClick={(e) =>
+                          onClickHandler(content.nextLink, e.target.value)
+                        }
+                        className="block py-2 px-4 hover:text-red-600 cursor-pointer"
+                      >
+                        {item}
+                        {/* navigate("/sdfksdf",{
                         state:{sdfklsdf}
                       }) */}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       </motion.div>
     </AnimatePresence>

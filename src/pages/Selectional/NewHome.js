@@ -9,7 +9,7 @@ const NewHome = () => {
     subtitle: "Don't know what you are looking for?",
     input: true,
     lis: ["RESIDENTIAL", "COMMERCIAL", "ADMIN"],
-    nextLink: "/property",
+    nextLink: "property",
   };
 
   return (
