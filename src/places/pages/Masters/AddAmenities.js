@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -89,8 +89,8 @@ function AddAmenities() {
         if (response.status === 200) {
           getAmenities();
           toast.success(response?.data?.message);
+          setResetForm(true);
         } else toast.error(response.data.error.message);
-        setResetForm(true);
       })
       .catch((err) => toast.error(err.message));
   };
