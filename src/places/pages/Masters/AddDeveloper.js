@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import http from '../../../utils/http'
+import http from "../../../utils/http";
 import toast from "react-hot-toast";
 
 import BoxHeader from "../../components/UI/BoxHeader";
@@ -24,6 +24,7 @@ function AddDeveloper() {
   const [updateIcon, setUpdateIcon] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
+  const [updateData, setUpdateData] = useState(null);
 
   const [state, setState] = useState({
     tableBodyList: [],
@@ -72,6 +73,7 @@ function AddDeveloper() {
 
   const editHandler = (data) => {
     setUpdateForm(true);
+    setUpdateData(data);
     setUpdateName(data.Name);
     setUpdateIcon(data.Icon);
     setUpdateDescription(data.Description);
@@ -83,18 +85,34 @@ function AddDeveloper() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    http
-      .post(
-        `${process.env.REACT_APP_ATLAS_URI}/addProjectDeveloper/`,
-        formState /*, configToken*/
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setTableBodyList((prevState) => [response?.data?.data, ...prevState]);
-          setResetForm(true);
-        } else toast.error(response.data.error.message);
-      })
-      .catch((err) => toast.error(err.message));
+    updateData
+      ? http
+          .put(
+            `${process.env.REACT_APP_ATLAS_URI}/updateProjectDeveloper/${updateData._id}`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getProjectDevelopers();
+              setResetForm(true);
+              setUpdateData(null);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message))
+      : http
+          .post(
+            `${process.env.REACT_APP_ATLAS_URI}/addProjectDeveloper/`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getProjectDevelopers();
+              setResetForm(true);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
     getProjectDevelopers();
@@ -137,7 +155,7 @@ function AddDeveloper() {
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            <BoxHeader title={`${edit ? "Update" : "Add"} Developer`} />
+            <BoxHeader title={`${updateData ? "Update" : "Add"} Developer`} />
             <form
               onSubmit={onSubmitHandler}
               className="flex flex-col gap-4 pt-2 px-2"
@@ -180,7 +198,7 @@ function AddDeveloper() {
               />
 
               <FormButton onClick={editCancelHandler}>
-                {edit ? "Update" : "Save"}
+                {updateData ? "Update" : "Save"}
               </FormButton>
             </form>
           </div>
