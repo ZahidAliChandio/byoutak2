@@ -19,19 +19,25 @@ function AddLocation() {
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
   const [edit, setEdit] = useState(false);
-  const [resetForm, setResetForm] = useState(false);
   const [updateName, setUpdateName] = useState(true);
   const [updateDescription, setUpdateDescription] = useState(true);
+  const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
 
-  const [formState, inputHandler] = useForm({
-    Location: "",
+  const [Address, setAddress] = useState({
+    City: "",
+    state: "",
+    Country: "",
     Address: "",
   });
+  const [formState, inputHandler] = useForm({
+    Location: "",
+    Address: Address,
+  });
 
-  const getAmenities = () => {
+  const getLocations = () => {
     axios
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getAmenities/`, {
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`, {
         params: {
           page: page + 1,
           limit: limit,
@@ -58,10 +64,10 @@ function AddLocation() {
 
   function deleteFromTable(data) {
     axios
-      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteAmenity/${data._id}`)
+      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteLocation/${data._id}`)
       .then((response) => {
         if (response.status === 200) {
-          getAmenities();
+          getLocations();
           toast.success(response?.data);
         } else toast.error(response?.data?.error?.message);
       })
@@ -80,23 +86,24 @@ function AddLocation() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    console.log(formState);
     axios
       .post(
-        `${process.env.REACT_APP_ATLAS_URI}/addAmenity/`,
+        `${process.env.REACT_APP_ATLAS_URI}/addLocation/`,
         formState /*, configToken*/
       )
       .then((response) => {
         if (response.status === 200) {
-          getAmenities();
+          getLocations();
           toast.success(response?.data?.message);
+          setResetForm(true);
         } else toast.error(response.data.error.message);
-        setResetForm(true);
       })
       .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
-    getAmenities();
-  }, [getAmenities]);
+    getLocations();
+  }, [getLocations]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
@@ -135,16 +142,76 @@ function AddLocation() {
         <AdminCard className="h-fit">
           <div className="box box-primary">
             <BoxHeader title="Add Location" />
-            <form onSubmit={onSubmitHandler} className="pt-2 px-2">
+            <form
+              onSubmit={onSubmitHandler}
+              className="flex flex-col gap-4 pt-2 px-2"
+            >
               <Input
                 label={"Name"}
-                id={"locationName"}
-                name={"LocationName"}
+                id={"Location"}
+                name={"Location"}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                // updateValue={updateName}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
                 onInput={inputHandler}
                 required
               />
-
-              <FormButton type="submit">Save</FormButton>
+              <h3 className="text-sm font-bold text-[color:var(--red-color)] box-title">
+                Address
+              </h3>
+              <Input
+                label={"City"}
+                id={"City"}
+                name={"City"}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                // updateValue={updateName}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
+                onInput={inputHandler}
+                required
+              />
+              <Input
+                label={"State"}
+                id={"state"}
+                name={"state"}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                // updateValue={updateName}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
+                onInput={inputHandler}
+                required
+              />
+              <Input
+                label={"Country"}
+                id={"Country"}
+                name={"Country"}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                // updateValue={updateName}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
+                onInput={inputHandler}
+                required
+              />
+              <Input
+                label={"Address"}
+                id={"Address"}
+                name={"Address"}
+                updateForm={updateForm}
+                setUpdateForm={setUpdateForm}
+                // updateValue={updateName}
+                resetForm={resetForm}
+                setResetForm={setResetForm}
+                onInput={inputHandler}
+                required
+              />
+              <FormButton onClick={editCancelHandler}>
+                {edit ? "Update" : "Save"}
+              </FormButton>
             </form>
           </div>
         </AdminCard>
@@ -166,25 +233,22 @@ function AddLocation() {
                 />
 
                 <div className="col-md-12">
-                  <div className="box box-primary">
-                    <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
-                      <div>
-                        <DataTable
-                          tableHeadersData={tableHeaders}
-                          setTableHeadersData={setTableHeaders}
-                          tableBodyData={[]}
-                        />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-0 w-[-webkit-fill-available] z-50">
-                      <Paginator
-                        page={page}
-                        setPage={setPage}
-                        limit={limit}
-                        setLimit={setLimit}
-                        total={0}
-                      />
-                    </div>
+                  <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
+                    <DataTable
+                      isLoading={loading}
+                      tableHeadersData={tableHeaders}
+                      setTableHeadersData={setTableHeaders}
+                      tableBodyData={tableBodyList || []}
+                    />
+                  </div>
+                  <div className="absolute bottom-0 w-[-webkit-fill-available] z-50">
+                    <Paginator
+                      page={page}
+                      setPage={setPage}
+                      limit={limit}
+                      setLimit={setLimit}
+                      total={count}
+                    />
                   </div>
                 </div>
               </div>
