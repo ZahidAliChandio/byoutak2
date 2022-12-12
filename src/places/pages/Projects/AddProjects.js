@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { changeHandler } from '../../Helpers/ChangeHandler'
 import * as $ from 'jquery'
-import axios from 'axios'
+import http from '../../../utils/http'
 import BoxHeader from '../../components/BoxHeader'
 import Dialog from '../../components/Dialog'
 import { ATLAS_URI } from '../../Constants'
@@ -46,7 +46,7 @@ function AddProjects() {
 
         if (!resetEditID("/Projects/addProjects")) {
             console.log("Entered ID")
-            axios.get(`${ATLAS_URI}/getProjectByID/${EditDetailsData.id}`, configToken).then(response => {
+            http.get(`${ATLAS_URI}/getProjectByID/${EditDetailsData.id}`, configToken).then(response => {
                 const responseData = response.data;
                 if (typeof responseData !== 'undefined') {
                     setState(prevState => ({
@@ -77,7 +77,7 @@ function AddProjects() {
         formData.append('Images', state.newTableRow.Images);
 
         if (!state.editingActivated) {
-            axios.post(`${ATLAS_URI}/addProject/`, formData, configToken)
+            http.post(`${ATLAS_URI}/addProject/`, formData, configToken)
                 .then(response => {
                     if (response.status === 200) {
                         const newDialogInfo = { isOpened: true, text: "Project Added Successfully", type: "Success" }
@@ -93,13 +93,13 @@ function AddProjects() {
 
         } else {
             if (state.newTableRow.ImageSelected) {
-                axios.post(`${ATLAS_URI}/updateProjectWithImages/` + EditDetailsData.id, formData, configToken)
+                http.post(`${ATLAS_URI}/updateProjectWithImages/` + EditDetailsData.id, formData, configToken)
                     .then(() => {
                         redirectFromEditDetails(EditDetailsData.redirectFrom)
                     }).catch(err => alert(err))
 
             } else {
-                axios.post(`${ATLAS_URI}/updateProject/` + EditDetailsData.id, state.newTableRow, configToken)
+                http.post(`${ATLAS_URI}/updateProject/` + EditDetailsData.id, state.newTableRow, configToken)
                     .then(() => {
                         redirectFromEditDetails(EditDetailsData.redirectFrom)
                     }).catch(err => alert(err))

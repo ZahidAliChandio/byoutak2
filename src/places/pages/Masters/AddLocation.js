@@ -19,20 +19,20 @@ function AddLocation() {
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
   const [edit, setEdit] = useState(false);
-  const [updateName, setUpdateName] = useState(true);
-  const [updateDescription, setUpdateDescription] = useState(true);
+  const [updateName, setUpdateName] = useState("");
+  const [updateCity, setUpdateCity] = useState("");
+  const [updateCountry, setUpdateCountry] = useState("");
+  const [updateEstate, setUpdateEstate] = useState("");
+  const [updateAddress, setUpdateAddress] = useState("");
   const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
 
-  const [Address, setAddress] = useState({
+  const [formState, inputHandler] = useForm({
+    Location: "",
     City: "",
     state: "",
     Country: "",
     Address: "",
-  });
-  const [formState, inputHandler] = useForm({
-    Location: "",
-    Address: Address,
   });
 
   const getLocations = () => {
@@ -45,7 +45,15 @@ function AddLocation() {
       })
       .then((response) => {
         if (response.status === 200) {
-          setTableBodyList(response?.data?.results);
+          setTableBodyList(
+            response?.data?.results.map((x) => {
+              x.Address = x.Address?.Address;
+              x.City = x.Address?.City;
+              x.state = x.Address?.state;
+              x.Country = x.Address?.Country;
+              return x;
+            })
+          );
           setCount(response?.data?.count);
           setLoading(false);
         } else toast.error(response?.data?.error?.message);
@@ -77,7 +85,10 @@ function AddLocation() {
   const editHandler = (data) => {
     setUpdateForm(true);
     setUpdateName(data.Name);
-    setUpdateDescription(data.Description);
+    setUpdateCity(data.Address.City);
+    setUpdateEstate(data.Address.EstsetUpdateEstate);
+    setUpdateCountry(data.Address.Country);
+    setUpdateAddress(data.Address.Address);
     setEdit(true);
   };
   const editCancelHandler = () => {
@@ -86,16 +97,22 @@ function AddLocation() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(formState);
     axios
       .post(
         `${process.env.REACT_APP_ATLAS_URI}/addLocation/`,
-        formState /*, configToken*/
+        {
+          Location: formState.Location,
+          Address: {
+            City: formState.City,
+            state: formState.state,
+            Country: formState.Country,
+            Address: formState.Address,
+          },
+        } /*, configToken*/
       )
       .then((response) => {
         if (response.status === 200) {
           getLocations();
-          toast.success(response?.data?.message);
           setResetForm(true);
         } else toast.error(response.data.error.message);
       })
@@ -103,12 +120,15 @@ function AddLocation() {
   };
   useEffect(() => {
     getLocations();
-  }, [getLocations]);
+  }, [page, limit]);
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
-    { id: "Name", label: "Name" },
-    { id: "Description", label: "Description" },
+    { id: "Location", label: "Name" },
+    { id: "City", label: "City" },
+    { id: "state", label: "State" },
+    { id: "Country", label: "Country" },
+    { id: "Address", label: "Address" },
     {
       id: "actions",
       label: "",
@@ -134,7 +154,6 @@ function AddLocation() {
       ),
     },
   ]);
-
   return (
     <section className="content">
       <MainHeader type="Masters" subtype="Add Location" />
@@ -142,6 +161,7 @@ function AddLocation() {
         <AdminCard className="h-fit">
           <div className="box box-primary">
             <BoxHeader title="Add Location" />
+            {console.log(tableBodyList)}
             <form
               onSubmit={onSubmitHandler}
               className="flex flex-col gap-4 pt-2 px-2"
@@ -152,7 +172,7 @@ function AddLocation() {
                 name={"Location"}
                 updateForm={updateForm}
                 setUpdateForm={setUpdateForm}
-                // updateValue={updateName}
+                updateValue={updateName}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}
@@ -167,7 +187,7 @@ function AddLocation() {
                 name={"City"}
                 updateForm={updateForm}
                 setUpdateForm={setUpdateForm}
-                // updateValue={updateName}
+                updateValue={updateCity}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}
@@ -179,7 +199,7 @@ function AddLocation() {
                 name={"state"}
                 updateForm={updateForm}
                 setUpdateForm={setUpdateForm}
-                // updateValue={updateName}
+                updateValue={updateEstate}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}
@@ -191,7 +211,7 @@ function AddLocation() {
                 name={"Country"}
                 updateForm={updateForm}
                 setUpdateForm={setUpdateForm}
-                // updateValue={updateName}
+                updateValue={updateCountry}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}
@@ -203,7 +223,7 @@ function AddLocation() {
                 name={"Address"}
                 updateForm={updateForm}
                 setUpdateForm={setUpdateForm}
-                // updateValue={updateName}
+                updateValue={updateAddress}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import http from '../../../utils/http'
 import toast from "react-hot-toast";
 
 import BoxHeader from "../../components/UI/BoxHeader";
@@ -39,7 +39,7 @@ function AddDeveloper() {
   });
 
   const getProjectDevelopers = () => {
-    axios
+    http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getProjectDevelopers/`, {
         params: {
           page: page + 1,
@@ -57,7 +57,7 @@ function AddDeveloper() {
   };
 
   function deleteFromTable(data) {
-    axios
+    http
       .delete(
         `${process.env.REACT_APP_ATLAS_URI}/deleteProjectDeveloper/${data._id}`
       )
@@ -83,7 +83,7 @@ function AddDeveloper() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    axios
+    http
       .post(
         `${process.env.REACT_APP_ATLAS_URI}/addProjectDeveloper/`,
         formState /*, configToken*/
