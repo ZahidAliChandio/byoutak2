@@ -139,6 +139,7 @@ const Paginator = ({ limit = 20, setLimit, page = 0, setPage, total = 20 }) => {
                         ? "border-blue-500 text-blue-600 bg-blue-50 !cursor-not-allowed"
                         : "border-gray-300 text-gray-500 bg-white hover:bg-gray-50"
                     } px-4 py-2 text-sm font-medium focus:z-20`}
+                    key={index}
                   >
                     {index + 1}
                   </a>

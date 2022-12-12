@@ -15,10 +15,12 @@ const SlidingContent = (props) => {
 
   return (
     <AnimatePresence>
-      <RightAngle/>
+      <RightAngle />
       <motion.div
         key="select"
-        className={`flex flex-col items-center justify-center ${!content.subtitle?'mt-16':'mt-16 md:mt-6'} mx-auto w-10/12 md:w-[50%] text-center transition-all duration-300 z-0`}
+        className={`flex flex-col items-center justify-center ${
+          !content.subtitle ? "mt-16" : "mt-16 md:mt-6"
+        } mx-auto w-10/12 md:w-[50%] text-center transition-all duration-300 z-0`}
         initial={{ transform: "translateX(100%)" }}
         animate={{ transform: "translateX(0%)" }}
         exit={{ transform: "translateX(100%)" }}
@@ -110,6 +112,9 @@ const SlidingContent = (props) => {
                       className="block py-2 px-4 hover:text-red-600 cursor-pointer"
                     >
                       {item}
+                      {/* navigate("/sdfksdf",{
+                        state:{sdfklsdf}
+                      }) */}
                     </Link>
                   </li>
                 );
