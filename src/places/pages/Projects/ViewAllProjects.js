@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
+import http from '../../../utils/http'
+
 import BoxHeader from '../../components/BoxHeader'
 import DataTable from '../../components/DataTable'
 import Dialog from '../../components/Dialog'
@@ -25,7 +26,7 @@ function ViewAllProjects(props) {
     useEffect(() => () => { mounted.current = false; }, []);
     useEffect(() => {
         //Get All Agents
-        axios.get(`${ATLAS_URI}/getProjects/`, configToken)
+        http.get(`${ATLAS_URI}/getProjects/`, configToken)
             .then(response => {
                 const projectsData = response.data;
                 if (mounted.current) setState(prevState => ({ ...prevState, tableBodyList: projectsData }))
@@ -51,10 +52,10 @@ function ViewAllProjects(props) {
 
     function deleteFromTable(e) {
         const delID = state.dialogInfo.delID;
-        axios.delete(`${ATLAS_URI}/deleteProject/` + delID, configToken)
+        http.delete(`${ATLAS_URI}/deleteProject/` + delID, configToken)
             .then(() => {
                 state.tableBodyList.filter(data => data.id.toString() === delID)[0].Images.forEach((image) => {
-                    axios.delete(`${ATLAS_URI}/file/${image}`, configToken);
+                    http.delete(`${ATLAS_URI}/file/${image}`, configToken);
                 })
                 const newTableBodyList = state.tableBodyList.filter(data => data.id.toString() !== delID);
                 setState(prevState => ({

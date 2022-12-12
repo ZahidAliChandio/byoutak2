@@ -13,15 +13,12 @@ export default function AdminLayout() {
         containerClassName=""
         containerStyle={{}}
         toastOptions={{
-          // Define default options
           className: "",
           duration: 5000,
           style: {
-            background: "#363636",
-            color: "#fff",
+            background: "#fff",
+            color: "#363636",
           },
-
-          // Default options for specific types
           success: {
             duration: 3000,
             theme: {

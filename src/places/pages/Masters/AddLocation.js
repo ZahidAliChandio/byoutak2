@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import http from '../../../utils/http'
 import toast from "react-hot-toast";
 
 import BoxHeader from "../../components/UI/BoxHeader";
@@ -30,7 +30,7 @@ function AddLocation() {
   });
 
   const getAmenities = () => {
-    axios
+    http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getAmenities/`, {
         params: {
           page: page + 1,
@@ -57,7 +57,7 @@ function AddLocation() {
   });
 
   function deleteFromTable(data) {
-    axios
+    http
       .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteAmenity/${data._id}`)
       .then((response) => {
         if (response.status === 200) {
@@ -80,7 +80,7 @@ function AddLocation() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    axios
+    http
       .post(
         `${process.env.REACT_APP_ATLAS_URI}/addAmenity/`,
         formState /*, configToken*/

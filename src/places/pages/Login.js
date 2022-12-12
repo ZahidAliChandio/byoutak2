@@ -1,119 +1,61 @@
 import React, { useState, useEffect, useContext } from "react";
-// import * as $ from 'jquery'
-// import axios from 'axios';
-// import md5 from 'md5';
-import Dialog from "../components/UI/Dialog";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 // import stateContext from '../../context/StateContext'
 // import { ATLAS_URI } from '../../Constants'
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
-  const [state, setState] = useState({
-    dialogInfo: {
-      isOpened: false,
-      text: "",
-    },
-    businessName: "",
-  });
+
+  const [Name, setName] = useState()
+  const [Password, setPassword] = useState()
+  const navigate = useNavigate()
 
   const loginOperator = (e) => {
     e.preventDefault();
-
-    // const enteredUsername = $("#username").val();
-    // const enteredPassword = md5($("#password").val()).substring(5, 25)
-    // axios.post(`${ATLAS_URI}/authenticate`, { username: enteredUsername, password: enteredPassword })
-    //     .then(res1 => {
-    //         const userData = res1.data;
-    //         if (typeof userData !== 'undefined' && userData !== null) {
-    //             const { Username, Password, Name, Role } = userData;
-    //             if (Password === enteredPassword) {
-    //                 axios.get(`${ATLAS_URI}/getRoleByID/${Role}`)
-    //                     .then(role => {
-    //                         if (typeof role !== 'undefined') {
-
-    //                             const loginTime = getCurrentTime();
-    //                             const addedData = { Name: Name, Username: Username, Role: role.data.Role, LoginTime: loginTime };
-    //                             //Add Login Details
-    //                             axios.post(`${ATLAS_URI}/addLoginDetail/`, addedData)
-    //                                 .then(response => {
-    //                                     if (response.status === 200) {
-    //                                         userData.LastLogin = loginTime;
-    //                                         updateOperatorInfo(userData);
-    //                                         window.location.href = "/dashboard"
-
-    //                                         //Delete All Excels
-    //                                         axios.delete(`${ATLAS_URI}/deleteAllExcels`);
-
-    //                                     }
-    //                                 }).catch(err => alert(err))
-    //                         }
-    //                     }).catch(err => alert(err))
-
-    //             } else {
-    //                 const newDialogInfo = { isOpened: true, text: "Incorrect Password", type: "Error" }
-    //                 setState({ ...state, dialogInfo: newDialogInfo })
-    //                 $(".errorMsg").css({ "font-size": "14px" })
-    //                 setTimeout(() => { setState({ ...state, dialogInfo: { isOpened: false, text: "", type: "" } }) }, 3000)
-    //             }
-
-    //         } else {
-    //             const newDialogInfo = { isOpened: true, text: "Incorrect Username", type: "Error" }
-    //             setState({ ...state, dialogInfo: newDialogInfo })
-    //             $(".errorMsg").css({ "font-size": "14px" })
-    //             setTimeout(() => { setState({ ...state, dialogInfo: { isOpened: false, text: "", type: "" } }) }, 3000)
-    //         }
-
-    //     }).catch(err => alert("Not Authorized"))
+    axios.post(`${process.env.REACT_APP_ATLAS_URI}/Authenticate`, { Name, Password })
+      .then(res1 => {
+        localStorage.setItem('byoutakToken', res1.data.token)
+        toast.success("Authentication Successful")
+        navigate("/admin/addProperty")
+      }).catch(err => toast.error("Not Authorized"))
   };
 
-  const getCurrentTime = () => {
-    const today = new Date();
-    const date = today.getDate();
-    const month = String(parseInt(today.getMonth()) + 1);
 
-    return (
-      (date < 10 && "0") +
-      date +
-      "-" +
-      (month < 10 && "0") +
-      month +
-      "-" +
-      today.getFullYear() +
-      "  " +
-      ("0" + today.getHours()).slice(-2) +
-      ":" +
-      ("0" + today.getMinutes()).slice(-2) +
-      ":" +
-      ("0" + today.getSeconds()).slice(-2)
-    );
-  };
-
-  const [activeInputIndex, setInputIndex] = useState(null);
-  const inputClickHandler = (index) => {
-    setInputIndex(index);
-  };
 
   return (
     <React.Fragment>
-      {state.dialogInfo.isOpened && (
-        <Dialog
-          onClose={(e) =>
-            setState({
-              ...state,
-              dialogInfo: { isOpened: false, text: "", type: "" },
-            })
-          }
-          dialogInfo={state.dialogInfo}
-        />
-      )}
       <main
         id="loginSection"
         className="flex flex-col justify-center items-center h-screen"
       >
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          gutter={8}
+          containerClassName=""
+          containerStyle={{}}
+          toastOptions={{
+            className: "",
+            duration: 5000,
+            style: {
+              background: "#fff",
+              color: "#363636",
+            },
+            success: {
+              duration: 3000,
+              theme: {
+                primary: "green",
+                secondary: "black",
+              },
+            },
+          }}
+        />
         <div className="login_container flex flex-col items-center w-full">
           <div className="flex flex-col justify gap-12 w-11/12 sm:w-3/4 md:w-1/2 lg:w-[30%]">
-            <div className="flex flex-col gap-1 text-[#555] font-sans-serif font-semibold">
+            <div className="flex flex-col gap-1 text-gray-50 font-sans-serif font-semibold">
               <p className="login_heading text-lg">
-                Real Estate CRM : Demo
+                Byoutak : Admin
               </p>
               <p className="login_subHeading text-sm font-semibold">CRM Login</p>
             </div>
@@ -125,7 +67,9 @@ function Login() {
               >                
                 <div className="relative z-0 mb-1 w-full group">
                   <input
-                    type="email"
+                    type="text"
+                    value={Name}
+                    onChange={(e) => setName(e.target.value)}
                     name="floating_email"
                     id="floating_email"
                     className="block pb-2 pt-5 px-2 w-full text-[#212020] bg-transparent border-transparent border border-b border-b-gray-600 appearance-none focus:outline-none focus:border-b-2 focus:border-[color:var(--red-color)] focus:ring-0 peer text-xs font-semibold"
@@ -144,6 +88,8 @@ function Login() {
                   <input
                     type="password"
                     name="floating_password"
+                    value={Password}
+                    onChange={(e) => setPassword(e.target.value)}
                     id="floating_password"
                     className="block pb-2 pt-5 px-2 w-full text-[#212020] border-transparent bg-transparent border border-b border-b-gray-600 appearance-none outline-none focus:ring-0 focus:border-[color:var(--red-color)] focus:border-b-2 peer text-xs font-semibold"
                     placeholder=" "

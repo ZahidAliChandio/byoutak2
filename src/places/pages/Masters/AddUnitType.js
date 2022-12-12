@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
-
+import http from '../../../utils/http'
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -29,7 +28,7 @@ function AddUnitType() {
   });
 
   const getUnitTypes = () => {
-    axios
+    http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`, {
         params: {
           page: page + 1,
@@ -47,7 +46,7 @@ function AddUnitType() {
   };
 
   function deleteFromTable(data) {
-    axios
+    http
       .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteUnitType/${data._id}`)
       .then((response) => {
         if (response.status === 200) {
@@ -69,7 +68,7 @@ function AddUnitType() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    axios
+    http
       .post(
         `${process.env.REACT_APP_ATLAS_URI}/addUnitType/`,
         formState /*, configToken*/
