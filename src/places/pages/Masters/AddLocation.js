@@ -26,6 +26,7 @@ function AddLocation() {
   const [updateAddress, setUpdateAddress] = useState("");
   const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
+  const [updateData, setUpdateData] = useState(null);
 
   const [formState, inputHandler] = useForm({
     Location: "",
@@ -84,9 +85,11 @@ function AddLocation() {
 
   const editHandler = (data) => {
     setUpdateForm(true);
+    setUpdateData(data);
+    console.log(data);
     setUpdateName(data.Name);
     setUpdateCity(data.Address.City);
-    setUpdateEstate(data.Address.EstsetUpdateEstate);
+    setUpdateEstate(data.Address.state);
     setUpdateCountry(data.Address.Country);
     setUpdateAddress(data.Address.Address);
     setEdit(true);
@@ -97,26 +100,34 @@ function AddLocation() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    http
-      .post(
-        `${process.env.REACT_APP_ATLAS_URI}/addLocation/`,
-        {
-          Location: formState.Location,
-          Address: {
-            City: formState.City,
-            state: formState.state,
-            Country: formState.Country,
-            Address: formState.Address,
-          },
-        } /*, configToken*/
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          getLocations();
-          setResetForm(true);
-        } else toast.error(response.data.error.message);
-      })
-      .catch((err) => toast.error(err.message));
+    updateData
+      ? http
+          .put(
+            `${process.env.REACT_APP_ATLAS_URI}/updateLocation/${updateData._id}`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getLocations();
+              setResetForm(true);
+              setUpdateData(null);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message))
+      : http
+          .post(
+            `${process.env.REACT_APP_ATLAS_URI}/addLocation/`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getLocations();
+              setResetForm(true);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
     getLocations();
@@ -160,7 +171,7 @@ function AddLocation() {
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            <BoxHeader title="Add Location" />
+            <BoxHeader title={`${updateData ? "Update" : "Add"} Location`} />
             {console.log(tableBodyList)}
             <form
               onSubmit={onSubmitHandler}
@@ -230,7 +241,7 @@ function AddLocation() {
                 required
               />
               <FormButton onClick={editCancelHandler}>
-                {edit ? "Update" : "Save"}
+                {updateData ? "Update" : "Save"}
               </FormButton>
             </form>
           </div>

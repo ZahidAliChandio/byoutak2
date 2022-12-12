@@ -23,6 +23,7 @@ function AddAmenities() {
   const [updateName, setUpdateName] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
+  const [updateData, setUpdateData] = useState(null);
 
   const [formState, inputHandler] = useForm({
     Name: "",
@@ -70,6 +71,7 @@ function AddAmenities() {
 
   const editHandler = (data) => {
     setUpdateForm(true);
+    setUpdateData(data);
     setUpdateName(data.Name);
     setUpdateDescription(data.Description);
     setEdit(true);
@@ -80,19 +82,34 @@ function AddAmenities() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    http
-      .post(
-        `${process.env.REACT_APP_ATLAS_URI}/addAmenity/`,
-        formState /*, configToken*/
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          getAmenities();
-          // setTableBodyList((prevState) => [response?.data?.data, ...prevState]);
-          setResetForm(true);
-        } else toast.error(response.data.error.message);
-      })
-      .catch((err) => toast.error(err.message));
+    updateData
+      ? http
+          .put(
+            `${process.env.REACT_APP_ATLAS_URI}/updateAmenity/${updateData._id}`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getAmenities();
+              setResetForm(true);
+              setUpdateData(null);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message))
+      : http
+          .post(
+            `${process.env.REACT_APP_ATLAS_URI}/addAmenity/`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getAmenities();
+              setResetForm(true);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
     getAmenities();
@@ -133,7 +150,7 @@ function AddAmenities() {
       <MainHeader type="Masters" subtype="Add Amenity" />
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
-          <BoxHeader title={`${edit ? "Update" : "Add"} Amenity`} />
+          <BoxHeader title={`${updateData ? "Update" : "Add"} Amenity`} />
           <form
             onSubmit={onSubmitHandler}
             className="flex flex-col gap-4 pt-2 px-2"
@@ -163,7 +180,7 @@ function AddAmenities() {
               onInput={inputHandler}
             />
             <FormButton onClick={editCancelHandler}>
-              {edit ? "Update" : "Save"}
+              {updateData ? "Update" : "Save"}
             </FormButton>
           </form>
         </AdminCard>
@@ -187,6 +204,7 @@ function AddAmenities() {
 
                 <div className="col-md-12">
                   <div className="box box-primary">
+                    ``
                     <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
                       <div>
                         <DataTable

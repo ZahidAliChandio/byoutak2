@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import http from '../../../utils/http'
+import http from "../../../utils/http";
+
 import BoxHeader from "../../components/UI/BoxHeader";
 import Dialog from "../../components/UI/Dialog";
 import AdminCard from "../../components/UI/AdminCard";
@@ -10,7 +11,6 @@ import FormButton from "../../components/UI/FormButton";
 import DataTable from "../../components/UI/DataTable";
 import Paginator from "../../components/UI/paginator";
 import { useForm } from "../../hooks/form-hook";
-import { useCallback } from "react";
 
 function AddUnitType() {
   const [loading, setLoading] = useState(false);
@@ -22,6 +22,7 @@ function AddUnitType() {
   const [resetForm, setResetForm] = useState(false);
   const [updateName, setUpdateName] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
+  const [updateData, setUpdateData] = useState(null);
 
   const [formState, inputHandler] = useForm({
     Name: "",
@@ -58,7 +59,8 @@ function AddUnitType() {
   }
 
   const editHandler = (data) => {
-    updateForm(true);
+    setUpdateForm(true);
+    setUpdateData(data);
     setUpdateName(data.Name);
     setEdit(true);
   };
@@ -68,19 +70,34 @@ function AddUnitType() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    http
-      .post(
-        `${process.env.REACT_APP_ATLAS_URI}/addUnitType/`,
-        formState /*, configToken*/
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setTableBodyList((prevState) => [response?.data?.data, ...prevState]);
-          setResetForm(true);
-          toast.success(response?.data?.message);
-        } else toast.error(response.data.error.message);
-      })
-      .catch((err) => toast.error(err.message));
+    updateData
+      ? http
+          .put(
+            `${process.env.REACT_APP_ATLAS_URI}/updateUnitType/${updateData._id}`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getUnitTypes();
+              setResetForm(true);
+              setUpdateData(null);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message))
+      : http
+          .post(
+            `${process.env.REACT_APP_ATLAS_URI}/addUnitType/`,
+            formState /*, configToken*/
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              getUnitTypes();
+              setResetForm(true);
+              toast.success(response?.data?.message);
+            } else toast.error(response.data.error.message);
+          })
+          .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
     getUnitTypes();
@@ -121,7 +138,7 @@ function AddUnitType() {
       <div className="grid grid-cols-1 md:grid-cols-[2fr,3fr] gap-3 md:gap-5 w-full p-2">
         <AdminCard className="h-fit">
           <div className="box box-primary">
-            <BoxHeader title={`${edit ? "Update" : "Add"} Unit Type`} />
+            <BoxHeader title={`${updateData ? "Update" : "Add"} Unit Type`} />
             <form onSubmit={onSubmitHandler} className="pt-2 px-2">
               <Input
                 label={"Name"}
@@ -136,7 +153,7 @@ function AddUnitType() {
                 required
               />
               <FormButton onClick={editCancelHandler}>
-                {edit ? "Update" : "Save"}
+                {updateData ? "Update" : "Save"}
               </FormButton>
             </form>
           </div>
