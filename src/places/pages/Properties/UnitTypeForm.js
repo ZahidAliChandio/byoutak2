@@ -1,18 +1,37 @@
+import { useState, useEffect, useCallback } from "react";
+import http from "../../../utils/http";
+import toast from "react-hot-toast";
+
 import Input from "../../components/UI/Input";
 import { useUnitTypeForm } from "../../hooks/unit-type";
 import { useForm } from "../../hooks/form-hook";
 import FormButton from "../../components/UI/FormButton";
-import { useEffect } from "react";
 
 const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
+  const [unitTypes, setUnitTypes] = useState(null);
+
+  const getUnitTypes = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setUnitTypes(results);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+
+  useEffect(() => {
+    getUnitTypes();
+  }, [getUnitTypes]);
 
   const changeHandler = (e) => {
     unitType[e.target.name] = e.target.value;
-  }
+  };
   // console.log(props.index);
   return (
     <div className="grid grid-cols-6  items-end justify-center gap-4 w-full">
-
       <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
         <label className="font-semibold ">Unit Type</label>
         <select
@@ -22,25 +41,22 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
           name={"UnitType"}
           onChange={changeHandler}
         >
-          {[
-          "Select",
-          "Apartment",
-          "Stand Alone Villa",
-          "Town House",
-          "Tiwn House",
-          ].map((classData, index) => (
-            <option key={index} value={classData.id}>
-              {classData}
-            </option>
-          ))}
+          {unitTypes ? (
+            unitTypes.map((UnitType, index) => (
+              <option key={index} value={UnitType._id}>
+                {UnitType.Name}
+              </option>
+            ))
+          ) : (
+            <option disabled>No Data to select</option>
+          )}
         </select>
-
       </div>
 
       <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
         <label className="font-semibold ">Unit Type</label>
         <input
-          type={'text'}
+          type={"text"}
           className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
           id={"name"}
           label={"Unit Name"}
@@ -51,7 +67,7 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
       <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
         <label className="font-semibold ">Area From</label>
         <input
-          type={'text'}
+          type={"text"}
           className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
           id={"AreaFrom"}
           label={"Area From"}
@@ -62,7 +78,7 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
       <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
         <label className="font-semibold ">Area To</label>
         <input
-          type={'text'}
+          type={"text"}
           className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
           id={"AreaTo"}
           label={"Area To"}
@@ -73,7 +89,7 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
       <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
         <label className="font-semibold ">Price</label>
         <input
-          type={'text'}
+          type={"text"}
           className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
           id={"Price"}
           label={"Price"}

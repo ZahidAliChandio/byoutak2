@@ -6,8 +6,7 @@ import toast from "react-hot-toast";
 import SlidingContent from "../../components/UI/SlidingContent";
 
 const Property = () => {
-  const [dataFetched, setDataFetched] = useState(false);
-  const [data, setData] = useState([{}]);
+  const [data, setData] = useState(null);
 
   const content = {
     pageId: 2,
@@ -23,7 +22,6 @@ const Property = () => {
         if (response.status === 200) {
           const results = response?.data?.results;
           setData(results);
-          setDataFetched(true);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -35,12 +33,7 @@ const Property = () => {
 
   return (
     <Fragment>
-      {dataFetched && (
-        <SlidingContent
-          content={content}
-          isFetched={dataFetched}
-        ></SlidingContent>
-      )}
+      <SlidingContent content={content} isFetched={data}></SlidingContent>
     </Fragment>
   );
 };

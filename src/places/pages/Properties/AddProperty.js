@@ -1,4 +1,6 @@
-import React, { Fragment, useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import toast from "react-hot-toast";
+import http from "../../../utils/http";
 
 import BoxHeader from "../../components/UI/BoxHeader";
 import MainHeader from "../../components/Navigation/MainHeader";
@@ -7,18 +9,18 @@ import Input from "../../components/UI/Input";
 import { useForm } from "../../hooks/form-hook";
 import { useUnitTypeForm } from "../../hooks/unit-type";
 import FormButton from "../../components/UI/FormButton";
-import UnitTypeForm from "./UnitType";
+import UnitTypeForm from "./UnitTypeForm";
+import { Fragment } from "react";
 
 function AddProperty(props) {
   const [checkboxesList, setCheckboxesList] = useState([]);
-  const [updateName, setUpdateName] = useState("");
+  // const [updateName, setUpdateName] = useState("");
   const [updateCity, setUpdateCity] = useState("");
   const [updateCountry, setUpdateCountry] = useState("");
   const [updateEstate, setUpdateEstate] = useState("");
   const [updateAddress, setUpdateAddress] = useState("");
   const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
-  const [updateData, setUpdateData] = useState(null);
   const [unitTypes, setUnitTypes] = useState([
     {
       unitType: "",
@@ -29,13 +31,88 @@ function AddProperty(props) {
     },
   ]);
 
+  const [amenitiesData, setAmenitiesData] = useState(null);
+
+  const [locationsData, setLocationsData] = useState(null);
+  const [locationsName, setLocationsName] = useState([]);
+
+  const [projectDevelopersData, setProjectDevelopersData] = useState(null);
+  const [projectDevelopersName, setProjectDevelopersName] = useState([]);
+
+  const getProjectDevelopers = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProjectDevelopers/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setProjectDevelopersData(results);
+          results.forEach((developer) => {
+            for (let key in developer) {
+              if (key === "Name") {
+                // console.log(developer[key]);
+                setProjectDevelopersName(
+                  projectDevelopersName.concat([`${developer[key]}`])
+                );
+              }
+            }
+          });
+          console.log(projectDevelopersName);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+
+  const getLocations = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setLocationsData(results);
+          results.forEach((location) => {
+            for (let key in location) {
+              if (key === "Location") {
+                // console.log(location[key]);
+                setLocationsName(locationsName.concat([`${location[key]}`]));
+              }
+            }
+          });
+          console.log(locationsName);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+
+  const getAmenities = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getAmenities/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setAmenitiesData(results);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+
+  useEffect(() => {
+    getProjectDevelopers();
+  }, [getProjectDevelopers]);
+
+  useEffect(() => {
+    getLocations();
+  }, [getLocations]);
+
+  useEffect(() => {
+    getAmenities();
+  }, [getAmenities]);
+
   // const removeUnitFormHandler = (formIndex) => {
   //   const newUnitForm = unitForm.filter(
   //     (unitForm, index) => index !== formIndex
   //   );
   //   setUnitForm(newUnitForm);
   // };
-
 
   const [formState, inputHandler] = useForm({
     propertyTitle: "",
@@ -107,7 +184,7 @@ function AddProperty(props) {
                     <Input
                       type="select"
                       items={["Select", "Residential", "Commercial", "Admin"]}
-                      id={"propertyType"}
+                      id={"PropertyType"}
                       label={"Property Type"}
                       name={"PropertyType"}
                       onInput={inputHandler}
@@ -115,8 +192,8 @@ function AddProperty(props) {
                     />
                     <Input
                       type="select"
-                      items={["Select", "Residential", "Commercial", "Admin"]}
-                      id={"propertyType"}
+                      items={projectDevelopersName ? projectDevelopersName : []}
+                      id={"ProjectDeveloper"}
                       label={"Project Developer"}
                       name={"ProjectDeveloper"}
                       onInput={inputHandler}
@@ -126,7 +203,7 @@ function AddProperty(props) {
                   <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-20 lg-gap:5 xl:gap-5">
                     <Input
                       type="number"
-                      id={"downPayment"}
+                      id={"DownPayment"}
                       label={"Down Payment"}
                       name={"DownPayment"}
                       onInput={inputHandler}
@@ -134,9 +211,7 @@ function AddProperty(props) {
                       placeholder="20000"
                     />
                     <Input
-                      type="text"
-                      items={["Select", "Cash", "Credit"]}
-                      id={"delivery"}
+                      id={"Delivery"}
                       label={"Delivery"}
                       name={"delivery"}
                       onInput={inputHandler}
@@ -152,7 +227,6 @@ function AddProperty(props) {
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-5 lg-gap:5 xl:gap-5">
-
                     <Input
                       label={"City"}
                       id={"City"}
@@ -205,7 +279,7 @@ function AddProperty(props) {
                     />
                     <Input
                       type="select"
-                      items={["Select", "Cash", "Credit"]}
+                      items={locationsName ? locationsName : []}
                       id={"location"}
                       label={"Location"}
                       name={"location"}
@@ -243,62 +317,65 @@ function AddProperty(props) {
                   />
 
                   <div className="flex flex-col gap-2 ">
-                    <label className="font-semibold after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <h3 className="font-semibold after:content-['*'] after:ml-0.5 after:text-red-500">
                       Amenities
-                    </label>
-                    <label
-                      htmlFor="attachedBathroom"
-                      className="flex gap-1 font-semibold"
-                    >
-                      <input
-                        type="checkbox"
-                        name="attachedBahtroom"
-                        id="attachedBathroom"
-                        value={"Attached Bathroom"}
-                        onChange={handleCheck}
-                        className="w-[0.6rem]"
-                      />
-                      <span>Attached Bathroom</span>
-                    </label>
-                    <label
-                      htmlFor="garage"
-                      className="flex gap-1 font-semibold"
-                    >
-                      <input
-                        type="checkbox"
-                        name="garage"
-                        value={"garage"}
-                        id="garage"
-                        onChange={handleCheck}
-                        className="w-[0.6rem]"
-                      />
-                      <span>Garage</span>
-                    </label>
-                  </div>
+                    </h3>
 
+                    {amenitiesData ? (
+                      amenitiesData.map((amenity) => (
+                        <div key={amenity._id} className="flex gap-2">
+                          {console.log(amenity)}
+                          <input
+                            type="checkbox"
+                            name={`${amenity.Name}`}
+                            id={`${amenity._id}`}
+                            value={amenity.Name}
+                            onChange={handleCheck}
+                            className="w-[0.6rem]"
+                          />
+                          <label
+                            htmlFor={`${amenity._id}`}
+                            className="flex gap-1 font-semibold"
+                          >
+                            <span>{amenity.Name}</span>
+                          </label>
+                        </div>
+                      ))
+                    ) : (
+                      <span>No Amenities to show</span>
+                    )}
+                  </div>
                 </div>
-                <FormButton type="button" onClick={() => setUnitTypes(prevState => ([...prevState, {
-                  UnitType: "",
-                  UnitName: "",
-                  AreaFrom: "",
-                  AreaTo: "",
-                  Price: ""
-                }]))}>
-                    <i className="fa-regular fa-plus flex items-center justify-center text-3xl h-5 w-5"></i>
-                  </FormButton>
+                <FormButton
+                  type="button"
+                  onClick={() =>
+                    setUnitTypes((prevState) => [
+                      ...prevState,
+                      {
+                        UnitType: "",
+                        UnitName: "",
+                        AreaFrom: "",
+                        AreaTo: "",
+                        Price: "",
+                      },
+                    ])
+                  }
+                >
+                  <i className="fa-regular fa-plus flex items-center justify-center text-3xl h-5 w-5"></i>
+                </FormButton>
                 <div className="flex items-end gap-4  px-1 sm:px-4 md:px-10 lg:px-16 my-4">
                   <div className="flex flex-col gap-4 w-full">
-
-                    {
-                      unitTypes.map((form, index) => <>
-                        <UnitTypeForm
-                          removeUnitFormHandler={(e) => { setUnitTypes(unitTypes.filter((v, i) => i !== index)); }}
-                          unitType={form}
-                          key={index}
-                          index={index}
-                        />
-                      </>)
-                    }</div>
+                    {unitTypes.map((form, index) => (
+                      <UnitTypeForm
+                        removeUnitFormHandler={(e) => {
+                          setUnitTypes(unitTypes.filter((v, i) => i !== index));
+                        }}
+                        unitType={form}
+                        key={index}
+                        index={index}
+                      />
+                    ))}
+                  </div>
                 </div>
                 <FormButton>Save</FormButton>
               </form>
