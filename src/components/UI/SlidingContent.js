@@ -21,7 +21,8 @@ const SlidingContent = (props) => {
   };
 
   const onClickHandler = (link, data) => {
-    setValueHandler(data);
+    const dataWithPageId = { ...data, pageId: content.pageId };
+    setValueHandler(dataWithPageId);
     navigate(`/${link}`, {
       state: data,
     });
@@ -29,7 +30,6 @@ const SlidingContent = (props) => {
 
   useEffect(() => {
     console.log(value);
-    console.log(content);
   }, [value]);
 
   return (

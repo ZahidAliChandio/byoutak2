@@ -3,7 +3,7 @@ import SlidingContent from "../../components/UI/SlidingContent";
 
 const Price = () => {
   const content = {
-    id: 2,
+    pageId: 4,
     title: "WHERE WOULD YOUR PROPERTY BY?",
     lis: [
       { _id: 0, Name: "NEW CAIRO" },

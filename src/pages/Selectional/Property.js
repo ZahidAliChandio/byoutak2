@@ -10,6 +10,7 @@ const Property = () => {
   const [data, setData] = useState([{}]);
 
   const content = {
+    pageId: 2,
     title: "WHAT IS THE TYPE OF UNIT YOU ARE LOOKING FOR?",
     lis: data,
     nextLink: "unit",

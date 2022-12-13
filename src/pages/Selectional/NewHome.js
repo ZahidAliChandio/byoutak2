@@ -4,7 +4,7 @@ import SlidingContent from "../../components/UI/SlidingContent";
 
 const NewHome = () => {
   const content = {
-    id: 1,
+    pageId: 1,
     title: "FIND YOUR NEW HOME",
     subtitle: "Don't know what you are looking for?",
     input: true,
