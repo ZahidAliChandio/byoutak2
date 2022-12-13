@@ -13,7 +13,7 @@ import UnitTypeForm from "./UnitTypeForm";
 import { Fragment } from "react";
 
 function AddProperty(props) {
-  const [checkboxesList, setCheckboxesList] = useState([]);
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
   // const [updateName, setUpdateName] = useState("");
   const [updateCity, setUpdateCity] = useState("");
   const [updateCountry, setUpdateCountry] = useState("");
@@ -142,13 +142,13 @@ function AddProperty(props) {
   });
 
   const handleCheck = (e) => {
-    let updatedList = [...checkboxesList];
+    let updatedList = [...selectedAmenities];
     if (e.target.checked) {
-      updatedList = [...checkboxesList, e.target.value];
+      updatedList = [...selectedAmenities, e.target.value];
     } else {
-      updatedList.splice(checkboxesList.indexOf(e.target.value), 1);
+      updatedList.splice(selectedAmenities.indexOf(e.target.value), 1);
     }
-    setCheckboxesList(updatedList);
+    setSelectedAmenities(updatedList);
     inputHandler("amenities", updatedList);
   };
 
