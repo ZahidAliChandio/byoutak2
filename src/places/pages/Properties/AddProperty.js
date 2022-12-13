@@ -21,15 +21,7 @@ function AddProperty(props) {
   const [updateAddress, setUpdateAddress] = useState("");
   const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
-  const [unitTypes, setUnitTypes] = useState([
-    {
-      unitType: "",
-      name: "",
-      areaFrom: "",
-      areaTo: "",
-      price: "",
-    },
-  ]);
+  const [unitTypes, setUnitTypes] = useState([{}]);
 
   const [amenitiesData, setAmenitiesData] = useState(null);
 
@@ -102,22 +94,22 @@ function AddProperty(props) {
     loanAvailability: "",
     selectedFile: "",
     amenities: [],
-    UnitTypes: [
-      {
-        unitType: "",
-        name: "",
-        areaFrom: "",
-        areaTo: "",
-        price: "",
-      },
-      {
-        unitType: "",
-        name: "",
-        areaFrom: "",
-        areaTo: "",
-        price: "",
-      },
-    ],
+    // UnitTypes: [
+    //   {
+    //     unitType: "",
+    //     name: "",
+    //     areaFrom: "",
+    //     areaTo: "",
+    //     price: "",
+    //   },
+    //   {
+    //     unitType: "",
+    //     name: "",
+    //     areaFrom: "",
+    //     areaTo: "",
+    //     price: "",
+    //   },
+    // ],
   });
 
   const handleCheck = (e) => {
@@ -133,9 +125,9 @@ function AddProperty(props) {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log("clicked");
-    console.log(formState);
-    console.log(unitTypes);
+    const mergedFormState = { ...formState, unitTypes };
+    console.log(mergedFormState);
+    // console.log(unitTypes);
   };
 
   return (
@@ -244,7 +236,6 @@ function AddProperty(props) {
                       onInput={inputHandler}
                       required
                     />
-
                     <Input
                       type="textarea"
                       label={"Address"}

@@ -54,7 +54,7 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
       </div>
 
       <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
-        <label className="font-semibold ">Unit Type</label>
+        <label className="font-semibold ">Unit Name</label>
         <input
           type={"text"}
           className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
