@@ -37,7 +37,6 @@ function AddProperty(props) {
   const [locationsName, setLocationsName] = useState([]);
 
   const [projectDevelopersData, setProjectDevelopersData] = useState(null);
-  const [projectDevelopersName, setProjectDevelopersName] = useState([]);
 
   const getProjectDevelopers = useCallback(() => {
     http
@@ -46,17 +45,6 @@ function AddProperty(props) {
         if (response.status === 200) {
           const results = response?.data?.results;
           setProjectDevelopersData(results);
-          results.forEach((developer) => {
-            for (let key in developer) {
-              if (key === "Name") {
-                // console.log(developer[key]);
-                setProjectDevelopersName(
-                  projectDevelopersName.concat([`${developer[key]}`])
-                );
-              }
-            }
-          });
-          console.log(projectDevelopersName);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -69,15 +57,6 @@ function AddProperty(props) {
         if (response.status === 200) {
           const results = response?.data?.results;
           setLocationsData(results);
-          results.forEach((location) => {
-            for (let key in location) {
-              if (key === "Location") {
-                // console.log(location[key]);
-                setLocationsName(locationsName.concat([`${location[key]}`]));
-              }
-            }
-          });
-          console.log(locationsName);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -192,7 +171,9 @@ function AddProperty(props) {
                     />
                     <Input
                       type="select"
-                      items={projectDevelopersName ? projectDevelopersName : []}
+                      items={
+                        projectDevelopersData ? projectDevelopersData : null
+                      }
                       id={"ProjectDeveloper"}
                       label={"Project Developer"}
                       name={"ProjectDeveloper"}
@@ -279,7 +260,8 @@ function AddProperty(props) {
                     />
                     <Input
                       type="select"
-                      items={locationsName ? locationsName : []}
+                      // items={locationsData ? locationsData : null}
+                      items={null}
                       id={"location"}
                       label={"Location"}
                       name={"location"}
@@ -324,7 +306,6 @@ function AddProperty(props) {
                     {amenitiesData ? (
                       amenitiesData.map((amenity) => (
                         <div key={amenity._id} className="flex gap-2">
-                          {console.log(amenity)}
                           <input
                             type="checkbox"
                             name={`${amenity.Name}`}

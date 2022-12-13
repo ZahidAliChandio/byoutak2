@@ -82,11 +82,19 @@ const InputField = (props) => {
         value={props.value || inputState.value}
         onChange={props.onChange || onChangeHandler}
       >
-        {props.items.map((classData, index) => (
-          <option key={index} value={classData.id}>
-            {classData}
-          </option>
-        ))}
+        {props.items ? (
+          props.items.map((classData, index) => (
+            <option key={index} value={classData._id}>
+              {classData.Name
+                ? classData.Name
+                : classData.Location
+                ? classData.Location
+                : classData}
+            </option>
+          ))
+        ) : (
+          <option disabled>No data to show</option>
+        )}
       </select>
     ) : (
       <input
