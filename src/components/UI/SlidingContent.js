@@ -4,12 +4,15 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import RightAngle from "../UI/RightAngle";
 import { useEffect } from "react";
+import { SelectContext } from "../../places/context/user-select";
+import { useContext } from "react";
 
 const SlidingContent = (props) => {
-  // const [previousData, setPrivousData] = useState([""]);
+  const selectContext = useContext(SelectContext);
+  const { value, setValueHandler } = selectContext;
+
   const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const content = props.content;
 
@@ -18,14 +21,16 @@ const SlidingContent = (props) => {
   };
 
   const onClickHandler = (link, data) => {
-    navigate(`/${link}`, { state: data });
+    setValueHandler(data);
+    navigate(`/${link}`, {
+      state: data,
+    });
   };
 
   useEffect(() => {
-    // console.log(location.state);
-    // if (location) setPrivousData([previousData.concat(location.state)]);
-    // console.log(previousData);
-  }, []);
+    console.log(value);
+    console.log(content);
+  }, [value]);
 
   return (
     <AnimatePresence>
@@ -108,39 +113,38 @@ const SlidingContent = (props) => {
             </svg>
           </button>
           {/* Dropdown menu  */}
-
-          {content.lis.length > 0 && (
-            <div
-              id="dropdown"
-              className={`${
-                isVisible ? "visible" : "invisible"
-              } font-bold mt-2 z-10 bg-white overflow-hidden rounded-xl divide-y divide-gray-100 w-full`}
+          <div
+            id="dropdown"
+            className={`${
+              isVisible ? "visible" : "invisible"
+            } font-bold mt-2 z-10 bg-white overflow-hidden rounded-xl divide-y divide-gray-100 w-full`}
+          >
+            <ul
+              className="py-1 text-sm text-gray-700"
+              aria-labelledby="dropdownDefault"
             >
-              <ul
-                className="py-1 text-sm text-gray-700"
-                aria-labelledby="dropdownDefault"
-              >
-                {content.lis.map((item, index) => {
+              {props.isFetched ? (
+                content.lis.map((item, index) => {
                   return (
                     <li key={index} className="my-1 md:my-2">
                       <button
                         value={item}
-                        onClick={(e) =>
-                          onClickHandler(content.nextLink, e.target.value)
-                        }
+                        onClick={(e) => onClickHandler(content.nextLink, item)}
                         className="block py-2 px-4 hover:text-red-600 cursor-pointer"
                       >
-                        {item}
+                        {item.Name}
                         {/* navigate("/sdfksdf",{
                         state:{sdfklsdf}
                       }) */}
                       </button>
                     </li>
                   );
-                })}
-              </ul>
-            </div>
-          )}
+                })
+              ) : (
+                <li className="my-1 md:my-2">No Data to show</li>
+              )}
+            </ul>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

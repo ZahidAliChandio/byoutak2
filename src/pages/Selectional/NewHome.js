@@ -8,13 +8,17 @@ const NewHome = () => {
     title: "FIND YOUR NEW HOME",
     subtitle: "Don't know what you are looking for?",
     input: true,
-    lis: ["RESIDENTIAL", "COMMERCIAL", "ADMIN"],
+    lis: [
+      { _id: 0, Name: "RESIDENTIAL" },
+      { _id: 1, Name: "COMMERCIAL" },
+      { _id: 2, Name: "ADMIN" },
+    ],
     nextLink: "property",
   };
 
   return (
     <Fragment>
-      <SlidingContent content={content}></SlidingContent>
+      <SlidingContent content={content} isFetched></SlidingContent>
     </Fragment>
   );
 };

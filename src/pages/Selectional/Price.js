@@ -5,12 +5,16 @@ const Price = () => {
   const content = {
     id: 2,
     title: "WHERE WOULD YOUR PROPERTY BY?",
-    lis: ["NEW CAIRO", "6TH OF OCTOBER", "NEW CAPITAL"],
-    nextLink: "/slider",
+    lis: [
+      { _id: 0, Name: "NEW CAIRO" },
+      { _id: 1, Name: "6TH OF OCTOBER" },
+      { _id: 2, Name: "NEW CAPITAL" },
+    ],
+    nextLink: "slider",
   };
   return (
-    <Fragment>      
-      <SlidingContent content={content}></SlidingContent>
+    <Fragment>
+      <SlidingContent content={content} isFetched></SlidingContent>
     </Fragment>
   );
 };
