@@ -4,80 +4,89 @@ import { useForm } from "../../hooks/form-hook";
 import FormButton from "../../components/UI/FormButton";
 import { useEffect } from "react";
 
-const UnitTypeForm = (props) => {
-  let { unitTypes } = props;
+const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
 
-  const [unitType, unitTypeInputHandler, addDataHandler] = useUnitTypeForm({
-    unitTypes,
-  });
-
-  useEffect(() => {
-    addDataHandler(props.addDataHandler);
-  }, [props, addDataHandler]);
-
-  // console.log(unitType.unitName);
-  console.log(unitTypes);
-
+  const changeHandler = (e) => {
+    unitType[e.target.name] = e.target.value;
+  }
   // console.log(props.index);
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-6 items-end justify-center gap-4 sm:gap-2 md:gap-6 lg:gap-8 xl:gap-16 w-full">
-      <Input
-        type="select"
-        items={[
+    <div className="grid grid-cols-6  items-end justify-center gap-4 w-full">
+
+      <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
+        <label className="font-semibold ">Unit Type</label>
+        <select
+          className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
+          id={"unitType"}
+          label={"Unit Type"}
+          name={"UnitType"}
+          onChange={changeHandler}
+        >
+          {[
           "Select",
           "Apartment",
           "Stand Alone Villa",
           "Town House",
           "Tiwn House",
-        ]}
-        id={"unitType"}
-        label={"Unit Type"}
-        name={"UnitType"}
-        containerclassName="w-full"
-        onInput={unitTypeInputHandler}
-        unitIndex={props.index}
-        required
-      />
-      <Input
-        id="unitName"
-        label={"Name"}
-        name={"UnitName"}
-        placeholder="unit name"
-        onInput={unitTypeInputHandler}
-        unitIndex={props.index}
-        required
-      />
-      <Input
-        id={"areaFrom"}
-        label={"Area From"}
-        name={"AreaFrom"}
-        placeholder="area from"
-        onInput={unitTypeInputHandler}
-        unitIndex={props.index}
-        required
-      />
-      <Input
-        id="areaTo"
-        label={"Area To"}
-        name="AreaTo"
-        placeholder="area to"
-        onInput={unitTypeInputHandler}
-        unitIndex={props.index}
-      />
-      <Input
-        id="price"
-        label={"Price"}
-        name="Price"
-        placeholder="price"
-        onInput={unitTypeInputHandler}
-        unitIndex={props.index}
-        required
-      />
+          ].map((classData, index) => (
+            <option key={index} value={classData.id}>
+              {classData}
+            </option>
+          ))}
+        </select>
+
+      </div>
+
+      <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
+        <label className="font-semibold ">Unit Type</label>
+        <input
+          type={'text'}
+          className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
+          id={"name"}
+          label={"Unit Name"}
+          name={"UnitName"}
+          onChange={changeHandler}
+        />
+      </div>
+      <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
+        <label className="font-semibold ">Area From</label>
+        <input
+          type={'text'}
+          className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
+          id={"AreaFrom"}
+          label={"Area From"}
+          name={"AreaFrom"}
+          onChange={changeHandler}
+        />
+      </div>
+      <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
+        <label className="font-semibold ">Area To</label>
+        <input
+          type={'text'}
+          className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
+          id={"AreaTo"}
+          label={"Area To"}
+          name={"AreaTo"}
+          onChange={changeHandler}
+        />
+      </div>
+      <div className=" flex flex-col gap-[0.18rem] text-[0.7rem]">
+        <label className="font-semibold ">Price</label>
+        <input
+          type={'text'}
+          className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
+          id={"Price"}
+          label={"Price"}
+          name={"Price"}
+          onChange={changeHandler}
+        />
+      </div>
+
       <FormButton
-        buttonclassName="!px-2"
-        containerclassName="!border-none !p-0 !w-fit justify-self-center"
+        buttonClass="!px-2"
+        containerClass="!border-none !p-0 !w-fit justify-self-center"
         // disabled={props.unitFormLength > 0 ? false : true}
-        onClick={() => props.removeUnitFormHandler(props.index)}
+        onClick={() => removeUnitFormHandler(index)}
       >
         <i className="fas fa-minus flex items-center justify-center text-xl h-5 w-5"></i>
       </FormButton>
