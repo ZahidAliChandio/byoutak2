@@ -7,15 +7,17 @@ import SlidingContent from "../../components/UI/SlidingContent";
 
 const Price = () => {
   const [data, setData] = useState(null);
+
+
   const content = {
     pageId: 4,
     title: "WHERE WOULD YOUR PROPERTY BE?",
-    // lis: data,
-    lis: [
-      { _id: 0, Name: "NEW CAIRO" },
-      { _id: 1, Name: "6TH OF OCTOBER" },
-      { _id: 2, Name: "NEW CAPITAL" },
-    ],
+    lis: data,
+    // lis: [
+    //   { _id: 0, Name: "NEW CAIRO" },
+    //   { _id: 1, Name: "6TH OF OCTOBER" },
+    //   { _id: 2, Name: "NEW CAPITAL" },
+    // ],
     nextLink: "slider",
   };
 
@@ -25,7 +27,11 @@ const Price = () => {
       .then((response) => {
         if (response.status === 200) {
           const results = response?.data?.results;
-          setData(results);
+          console.log(results)
+          setData(results.map(result => {
+            result.Name = result.Location
+            return result
+          }));
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));

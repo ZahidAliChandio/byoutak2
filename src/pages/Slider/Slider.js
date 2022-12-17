@@ -36,7 +36,44 @@ const Slider = (props) => {
     getLocations();
   }, [getLocations]);
 
-  const data = [
+
+  const getProperties = () => {
+    http.get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+      params: {
+        // page: page + 1,
+        // limit: limit,
+      },
+    })
+      .then((response) => {
+        const data = response.data
+        if (response.status === 200) {
+          const list = []
+          data.forEach(element => {
+            list.push({
+              id: element,
+              img: element.Images.length !== 0 ? element.Images[0] : null,
+              title: element.Name,
+              subtitle: element.Type,
+              price: "EGP 5,500,000",
+              contient: element.State,
+              location: `${element.City}, ${element.Country}`,
+              bedrooms: 3,
+              bathrooms: 2,
+              area: "150 m²",
+            })
+          });
+          setData(list)
+          // setTableBodyList(data.map(?=> ));
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  };
+  useEffect(() => {
+    getProperties();
+  }, []);
+
+
+  const [data, setData] = useState([
     {
       id: 1,
       img: null,
@@ -97,7 +134,7 @@ const Slider = (props) => {
       bathrooms: 2,
       area: "150 m²",
     },
-  ];
+  ]);
   return (
     <div className="relative px-2 sm:px-20 md:px-24 lg:px-32 xl:px-40 2xl:px-48 z-0 mt-6 md:mt-8 lg:mt-16">
       <div className="text-white text-center w-full">

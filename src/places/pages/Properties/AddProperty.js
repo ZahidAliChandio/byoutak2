@@ -22,7 +22,7 @@ function AddProperty(props) {
   const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
   const [unitTypes, setUnitTypes] = useState([{}]);
-
+  const [images, setImages] = useState([])
   const [amenitiesData, setAmenitiesData] = useState(null);
 
   const [locationsData, setLocationsData] = useState(null);
@@ -126,8 +126,44 @@ function AddProperty(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const mergedFormState = { ...formState, unitTypes };
-    console.log(mergedFormState);
+    console.log(mergedFormState, images);
     // console.log(unitTypes);
+
+    const formData = new FormData();
+
+    if (images) {
+      images.forEach(image => {
+        console.log(image)
+        formData.append('SelectedImages', image[0]);
+      })
+    }
+
+    formData.append('Name', mergedFormState.propertyTitle);
+    formData.append('Type', mergedFormState.PropertyType);
+    formData.append('Description', mergedFormState.description);
+    formData.append('Amenities', mergedFormState.amenities);
+    formData.append('Project_Developer', mergedFormState.ProjectDeveloper);
+    formData.append('Unit_PropertyType', JSON.stringify(mergedFormState.unitTypes))
+    formData.append('Delivery', mergedFormState.Delivery);
+    formData.append('InstallmentYears', mergedFormState.installmentYears);
+    formData.append('Location', mergedFormState.location);
+    formData.append('Link', mergedFormState.link);
+    formData.append('City', mergedFormState.City);
+    formData.append('State', mergedFormState.state);
+    formData.append('Country', mergedFormState.Country);
+    formData.append('Address', mergedFormState.Address);
+
+
+
+    http.post(`${process.env.REACT_APP_ATLAS_URI}/addProperty/`, formData)
+      .then((response) => {
+        if (response.status === 200) {
+          // setResetForm(true);
+          toast.success(response?.data?.message);
+        } else toast.error(response.data.error.message);
+      })
+      .catch((err) => toast.error(err.message));
+
   };
 
   return (
@@ -251,8 +287,8 @@ function AddProperty(props) {
                     />
                     <Input
                       type="select"
-                      // items={locationsData ? locationsData : null}
-                      items={null}
+                      items={locationsData ? locationsData : null}
+                      // items={null}
                       id={"location"}
                       label={"Location"}
                       name={"location"}
@@ -268,18 +304,29 @@ function AddProperty(props) {
                       onInput={inputHandler}
                       required
                     />
+
                   </div>
                   <div className="flex flex-col gap[0.18rem]">
                     <label className="font-semibold">Image</label>
                     <input
-                      id={"imageSelected"}
+                      id={"ImageSelected"}
                       name="ImageSelected"
                       type="file"
                       accept=".png, .jpg, .jpeg"
                       multiple
-                      onChange={(e) => inputHandler("image", e.target.files[0])}
+                      onChange={(e) => setImages(prevState => ([...prevState, Object.values(e.target.files)]))}
                       className="form-control border border-gray-300 bg-gray-50 rounded-l-sm"
                     />
+                    {/* {typeof images !== 'undefined' && images.map((image, key) =>
+                      <span key={key} index={key} className='databaseImgArea'>
+                        <img alt="database images" style={{ margin: "5px 2px", objectFit: "cover" }} src={`${process.env.ATLAS_URI}/file/${image}`} width={60} height={60}></img>
+                        <button type='button' onClick={this.openDialog}>x</button>
+                      </span>
+                    )} */}
+                    {/* {typeof images !== 'undefined' && images.map(image =>
+                      <img alt="selected images" style={{ margin: "5px 2px", objectFit: "cover" }} src={URL.createObjectURL(image)} width={60} height={60}></img>
+                    )} */}
+
                   </div>
                   <Input
                     type="textarea"
@@ -301,7 +348,7 @@ function AddProperty(props) {
                             type="checkbox"
                             name={`${amenity.Name}`}
                             id={`${amenity._id}`}
-                            value={amenity.Name}
+                            value={amenity._id}
                             onChange={handleCheck}
                             className="w-[0.6rem]"
                           />

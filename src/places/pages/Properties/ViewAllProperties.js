@@ -7,27 +7,37 @@ import BoxHeader from "../../components/UI/BoxHeader";
 import Paginator from "../../components/UI/paginator";
 import MainHeader from "../../components/Navigation/MainHeader";
 import AdminCard from "../../components/UI/AdminCard";
-// import { ATLAS_URI } from '../../Constants'
-// import stateContext from '../../context/StateContext'
+import http from "../../../utils/http";
+import toast from "react-hot-toast";
 
 function ViewAllProperties() {
-  // const contextState = useContext(stateContext)
-  // const updateEditDetails = contextState.updateEditDetails
-  // const { configToken } = contextState.state
-
-  const [state, setState] = useState({
-    tableBodyList: [],
-    dialogInfo: {
-      isOpened: false,
-      text: "",
-      type: "",
-    },
-  });
-
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(20);
-  // const mounted = React.useRef(true);
-  // useEffect(() => () => { mounted.current = false; }, []);
+  const [limit, setLimit] = useState(5);
+  const [tableBodyList, setTableBodyList] = useState([]);
+  const [count, setCount] = useState(0);
+
+  const getProperties = () => {
+    http.get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+      params: {
+        page: page + 1,
+        limit: limit,
+      },
+    })
+      .then((response) => {
+        const data = response.data
+        if (response.status === 200) {
+          setTableBodyList(data);
+          setCount(response?.data?.count);
+          setLoading(false);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  };
+  useEffect(() => {
+    getProperties();
+  }, [page, limit]);
+
   useEffect(() => {
     // console.log("mounted")
     // axios.get(`${ATLAS_URI}/getProperties/`, configToken)
@@ -76,17 +86,13 @@ function ViewAllProperties() {
   }
 
   const [tableHeaders, setTableHeaders] = useState([
-    { id: "createdAt", label: "Sale Date", sorting: "desc" },
-    { id: "contactJoined", label: "Contact Created" },
-    { id: "productName", label: "Product Name" },
-    { id: "productTag", label: "Product Tag" },
-    { id: "recurring", label: "Recurring" },
-    { id: "value", label: "Sale" },
-    { id: "transactionType", label: "Transaction Type" },
-    { id: "contactPhone", label: "Contact Phone#" },
-    { id: "contactName", label: "Contact Name" },
-    { id: "closerEmail", label: "Closer Email" },
-    { id: "closerName", label: "Closer Name" },
+    { id: "_id", label: "ID" },
+    { id: "Name", label: "Name" },
+    { id: "Type", label: "Type" },
+    { id: "Description", label: "Description" },
+    { id: "Address", label: "Address" },
+    { id: "_Amenities", label: "Amenities", component: (data, setData) => { return <>{data._Amenities.map(x => <>{x.Name}<br /></>)}</> } },
+    // { id: "Unit_PropertyType", label: "Units", component: (data, setData) => { return <>{data.Unit_PropertyType.map(x => <>{x.Name}<br /></>)}</> } },\
   ]);
 
   return (
@@ -96,17 +102,6 @@ function ViewAllProperties() {
         <AdminCard>
           <div className="content">
             <div className="row">
-              <Dialog
-                onFalse={(e) =>
-                  setState((prevState) => ({
-                    ...prevState,
-                    dialogInfo: { isOpened: false, text: "" },
-                  }))
-                }
-                onTrue={(e) => deleteFromTable(e)}
-                dialogInfo={state.dialogInfo}
-              />
-
               <div className="col-md-12">
                 <div className="box box-primary">
                   <BoxHeader title="Properties List" />
@@ -117,7 +112,7 @@ function ViewAllProperties() {
                         // isLoading={loading}
                         tableHeadersData={tableHeaders}
                         setTableHeadersData={setTableHeaders}
-                        tableBodyData={[]}
+                        tableBodyData={tableBodyList}
                       />
                     </div>
                   </div>
