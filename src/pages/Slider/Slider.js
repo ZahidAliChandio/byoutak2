@@ -17,6 +17,7 @@ import "swiper/css/pagination";
 
 const Slider = (props) => {
   const [locations, setLocations] = useState(null);
+  const [data, setData] = useState([{}]);
 
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
@@ -39,12 +40,7 @@ const Slider = (props) => {
 
   const getProperties = () => {
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
-        params: {
-          // page: page + 1,
-          // limit: limit,
-        },
-      })
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`)
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
@@ -63,8 +59,7 @@ const Slider = (props) => {
               area: "150 m²",
             });
           });
-          // setData(list);
-          // setTableBodyList(data.map(?=> ));
+          setData(list);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -76,69 +71,6 @@ const Slider = (props) => {
   useEffect(() => {
     console.log(value);
   });
-
-  const [data, setData] = useState([
-    {
-      id: 1,
-      img: null,
-      title: "Twinhouse",
-      subtitle: "SODIC",
-      price: "EGP 5,500,000",
-      contient: "Sodic Ease",
-      location: "New Heliopolis, Egypt",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: "150 m²",
-    },
-    {
-      id: 2,
-      img: null,
-      title: "Twinhouse",
-      subtitle: "SODIC",
-      price: "EGP 5,500,000",
-      contient: "Sodic Ease",
-      location: "New Heliopolis, Egypt",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: "150 m²",
-    },
-    {
-      id: 3,
-      img: null,
-      title: "Twinhouse",
-      subtitle: "SODIC",
-      price: "EGP 5,500,000",
-      contient: "Sodic Ease",
-      location: "New Heliopolis, Egypt",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: "150 m²",
-    },
-    {
-      id: 4,
-      img: null,
-      title: "Twinhouse",
-      subtitle: "SODIC",
-      price: "EGP 5,500,000",
-      contient: "Sodic Ease",
-      location: "New Heliopolis, Egypt",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: "150 m²",
-    },
-    {
-      id: 5,
-      img: null,
-      title: "Twinhouse",
-      subtitle: "SODIC",
-      price: "EGP 5,500,000",
-      contient: "Sodic Ease",
-      location: "New Heliopolis, Egypt",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: "150 m²",
-    },
-  ]);
   return (
     <div className="relative px-2 sm:px-20 md:px-24 lg:px-32 xl:px-40 2xl:px-48 z-0 mt-6 md:mt-8 lg:mt-16">
       <div className="text-white text-center w-full">
@@ -183,7 +115,7 @@ const Slider = (props) => {
                 className="flex justify-center text-left rounded-xl z-0 w-full mb-6 md:mb-10"
                 key={data.id}
               >
-                <Link to="/property-page" className="w-full">
+                <Link to="/property" className="w-full">
                   <SliderCard data={data} />
                 </Link>
               </SwiperSlide>
