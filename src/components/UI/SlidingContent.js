@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import RightAngle from "../UI/RightAngle";
 import { useEffect } from "react";
-import { SelectContext } from "../../places/context/user-select";
+import { SelectContext } from "../../context/user-select";
 import { useContext } from "react";
 
 const SlidingContent = (props) => {
@@ -35,9 +35,8 @@ const SlidingContent = (props) => {
   return (
     <AnimatePresence>
       <RightAngle />
-      <div className="w-full overflow-hidden">
+      <div className="w-full overflow-hidden" key="select">
         <motion.div
-          key="select"
           className={`flex flex-col items-center justify-center ${
             !content.subtitle ? "mt:16 md:mt-24" : "mt-16"
           } mx-auto w-10/12 md:w-[50%] text-center transition-all duration-300 z-0`}

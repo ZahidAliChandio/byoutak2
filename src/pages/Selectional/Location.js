@@ -8,7 +8,6 @@ import SlidingContent from "../../components/UI/SlidingContent";
 const Price = () => {
   const [data, setData] = useState(null);
 
-
   const content = {
     pageId: 4,
     title: "WHERE WOULD YOUR PROPERTY BE?",
@@ -27,11 +26,15 @@ const Price = () => {
       .then((response) => {
         if (response.status === 200) {
           const results = response?.data?.results;
-          console.log(results)
-          setData(results.map(result => {
-            result.Name = result.Location
-            return result
-          }));
+          console.log(results);
+          setData(
+            results.map((result) => {
+              result.Name = result.Location;
+              return result;
+            })
+          );
+          // const newObject=
+          // setData();
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));

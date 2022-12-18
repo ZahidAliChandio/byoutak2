@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
+
 import PropertyCard from "../../components/UI/PropertyCard";
 import SearchBar from "./SearchBar";
+import Dropdown from "../../components/UI/Dropdown";
 
 import Apartment from "../../static/images/apartment.jpg";
 import "swiper/css";
@@ -172,8 +174,45 @@ const SearchProperty = () => {
 
   return (
     <Fragment>
-      <SearchBar showAll={showAll} setShowAll={setShowAll} />
-      <div className="relative px-2 sm:px-4 lg:px-8 pt-4">
+      <div className="text-center px-32 pt-6">
+        <h2 className="font-semibold text-xl md:text-3xl lg:text-5xl lg:mb-4 px-4 sm:p-0 text-white">
+          find the <span className="text-[red] font-bold">property</span> that
+          <span className="text-[red] font-bold"> suits</span> you best
+        </h2>
+        <div className="grid grid-cols-[4fr,2fr,4fr,1fr] gap-8 justify-center items-start mt-6 md:mt-8 lg:mt-16 mx-auto">
+          <Dropdown
+            content={[
+              { id: 0, value: "Search" },
+              { id: 1, value: "Find" },
+              { id: 2, value: "Navigate" },
+            ]}
+            selectedValue={"Search"}
+          />
+          <Dropdown
+            content={[
+              { id: 0, value: "Property Type" },
+              { id: 1, value: "Find" },
+              { id: 2, value: "Navigate" },
+            ]}
+            selectedValue={"Property Type"}
+          />
+          <Dropdown
+            content={[
+              { id: 0, value: "Location" },
+              { id: 1, value: "Find" },
+              { id: 2, value: "Navigate" },
+            ]}
+            selectedValue={"Location"}
+          />
+          <div
+            className="border-2 rounded-full border-[red] w-fit px-3 py-2"
+            onClick={undefined}
+          >
+            <i className="fa-solid fa-magnifying-glass text-2xl text-white"></i>
+          </div>
+        </div>
+      </div>
+      <div className="relative px-2 sm:px-4 lg:px-8">
         <div className="text-white text-center w-full">
           <h2 className="font-bold text-xl md:text-2xl lg:text-3xl mb-4 lg:mb-6 px-4 sm:p-0 grid-cols-3">
             {propertyData.length} results
@@ -181,7 +220,7 @@ const SearchProperty = () => {
         </div>
 
         {/* Search Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-8 xl:gap-10 px-4 lg:px-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-8 xl:gap-10 px-6 sm:px-9 md:px-12 2xl:px-16">
           {propertyData.map((data, index) => {
             return <PropertyCard data={data} key={index} className="!w-full" />;
           })}

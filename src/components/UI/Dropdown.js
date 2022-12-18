@@ -21,7 +21,7 @@ const Dropdown = (props) => {
     <div className="relative" onBlur={onBlurHandler} tabIndex={0}>
       <div
         className={
-          "flex justify-between items-center border-2 border-[red] rounded-full px-4 py-3 bg-transparent w-full cursor-pointer mb-1"
+          "flex justify-between items-center border-2 border-[red] rounded-full px-4 py-3 text-white bg-transparent w-full cursor-pointer mb-1"
         }
         onClick={toggleVisibility}
       >
