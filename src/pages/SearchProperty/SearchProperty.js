@@ -174,12 +174,12 @@ const SearchProperty = () => {
 
   return (
     <Fragment>
-      <div className="text-center px-32 pt-6">
+      <div className="text-center px-6 sm:px-4 md:px-8 lg:px-10 xl:px-32 pt-6">
         <h2 className="font-semibold text-xl md:text-3xl lg:text-5xl lg:mb-4 px-4 sm:p-0 text-white">
           find the <span className="text-[red] font-bold">property</span> that
           <span className="text-[red] font-bold"> suits</span> you best
         </h2>
-        <div className="grid grid-cols-[4fr,2fr,4fr,1fr] gap-8 justify-center items-start mt-6 md:mt-8 lg:mt-16 mx-auto">
+        <div className="grid grid-cols-[3fr,3fr] sm:grid-cols-[3fr,3fr,3fr,1fr] md:grid-cols-[4fr,3fr,4fr,1fr] lg:grid-cols-[4fr,2fr,4fr,1fr] gap-4 lg:gap-8 justify-center items-start mt-6 md:mt-8 lg:mt-16 mx-auto">
           <Dropdown
             content={[
               { id: 0, value: "Search" },
@@ -205,7 +205,7 @@ const SearchProperty = () => {
             selectedValue={"Location"}
           />
           <div
-            className="border-2 rounded-full border-[red] w-fit px-3 py-2"
+            className="border-2 rounded-full border-[red] w-fit px-3 py-2 justify-self-center"
             onClick={undefined}
           >
             <i className="fa-solid fa-magnifying-glass text-2xl text-white"></i>

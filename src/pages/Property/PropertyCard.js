@@ -5,9 +5,9 @@ const PropertyCard = (props) => {
   const data = props.data;
   return (
     <div
-      className={`${props.className} px-2 lg:px-8 xl:px-12 py-7 rounded-md font-gillsans mx-auto w-full text-white`}
+      className={`${props.className} px-4 sm:px-8 xl:px-12 py-5 sm:py-7 rounded-md font-gillsans mx-auto w-full text-white`}
     >
-      <h2 className="text-5xl font-bold my-12">{data.title}</h2>
+      <h2 className="text-5xl font-bold my-8 sm:my-12">{data.title}</h2>
       <div className="flex flex-col gap-0">
         <h3 className="text-xl sm:text-2xl lg:text-4xl font-semibold text-[red]">
           {data.price}
