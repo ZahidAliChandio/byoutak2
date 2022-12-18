@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
 
@@ -7,6 +7,7 @@ import PropertySlider from "./PropertySlider";
 import PropertyCard from "./PropertyCard";
 import LeftContent from "./LeftContent";
 import RightContent from "./RightContent";
+import ContactUs from "./ContactUs";
 
 const Property = () => {
   const [propertyData, setPropertyData] = useState(null);
@@ -53,6 +54,7 @@ const Property = () => {
             <LeftContent data={propertyData} />
             <RightContent data={propertyData} />
           </div>
+          <ContactUs />
         </Fragment>
       )}
     </Fragment>
