@@ -136,10 +136,6 @@ function AddLocation() {
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
     { id: "Location", label: "Name" },
-    { id: "City", label: "City" },
-    { id: "state", label: "State" },
-    { id: "Country", label: "Country" },
-    { id: "Address", label: "Address" },
     {
       id: "actions",
       label: "",
@@ -172,7 +168,6 @@ function AddLocation() {
         <AdminCard className="h-fit">
           <div className="box box-primary">
             <BoxHeader title={`${updateData ? "Update" : "Add"} Location`} />
-            {console.log(tableBodyList)}
             <form
               onSubmit={onSubmitHandler}
               className="flex flex-col gap-4 pt-2 px-2"
@@ -189,57 +184,7 @@ function AddLocation() {
                 onInput={inputHandler}
                 required
               />
-              <h3 className="text-sm font-bold text-[color:var(--red-color)] box-title">
-                Address
-              </h3>
-              <Input
-                label={"City"}
-                id={"City"}
-                name={"City"}
-                updateForm={updateForm}
-                setUpdateForm={setUpdateForm}
-                updateValue={updateCity}
-                resetForm={resetForm}
-                setResetForm={setResetForm}
-                onInput={inputHandler}
-                required
-              />
-              <Input
-                label={"State"}
-                id={"state"}
-                name={"state"}
-                updateForm={updateForm}
-                setUpdateForm={setUpdateForm}
-                updateValue={updateEstate}
-                resetForm={resetForm}
-                setResetForm={setResetForm}
-                onInput={inputHandler}
-                required
-              />
-              <Input
-                label={"Country"}
-                id={"Country"}
-                name={"Country"}
-                updateForm={updateForm}
-                setUpdateForm={setUpdateForm}
-                updateValue={updateCountry}
-                resetForm={resetForm}
-                setResetForm={setResetForm}
-                onInput={inputHandler}
-                required
-              />
-              <Input
-                label={"Address"}
-                id={"Address"}
-                name={"Address"}
-                updateForm={updateForm}
-                setUpdateForm={setUpdateForm}
-                updateValue={updateAddress}
-                resetForm={resetForm}
-                setResetForm={setResetForm}
-                onInput={inputHandler}
-                required
-              />
+
               <FormButton onClick={editCancelHandler}>
                 {updateData ? "Update" : "Save"}
               </FormButton>
@@ -252,17 +197,6 @@ function AddLocation() {
             <BoxHeader title="Added Locations" />
             <div className="content">
               <div className="row">
-                <Dialog
-                  onFalse={(e) =>
-                    setState((prevState) => ({
-                      ...prevState,
-                      dialogInfo: { isOpened: false, text: "" },
-                    }))
-                  }
-                  onTrue={(e) => deleteFromTable(e)}
-                  dialogInfo={state.dialogInfo}
-                />
-
                 <div className="col-md-12">
                   <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
                     <DataTable
