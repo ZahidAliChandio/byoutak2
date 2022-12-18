@@ -16,28 +16,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const Slider = (props) => {
-  const [locations, setLocations] = useState(null);
-  const [data, setData] = useState([{}]);
+  const [data, setData] = useState(null);
 
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
-
-  const getLocations = useCallback(() => {
-    http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
-      .then((response) => {
-        if (response.status === 200) {
-          const results = response?.data?.results;
-          setLocations(results);
-        } else toast.error(response?.data?.error?.message);
-      })
-      .catch((err) => toast.error(err.message));
-  }, []);
-
-  useEffect(() => {
-    getLocations();
-  }, [getLocations]);
-
   const getProperties = () => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`)
@@ -82,46 +64,48 @@ const Slider = (props) => {
         </p>
       </div>
       <div className="md:relative w-full">
-        <Swiper
-          pagination={{
-            clickable: true,
-          }}
-          navigation={false}
-          modules={[Navigation, Pagination]}
-          className="!relative md:!static mySwiper !py-4"
-          breakpoints={{
-            1536: {
-              slidesPerView: data.length >= 4 ? 4 : data.length,
-            },
-            1280: {
-              slidesPerView: data.length >= 3 ? 3 : data.length,
-            },
-            1024: {
-              slidesPerView: data.length >= 2 ? 2 : data.length,
-            },
-            768: {
-              slidesPerView: data.length >= 2 ? 2 : data.length,
-            },
-          }}
-          spaceBetween={10}
-        >
-          <div className="absolute flex justify-between w-full top-1/2 z-50">
-            <NextBtn />
-            <PrevBtn />
-          </div>
-          {data.map((data) => {
-            return (
-              <SwiperSlide
-                className="flex justify-center text-left rounded-xl z-0 w-full mb-6 md:mb-10"
-                key={data.id}
-              >
-                <Link to="/property" className="w-full">
-                  <SliderCard data={data} />
-                </Link>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
+        {data && (
+          <Swiper
+            pagination={{
+              clickable: true,
+            }}
+            navigation={false}
+            modules={[Navigation, Pagination]}
+            className="!relative md:!static mySwiper !py-4"
+            breakpoints={{
+              1536: {
+                slidesPerView: data.length >= 4 ? 4 : data.length,
+              },
+              1280: {
+                slidesPerView: data.length >= 3 ? 3 : data.length,
+              },
+              1024: {
+                slidesPerView: data.length >= 2 ? 2 : data.length,
+              },
+              768: {
+                slidesPerView: data.length >= 2 ? 2 : data.length,
+              },
+            }}
+            spaceBetween={10}
+          >
+            <div className="absolute flex justify-between w-full top-1/2 z-50">
+              <NextBtn />
+              <PrevBtn />
+            </div>
+            {data.map((data) => {
+              return (
+                <SwiperSlide
+                  className="flex justify-center text-left rounded-xl z-0 w-full mb-6 md:mb-10"
+                  key={data.id}
+                >
+                  <Link to="/property" className="w-full">
+                    <SliderCard data={data} />
+                  </Link>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        )}
       </div>
     </div>
   );
