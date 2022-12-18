@@ -55,15 +55,15 @@ const Slider = (props) => {
               img: element.Images.length !== 0 ? element.Images[0] : null,
               title: element.Name,
               subtitle: element.Type,
-              price: "EGP 5,500,000",
+              price: `EGP ${element.Price}`,
               contient: element.State,
               location: `${element.City}, ${element.Country}`,
-              bedrooms: 3,
-              bathrooms: 2,
-              area: "150 m²",
+              bedrooms: `${element.Bedrooms}`,
+              bathrooms: `${element.Bathrooms}`,
+              area: `${element.Area} m²`,
             });
           });
-          // setData(list);
+          setData(list);
           // setTableBodyList(data.map(?=> ));
         } else toast.error(response?.data?.error?.message);
       })

@@ -87,7 +87,7 @@ function AddProperty(props) {
 
   const [formState, inputHandler] = useForm({
     propertyTitle: "",
-    propertyType: "",
+    propertyType: "Residential",
     propertySize: "",
     paymentMode: "",
     propertyAge: "",
@@ -144,8 +144,10 @@ function AddProperty(props) {
     formData.append('Amenities', mergedFormState.amenities);
     formData.append('Project_Developer', mergedFormState.ProjectDeveloper);
     formData.append('Unit_PropertyType', JSON.stringify(mergedFormState.unitTypes))
-    formData.append('Delivery', mergedFormState.Delivery);
-    formData.append('InstallmentYears', mergedFormState.installmentYears);
+    formData.append('Price', mergedFormState.price);
+    formData.append('Bedrooms', mergedFormState.bedrooms);
+    formData.append('Bathrooms', mergedFormState.bathrooms);
+    formData.append('Area', mergedFormState.area);
     formData.append('Location', mergedFormState.location);
     formData.append('Link', mergedFormState.link);
     formData.append('City', mergedFormState.City);
@@ -184,13 +186,13 @@ function AddProperty(props) {
                       id="propertyTitle"
                       label={"Property Title"}
                       name={"PropertyTitle"}
-                      placeholder="property title"
+                      placeholder="Property title"
                       onInput={inputHandler}
                       required
                     />
                     <Input
                       type="select"
-                      items={["Select", "Residential", "Commercial", "Admin"]}
+                      items={["Residential", "Commercial", "Admin"]}
                       id={"PropertyType"}
                       label={"Property Type"}
                       name={"PropertyType"}
@@ -212,25 +214,33 @@ function AddProperty(props) {
                   <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-20 lg-gap:5 xl:gap-5">
                     <Input
                       type="number"
-                      id={"DownPayment"}
-                      label={"Down Payment"}
-                      name={"DownPayment"}
+                      id={"price"}
+                      label={"Price"}
+                      name={"price"}
                       onInput={inputHandler}
                       required
                       placeholder="20000"
                     />
+                    <div className="grid grid-cols-2 gap-4"> 
                     <Input
-                      id={"Delivery"}
-                      label={"Delivery"}
-                      name={"delivery"}
+                        id={"bedrooms"}
+                        label={"Bedrooms"}
+                        name={"bedrooms"}
                       onInput={inputHandler}
                       required
                     />
                     <Input
-                      id="installmentYears"
-                      label={"Installment Years"}
-                      name="installmentYears"
-                      placeholder="in Years"
+                        id="bathrooms"
+                        label={"Bathrooms"}
+                        name="bathrooms"
+                        required
+                        onInput={inputHandler}
+                      />
+                    </div>
+                    <Input
+                      id="area"
+                      label={"Area"}
+                      name="area"
                       required
                       onInput={inputHandler}
                     />
@@ -323,10 +333,11 @@ function AddProperty(props) {
                         <button type='button' onClick={this.openDialog}>x</button>
                       </span>
                     )} */}
-                    {/* {typeof images !== 'undefined' && images.map(image =>
-                      <img alt="selected images" style={{ margin: "5px 2px", objectFit: "cover" }} src={URL.createObjectURL(image)} width={60} height={60}></img>
-                    )} */}
-
+                    <div className="inline-flex">
+                      {typeof images !== 'undefined' && images.map(image =>
+                        <img alt="selected images" className='w-20 h-20 m-1' src={URL.createObjectURL(image[0])} width={60} height={60}></img>
+                      )}
+                    </div>
                   </div>
                   <Input
                     type="textarea"
@@ -356,7 +367,7 @@ function AddProperty(props) {
                             htmlFor={`${amenity._id}`}
                             className="flex gap-1 font-semibold"
                           >
-                            <span>{amenity.Name}</span>
+                            <span>{amenity.Name} <span className="font-normal">({amenity.Description})</span></span>
                           </label>
                         </div>
                       ))
