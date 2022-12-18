@@ -1,23 +1,10 @@
-const RightContent = () => {
-  const features = [
-    {
-      Name: "Name",
-      feature: "feature",
-    },
-    {
-      Name: "Name",
-      feature: "feature",
-    },
-    {
-      Name: "Name",
-      feature: "feature",
-    },
-    {
-      Name: "Name",
-      feature: "feature",
-    },
-  ];
+import { useEffect } from "react";
 
+const RightContent = (props) => {
+  const features = props.data.id._Amenities;
+  useEffect(() => {
+    console.log(props.data.id._Amenities);
+  }, []);
   return (
     <div className="text-white">
       <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[red]">
@@ -26,8 +13,8 @@ const RightContent = () => {
       <ul className="w-1/3 my-6">
         {features.map((feature, index) => (
           <li className="flex my-2 justify-between text-light" key={index}>
+            <span>Name</span>
             <span>{feature.Name}</span>
-            <span>{feature.feature}</span>
           </li>
         ))}
       </ul>

@@ -1,53 +1,11 @@
 import { Fragment, useState, useRef } from "react";
-// import ParkingAreaFacility from "../../static/images/facilities.png?v=120.png";
-import CafesFacility from "../../static/images/cafes_facility.png";
-import ParkingAreaFacility from "../../static/images/parking_area_facility.png";
-import ClubFacility from "../../static/images/club_facility.png";
-import RestaurantFacility from "../../static/images/restaurant_facility.png";
-import SecurityFacility from "../../static/images/security_facility.png";
-import LocationPointer from "../../static/images/location_pointer.png";
-import DeveloperLogo from "../../static/images/developer_logo.png";
-import PropertyCard from "./PropertyCard";
-import HydePark from "../../static/images/hyde_park.png";
-import HydeParkLogo from "../../static/images/hyde_park_logo.png";
-import Mivida from "../../static/images/mivida.png";
-import MividaLogo from "../../static/images/mivida_logo.png";
 import PropertyTabs from "./PropertyTabs";
 import { CSSTransition } from "react-transition-group";
 
 const Accordion = () => {
   const [accordianPlus, setAccordianPlus] = useState("closed");
   const nodeRef = useRef(null);
-  const data = [
-    {
-      image: HydePark,
-      logo: HydeParkLogo,
-      title: "Mountain View Hyde Park",
-      location: "New Cairo",
-      price: "2,9,37,093 EGP",
-    },
-    {
-      image: Mivida,
-      logo: MividaLogo,
-      title: "Mivida",
-      location: "New Cairo",
-      price: "2,9,37,093 EGP",
-    },
-    {
-      image: HydePark,
-      logo: HydeParkLogo,
-      title: "Mountain View Hyde Park",
-      location: "New Cairo",
-      price: "2,9,37,093 EGP",
-    },
-    {
-      image: Mivida,
-      logo: MividaLogo,
-      title: "Mivida",
-      location: "New Cairo",
-      price: "2,9,37,093 EGP",
-    },
-  ];
+
   // List items
   const [items, setItems] = useState([
     {
@@ -96,14 +54,14 @@ const Accordion = () => {
               </div>
             </div>
           </div>
-          <span>{item.title}</span>
+          <h4>{item.title}</h4>
         </div>
         <CSSTransition
           in={items[index].isActive}
           timeout={200}
           nodeRef={nodeRef}
           classNames="accordian"
-          mountOnEnter
+          mousntOnEnter
           unmountOnExit
         >
           <div className={`text-gray-50 pl-4 md:pl-8 lg:pl-12 mt-8`}>

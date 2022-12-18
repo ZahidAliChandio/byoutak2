@@ -87,7 +87,7 @@ const PropertyTabs = () => {
                 activeIndex === index
                   ? "font-bold border border-b-0"
                   : "border-b"
-              }  px-8 py-2`}
+              }  px-8 py-2 cursor-default`}
             >
               {item}
             </li>
@@ -144,7 +144,7 @@ const PropertyTabs = () => {
                         )}
                         <li>
                           <div className="inline-block w-2 h-2 bg-gray-300 mr-3 border border-[#212020] rounded-full"></div>
-                          <span>Starting Price: </span>
+                          <span>Price: </span>
                           <span>{subitem.Price}</span>
                         </li>
                       </ul>
