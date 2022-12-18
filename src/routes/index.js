@@ -7,7 +7,7 @@ import Projects from "../pages/Projects/Projects";
 import Slider from "../pages/Slider/Slider";
 import Meeting from "../pages/Meeting/Meeting";
 import ContactUs from "../pages/ContactUs/ContactUs";
-import SearchProperty from "../pages/Search/SearchProperty";
+import SearchProperty from "../pages/SearchProperty/SearchProperty";
 import Property from "../pages/Property/Property";
 import UnitType from "../pages/Selectional/UnitType";
 import Login from "../places/pages/Login";

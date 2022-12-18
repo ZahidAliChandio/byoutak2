@@ -27,10 +27,10 @@ const PropertySlider = () => {
           disableOnInteraction: false,
         }}
       >
-        {images.map((data,index) => {
+        {images.map((data, index) => {
           return (
             <SwiperSlide className="" key={index}>
-              <img                
+              <img
                 src={data}
                 alt="property"
                 className="w-full h-[18rem] md:h-[20rem]  lg:h-[28rem] 2xl:h-[32.5rem]"
@@ -39,7 +39,6 @@ const PropertySlider = () => {
           );
         })}
       </Swiper>
-      <Contact className="absolute bottom-4 sm:bottom-12 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-4 md:right-12 z-50" />
     </div>
   );
 };

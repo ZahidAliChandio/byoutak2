@@ -51,99 +51,10 @@ const Accordion = () => {
   // List items
   const [items, setItems] = useState([
     {
-      title: "THE BROOKS Unit Types",
-      content: (
-        <div className="flex gap-4 items-center">
-          <span
-            className="bg-gray-200 p-2 rounded-full text-[red]"
-            data-toggle="tooltip"
-            title
-            data-original-title="Cafes"
-          >
-            <img src={CafesFacility} alt="facility" className="cafe-facility" />
-          </span>
-          <span className="border bg-gray-200 p-2 rounded-full">
-            <img
-              src={ParkingAreaFacility}
-              alt="facility"
-              className="parking-facility"
-            />
-          </span>
-          <span className="border bg-gray-200 p-2 rounded-full ">
-            <img src={ClubFacility} alt="facility" className="club-facility" />
-          </span>
-          <span className="border bg-gray-200 p-2 rounded-full ">
-            <img
-              src={RestaurantFacility}
-              alt="facility"
-              className="restaurant-facility"
-            />
-          </span>
-          <span className="border bg-gray-200 p-2 rounded-full ">
-            <img
-              src={SecurityFacility}
-              alt="facility"
-              className="security-facility"
-            />
-          </span>
-        </div>
-      ),
-      isActive: false,
-    },
-    {
-      title: "THE BROOKS Unit Types",
+      title: "Unit Types",
       content: <PropertyTabs />,
       isActive: false,
     },
-    {
-      title: "THE BROOKS Location",
-      content: (
-        <div className="relative overflow-hidden min-h-[300px] h-full">
-          <div className="map">
-            <div className="flex flex-col items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden">
-              <img src={LocationPointer} alt="pointer" />
-              <button className="text-gray-50 bg-[#212020] px-2 py-1 rounded-full">
-                Show Location on Map
-              </button>
-            </div>
-          </div>
-          <div id="google-map"></div>
-        </div>
-      ),
-      isActive: false,
-    },
-    {
-      title: "Project Developer",
-      content: (
-        <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-8 md:gap-12 lg:gap-16">
-          <img src={DeveloperLogo} alt="developer" />
-          <p className="text-gray-50">
-            PRE was established in 2017 by Pioneers Holding Group with a plan to
-            be one of the market leaders in the Egyptian Real Estate field, Our
-            Sister Companies: Cairo Housing – Giza General Contracting – Rooaya
-            Group – Electro Cable Egypt – United Housing – ...{" "}
-            <a href="/">
-              <u>read more</u>
-            </a>
-          </p>
-          <button className="text-[#212020] bg-gray-50 p-3 sm:p-4 md:p-5 rounded-full">
-            <span>ASK NOW</span>
-          </button>
-        </div>
-      ),
-      isActive: false,
-    },
-    // {
-    //   title: "You May Also Like",
-    //   content: (
-    //     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    //       {data.map((item, index) => {
-    //         return <PropertyCard data={item} key={index} />;
-    //       })}
-    //     </div>
-    //   ),
-    //   isActive: false,
-    // },
   ]);
 
   const onClickHandler = (index) => {
@@ -195,16 +106,14 @@ const Accordion = () => {
           mountOnEnter
           unmountOnExit
         >
-          <div className={`text-gray-50 pl-4 md:pl-8 lg:pl-12 my-8`}>
+          <div className={`text-gray-50 pl-4 md:pl-8 lg:pl-12 mt-8`}>
             {item.content}
           </div>
         </CSSTransition>
       </Fragment>
     );
   });
-  return (
-    <div className="mt-2 px-2 sm:px-8 mx:px-10 lg:px-20">{renderedItems}</div>
-  );
+  return <div className="mt-2 px-2">{renderedItems}</div>;
 };
 
 export default Accordion;
