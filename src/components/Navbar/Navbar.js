@@ -33,8 +33,8 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="inline mx-4 md:m-0" onClick={() => onClickHandler()}>
-            <Link to="/search" className="hover:text-[red]">
-              Search
+            <Link to="/search-property" className="hover:text-[red]">
+              Search Property
             </Link>
           </li>
           <li className="inline" onClick={() => onClickHandler()}>

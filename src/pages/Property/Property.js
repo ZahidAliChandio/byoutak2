@@ -4,10 +4,12 @@ import Intro from "./Intro";
 import Accordion from "./Accordion";
 
 const Property = () => {
-  return<Fragment>
-    <PropertySlider />    
-    <Intro/>
-    <Accordion/>
-  </Fragment> 
+  return (
+    <Fragment>
+      <PropertySlider />
+      <Intro />
+      <Accordion />
+    </Fragment>
+  );
 };
 export default Property;

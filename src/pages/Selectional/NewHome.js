@@ -13,7 +13,7 @@ const NewHome = () => {
       { _id: 1, Name: "COMMERCIAL" },
       { _id: 2, Name: "ADMIN" },
     ],
-    nextLink: "property",
+    nextLink: "unit-type",
   };
 
   return (

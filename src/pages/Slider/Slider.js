@@ -15,7 +15,7 @@ import Input from "./Input";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import Dropdown from "./Dropdown";
+import Dropdown from "../../components/UI/Dropdown";
 
 const Slider = (props) => {
   const [locations, setLocations] = useState(null);
@@ -36,19 +36,19 @@ const Slider = (props) => {
     getLocations();
   }, [getLocations]);
 
-
   const getProperties = () => {
-    http.get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
-      params: {
-        // page: page + 1,
-        // limit: limit,
-      },
-    })
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+        params: {
+          // page: page + 1,
+          // limit: limit,
+        },
+      })
       .then((response) => {
-        const data = response.data
+        const data = response.data;
         if (response.status === 200) {
-          const list = []
-          data.forEach(element => {
+          const list = [];
+          data.forEach((element) => {
             list.push({
               id: element,
               img: element.Images.length !== 0 ? element.Images[0] : null,
@@ -60,9 +60,9 @@ const Slider = (props) => {
               bedrooms: 3,
               bathrooms: 2,
               area: "150 m²",
-            })
+            });
           });
-          setData(list)
+          setData(list);
           // setTableBodyList(data.map(?=> ));
         } else toast.error(response?.data?.error?.message);
       })
@@ -71,7 +71,6 @@ const Slider = (props) => {
   useEffect(() => {
     getProperties();
   }, []);
-
 
   const [data, setData] = useState([
     {
@@ -140,7 +139,7 @@ const Slider = (props) => {
       <div className="text-white text-center w-full">
         <h2 className="font-semibold text-xl md:text-3xl lg:text-5xl lg:mb-6 px-4 sm:p-0">
           find the <span className="text-[red] font-bold">property</span> that
-          suits you best
+          <span className="text-[red] font-bold">suits</span> you best
         </h2>
         <div className="grid grid-cols-[4fr,2fr,4fr,1fr] gap-8 justify-center items-start my-6 md:my-8 lg:mt-16 mx-auto">
           <Dropdown

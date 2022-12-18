@@ -1,15 +1,15 @@
 import { useRoutes } from "react-router-dom";
 
 import NewHome from "../pages/Selectional/NewHome";
-import Unit from "../pages/Selectional/Unit";
-import Price from "../pages/Selectional/Price";
+import PriceRange from "../pages/Selectional/PriceRange";
+import Location from "../pages/Selectional/Location";
 import Projects from "../pages/Projects/Projects";
 import Slider from "../pages/Slider/Slider";
 import Meeting from "../pages/Meeting/Meeting";
 import ContactUs from "../pages/ContactUs/ContactUs";
-import Search from "../pages/Search/Search";
-import PropertyPage from "../pages/Property/Property";
-import Property from "../pages/Selectional/Property";
+import SearchProperty from "../pages/Search/SearchProperty";
+import Property from "../pages/Property/Property";
+import UnitType from "../pages/Selectional/UnitType";
 import Login from "../places/pages/Login";
 
 import {
@@ -18,7 +18,7 @@ import {
 } from "../places/pages/Properties/Properties";
 import {
   AddLocation,
-  AddAmenities,  
+  AddAmenities,
   AddUnitType,
 } from "../places/pages/Masters/Masters";
 
@@ -57,17 +57,17 @@ export default function Router() {
         {
           path: "addAmenities",
           element: <AddAmenities />,
-        },        
+        },
         {
           path: "addUnitType",
           element: <AddUnitType />,
         },
         {
           path: "addDeveloper",
-          element: <AddDeveloper/>,
+          element: <AddDeveloper />,
         },
       ],
-    },    
+    },
 
     {
       path: "",
@@ -77,15 +77,15 @@ export default function Router() {
           path: "/",
           element: <NewHome />,
         },
-        { path: "unit", element: <Unit /> },
-        { path: "price", element: <Price /> },
-        { path: "property", element: <Property /> },
+        { path: "price-range", element: <PriceRange /> },
+        { path: "location", element: <Location /> },
+        { path: "unit-type", element: <UnitType /> },
         { path: "projects", element: <Projects /> },
         { path: "slider", element: <Slider /> },
         { path: "meeting", element: <Meeting /> },
         { path: "contactus", element: <ContactUs /> },
-        { path: "search", element: <Search /> },
-        { path: "property-page", element: <PropertyPage /> },
+        { path: "search-property", element: <SearchProperty /> },
+        { path: "property", element: <Property /> },
       ],
     },
   ]);

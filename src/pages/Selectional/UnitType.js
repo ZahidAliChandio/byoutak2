@@ -5,14 +5,14 @@ import toast from "react-hot-toast";
 
 import SlidingContent from "../../components/UI/SlidingContent";
 
-const Property = () => {
+const UnitType = () => {
   const [data, setData] = useState(null);
 
   const content = {
     pageId: 2,
     title: "WHAT IS THE TYPE OF UNIT YOU ARE LOOKING FOR?",
     lis: data,
-    nextLink: "unit",
+    nextLink: "price-range",
   };
 
   const getUnitTypes = useCallback(() => {
@@ -37,4 +37,4 @@ const Property = () => {
     </Fragment>
   );
 };
-export default Property;
+export default UnitType;
