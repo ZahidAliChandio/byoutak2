@@ -1,5 +1,4 @@
-import { Fragment } from "react";
-import { useState, useEffect } from "react";
+import { Fragment, useCallback, useState, useEffect } from "react";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
 
@@ -12,7 +11,7 @@ import ContactUs from "./ContactUs";
 const Property = () => {
   const [propertyData, setPropertyData] = useState(null);
 
-  const getProperties = () => {
+  const getProperties = useCallback(() => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`)
       .then((response) => {
@@ -37,10 +36,10 @@ const Property = () => {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  };
+  }, []);
   useEffect(() => {
     getProperties();
-  }, []);
+  }, [getProperties]);
 
   return (
     <Fragment>
@@ -50,7 +49,7 @@ const Property = () => {
             <PropertySlider />
             <PropertyCard data={propertyData} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-6 sm:px-10 md:px-16 my-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-2 sm:px-6 sm:px-10 md:px-16 my-16">
             <LeftContent data={propertyData} />
             <RightContent data={propertyData} />
           </div>
