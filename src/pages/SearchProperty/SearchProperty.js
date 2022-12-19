@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
+import { useLocation } from "react-router";
 
 import PropertyCard from "../../components/UI/PropertyCard";
-import SearchBar from "./SearchBar";
 import Dropdown from "../../components/UI/Dropdown";
 
 import Apartment from "../../static/images/apartment.jpg";
@@ -11,7 +11,6 @@ import "swiper/css/pagination";
 
 const SearchProperty = () => {
   const [activePage, setActivePage] = useState(0);
-  const [showAll, setShowAll] = useState(false);
   const pageNumbers = ["1", "2", "3", "4"];
 
   const propertyData = [
@@ -163,14 +162,6 @@ const SearchProperty = () => {
   const selectPageHandler = (index) => {
     setActivePage(index);
   };
-
-  useEffect(() => {
-    if (showAll) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [showAll]);
 
   return (
     <Fragment>

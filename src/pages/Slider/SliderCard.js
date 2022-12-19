@@ -1,18 +1,22 @@
 import { ReactComponent as Bed } from "../../static/icons/bed.svg";
+
 const SliderCard = (props) => {
   const data = props.data;
   return (
     <div
       className={`${props.className} bg-gray-50 px-4 py-7 rounded-md font-gillsans mx-auto w-3/4 sm:w-4/5 md:w-11/12`}
+      onClick={() => props.onClick(data.id._id)}
     >
-      <img className="w-full h-[180px] rounded-md bg-[#EFEFEF]" alt="database images" src={`${process.env.REACT_APP_ATLAS_URI}/file/${data.img}`} />
+      <img
+        className="w-full h-[180px] rounded-md bg-[#EFEFEF]"
+        alt="database images"
+        src={`${process.env.REACT_APP_ATLAS_URI}/file/${data.img}`}
+      />
       <div className="px-4">
         <div className="flex flex-col w-full mt-4 gap-0">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">{data.title}</h2>
-
           </div>
-          {/* <span className="text-gray-500 font-bold"><i className="fas fa-cube text-cyan-500"></i>SODIC</span> */}
           <span className="text-gray-500 font-bold">{data.subtitle}</span>
         </div>
 
