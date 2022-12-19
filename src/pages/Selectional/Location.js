@@ -9,15 +9,27 @@ const Price = () => {
   const [data, setData] = useState(null);
 
   const content = {
-    pageId: 4,
-    title: "WHERE WOULD YOUR PROPERTY BE?",
+    pageId: 1,
     lis: data,
+    title: (
+      <span>
+        Find <span className="text-[red]">your</span> property
+      </span>
+    ),
+    subtitle: (
+      <span className="text-2xl">
+        Don't know what you are looking for?{" "}
+        <h2 className="font-bold px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-3xl my-4">
+          Where would your <span className="text-[red]">property</span> be?
+        </h2>
+      </span>
+    ),
     // lis: [
     //   { _id: 0, Name: "NEW CAIRO" },
     //   { _id: 1, Name: "6TH OF OCTOBER" },
     //   { _id: 2, Name: "NEW CAPITAL" },
     // ],
-    nextLink: "slider",
+    nextLink: "property-type",
   };
 
   const getLocations = useCallback(() => {

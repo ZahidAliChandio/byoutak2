@@ -7,18 +7,10 @@ const NewHome = () => {
     pageId: 1,
     title: (
       <span>
-        Find <span className="text-[red]">your</span> property
+        What type of <span className="text-[red]">property </span>
+        are you looking for?
       </span>
     ),
-    subtitle: (
-      <span>
-        Don't know what you are looking for?{" "}
-        <h2 className="font-bold px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-3xl my-4">
-          Where would your <span className="text-[red]">property</span> be?
-        </h2>
-      </span>
-    ),
-    input: true,
     lis: [
       { _id: 0, Name: "RESIDENTIAL" },
       { _id: 1, Name: "COMMERCIAL" },

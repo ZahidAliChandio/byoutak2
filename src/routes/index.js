@@ -75,10 +75,10 @@ export default function Router() {
       children: [
         {
           path: "/",
-          element: <NewHome />,
+          element: <Location />,
         },
         { path: "price-range", element: <PriceRange /> },
-        { path: "location", element: <Location /> },
+        { path: "property-type", element: <NewHome /> },
         { path: "unit-type", element: <UnitType /> },
         { path: "projects", element: <Projects /> },
         { path: "slider", element: <Slider /> },

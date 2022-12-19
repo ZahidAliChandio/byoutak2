@@ -38,7 +38,7 @@ const SlidingContent = (props) => {
       <div className="w-full overflow-hidden" key="select">
         <motion.div
           className={`flex flex-col items-center justify-center ${
-            !content.subtitle ? "mt:16 md:mt-24" : "mt-16"
+            !content.subtitle ? "mt:16 md:mt-32" : "mt-16"
           } mx-auto w-10/12 md:w-[50%] text-center transition-all duration-300 z-0`}
           initial={{ transform: "translateX(100%)" }}
           animate={{ transform: "translateX(0%)" }}
@@ -47,7 +47,7 @@ const SlidingContent = (props) => {
         >
           <div className="text-white text-center w-full">
             <div className="flex flex-col gap-8 w-full items-center">
-              <h2 className="font-bold px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-3xl">
+              <h2 className="font-bold px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-[2.5rem]">
                 {content.title}
               </h2>
               {content.input && (
@@ -79,13 +79,13 @@ const SlidingContent = (props) => {
               )}
             </div>
             {content.subtitle && (
-              <div className="mt-6 lg:mt-16 text-gray-300 text-lg md:text-xl">
+              <div className="mt-6 lg:mt-16 text-gray-300 text-lg md:text-3xl">
                 {content.subtitle}
               </div>
             )}
           </div>
 
-          <div className="w-3/5 sm:w-1/2 md:w-1/2 xl:w-[30%] mt-8">
+          <div className="w-3/5 sm:w-1/2 md:w-1/2 xl:w-[30%] mt-12">
             <button
               id="dropdownDefault"
               data-dropdown-toggle="dropdown"
