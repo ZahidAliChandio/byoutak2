@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
 
@@ -10,6 +11,7 @@ import ContactUs from "./ContactUs";
 
 const Property = () => {
   const [propertyData, setPropertyData] = useState(null);
+  const location = useLocation();
 
   const getProperties = useCallback(() => {
     http
@@ -43,6 +45,7 @@ const Property = () => {
   }, []);
   useEffect(() => {
     getProperties();
+    console.log("PropertyId: " + location.state);
   }, [getProperties]);
 
   return (

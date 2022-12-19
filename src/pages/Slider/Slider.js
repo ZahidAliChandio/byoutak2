@@ -1,13 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Link } from "react-router-dom";
-import { Pagination, Navigation } from "swiper";
 
-import NextBtn from "../../components/UI/PrevBtn";
-import PrevBtn from "../../components/UI/NextBtn";
 import SliderCard from "./SliderCard";
 import { SelectContext } from "../../context/user-select";
 
@@ -18,6 +13,7 @@ import "swiper/css/pagination";
 const Slider = (props) => {
   const [data, setData] = useState(null);
   const [activePage, setActivePage] = useState(0);
+  const navigate = useNavigate();
 
   const pageNumbers = ["1", "2", "3", "4"];
 
@@ -57,6 +53,12 @@ const Slider = (props) => {
     getProperties();
   }, []);
 
+  const onClickHandler = (id) => {
+    navigate(`/property`, {
+      state: id,
+    });
+    console.log(id);
+  };
   const selectPageHandler = (index) => {
     setActivePage(index);
   };
@@ -76,11 +78,13 @@ const Slider = (props) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full mt-10">
         {data &&
-          data.map((item) => (
-            <Link to="/property" className="w-full">
-              {/* {console.log(data)} */}
-              <SliderCard data={item} className="!w-11/12 !sm:w-full" />
-            </Link>
+          data.map((item, index) => (
+            <SliderCard
+              key={index}
+              data={item}
+              className="!w-11/12 !sm:w-full"
+              onClick={onClickHandler}
+            />
           ))}
       </div>
 
