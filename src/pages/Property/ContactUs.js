@@ -9,33 +9,48 @@ const ContactUs = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
-  const [phone, setPhone] = useState();
+  const [phone, setPhone] = useState("");
 
-  const { inputHandler } = useForm({
+  const [formState, inputHandler] = useForm({
     Name: "",
     Location: "",
+    phone: "",
     message: "",
   });
 
   const nameChangeHandler = (e) => {
     setName(e.target.value);
-    // inputHandler(e.target.value, e.target.value);
+    inputHandler(e.target.id, e.target.value);
   };
-  const phoneChangeHandler = (e) => {
-    setPhone(e.target.value);
-    // inputHandler(e.target.id, e.target.value);
+  const phoneChangeHandler = (input) => {
+    setPhone(input);
+    inputHandler("phone", input);
   };
   const locationChangeHandler = (e) => {
     setLocation(e.target.value);
-    // inputHandler(e.target.id, e.target.value);
+    inputHandler(e.target.id, e.target.value);
   };
   const messageChangeHandler = (e) => {
     setMessage(e.target.value);
-    // inputHandler(e.target.id, e.target.value);
+    inputHandler(e.target.id, e.target.value);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    setName("");
+    setPhone("");
+    setLocation("");
+    setMessage("");
+
+    console.log(formState);
   };
 
   return (
-    <form action="" className="mt-12 w-11/12 md:w-[85%] mx-auto">
+    <form
+      action=""
+      className="mt-12 w-11/12 md:w-[85%] mx-auto"
+      onSubmit={onSubmitHandler}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8 w-full">
         <div className="flex flex-col gap-8">
           <div className="relative z-0 w-full group mb-4">
@@ -61,8 +76,7 @@ const ContactUs = () => {
               specialLabel={""}
               id={"phone"}
               country={"th"}
-              // value={phone}
-
+              value={phone}
               onChange={phoneChangeHandler}
               buttonClass="bg-red"
               buttonStyle={{
