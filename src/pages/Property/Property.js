@@ -36,7 +36,7 @@ const Property = () => {
               amenities: element._Amenities,
             });
           });
-          setPropertyData(list[3]);
+          setPropertyData(list[5]);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));

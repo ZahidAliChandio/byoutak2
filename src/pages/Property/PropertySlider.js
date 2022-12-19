@@ -31,7 +31,7 @@ const PropertySlider = ({ data }) => {
           return (
             <SwiperSlide className="" key={index}>
               <img
-                src={data}
+                src={`${process.env.REACT_APP_ATLAS_URI}/file/${data}`}
                 alt="property"
                 className="w-full h-[18rem] md:h-[20rem]  lg:h-[28rem] 2xl:h-[32.5rem]"
               />
