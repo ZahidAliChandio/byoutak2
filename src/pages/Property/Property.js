@@ -36,11 +36,7 @@ const Property = () => {
               amenities: element._Amenities,
             });
           });
-<<<<<<< HEAD
-          setPropertyData(list[0]);
-=======
           setPropertyData(list[3]);
->>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -51,19 +47,6 @@ const Property = () => {
 
   return (
     <Fragment>
-<<<<<<< HEAD
-      <Fragment>
-        <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
-          <PropertySlider />
-          <PropertyCard data={propertyData} />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-2 sm:px-6 sm:px-10 md:px-16 my-16">
-          <LeftContent data={propertyData} />
-          {propertyData && <RightContent data={propertyData} />}
-        </div>
-        <ContactUs />
-      </Fragment>
-=======
       {propertyData && (
         <Fragment>
           <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
@@ -77,7 +60,6 @@ const Property = () => {
           <ContactUs />
         </Fragment>
       )}
->>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
     </Fragment>
   );
 };
