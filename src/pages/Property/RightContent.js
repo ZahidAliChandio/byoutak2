@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 
 const RightContent = (props) => {
-  const features = props.data.id._Amenities;
+  const features = props.data.id._Amenities
+    ? props.data.id._Amenities
+    : undefined;
   useEffect(() => {
-    console.log(props.data.id._Amenities);
+    // console.log(props.data.id._Amenities);
+    console.log(props);
   }, []);
   return (
     <div className="text-white">
@@ -11,12 +14,13 @@ const RightContent = (props) => {
         Features
       </h3>
       <ul className="w-1/2 sm:w-2/5 md:w-1/3 my-6 text-lg">
-        {features.map((feature, index) => (
-          <li className="flex my-2 justify-between text-light" key={index}>
-            <span>Name</span>
-            <span>{feature.Name}</span>
-          </li>
-        ))}
+        {features &&
+          features.map((feature, index) => (
+            <li className="flex my-2 justify-between text-light" key={index}>
+              <span>Name</span>
+              <span>{feature.Name}</span>
+            </li>
+          ))}
       </ul>
       <iframe
         title="map"

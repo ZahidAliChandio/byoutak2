@@ -56,14 +56,21 @@ const ContactUs = () => {
               Name
             </label>
           </div>
-          <div className="relative z-0 text-white rounded-xl mb-4">
+          <div className="relative z-[15] text-white rounded-xl mb-4">
             <PhoneInput
               specialLabel={""}
               id={"phone"}
               country={"th"}
-              value={phone}
+              // value={phone}
+
               onChange={phoneChangeHandler}
-              className="py-0"
+              buttonClass="bg-red"
+              buttonStyle={{
+                backgroundColor: "transparent",
+                border: "none",
+                fontSize: "1.5rem",
+                paddingLeft: "0.5rem",
+              }}
               inputStyle={{
                 backgroundColor: "transparent",
                 width: "100%",

@@ -4,17 +4,44 @@ import toast from "react-hot-toast";
 import { Transition } from "react-transition-group";
 
 const PropertyTabs = (props) => {
-  const propertyData = props.data;
+  const propertyData = props.data.id.Unit_PropertyType;
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSubItemIndex, setActiveSubItemIndex] = useState(null);
 
   const [unitTypes, setUnitTypes] = useState(null);
-  const [subListItem, setSubListItem] = useState(
-    propertyData.id.Unit_PropertyType
-  );
+  const [subListItem, setSubListItem] = useState("");
+  // propertyData.id.Unit_PropertyType
   // {console.log(propertyData.id.Unit_PropertyType)}
   const nodeRef = useRef(null);
   // const list = ["Villa", "Townhouse", "Penthouse", "Apartment"];
+
+  const findItems = () => {
+    var newArray = [];
+    // unitTypes.forEach((item) => {
+    // var newItem = {
+    //   _id: item.UnitType,
+    //   subList: [{ title: item.UnitName, content: [{}] }],
+    // };
+    // unitTypes.forEach((innerItem) => {
+    //   if (innerItem._id === item.UnitType) {
+    //     // newItem.elements = newItem.elements.concat(innerItem);
+    //     // newItem.content = newItem.content.concat(item);
+    //   }
+    // });
+
+    const myArray = [
+      {
+        subList: [
+          { id: 1, Name: "Ali" },
+          { id: 1, Name: "Khalid" },
+        ],
+      },
+      { subList: [{ id: 2, Name: "Ali" }] },
+      { subList: [{ id: 3, Name: "Ali" }] },
+    ];
+
+    console.log(newArray);
+  };
 
   //   Sublist data
   const subList = [
@@ -77,6 +104,7 @@ const PropertyTabs = (props) => {
   ];
 
   const activeSubList = subList[activeIndex].subList;
+
   const onClickHandler = (index) => {
     setActiveIndex(index);
   };
@@ -108,6 +136,7 @@ const PropertyTabs = (props) => {
     <Fragment>
       <ul className="flex flex-shrink w-fit">
         {unitTypes &&
+          findItems() &&
           unitTypes.map((item, index) => {
             return (
               <li
@@ -128,10 +157,10 @@ const PropertyTabs = (props) => {
         return (
           <Fragment key={index}>
             <div
-              className={`relative border flex items-center justify-between text-sm md:text-base 2xl:text-lg border bg-gray-300 py-2 cursor-pointer font-gillsans px-4 mt-4 text-[#212020] w-full`}
+              className={`relative flex items-center justify-between text-sm md:text-base 2xl:text-lg border bg-gray-300 py-2 cursor-pointer font-gillsans px-4 mt-4 text-[#212020] w-full`}
               onClick={() => subListClickHandler(index)}
             >
-              <span>{item.title}</span>
+              <span>{item.title}</span> {/* Sublist Title */}
               <div className="flex gap-12 items-center">
                 <i
                   className={`fas fa-chevron-down ${

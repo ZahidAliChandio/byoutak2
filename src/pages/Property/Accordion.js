@@ -5,64 +5,50 @@ import { useEffect } from "react";
 
 const Accordion = (props) => {
   const [accordianPlus, setAccordianPlus] = useState("closed");
+  const [isOpen, setIsOpen] = useState(false);
 
   const nodeRef = useRef(null);
 
   // List items
-  const [items, setItems] = useState([
-    {
-      title: "Unit Types",
-      content: <PropertyTabs {...props} />,
-      isActive: false,
-    },
-  ]);
 
-  const onClickHandler = (index) => {
+  const onClickHandler = () => {
     if (accordianPlus === "opened") {
       setAccordianPlus("closed");
     } else {
       setAccordianPlus("opened");
     }
-    const newItems = [...items];
-    newItems[index].isActive = !newItems[index].isActive;
-    setItems(newItems);
+    setIsOpen((prev) => !prev);
+    // const newItems = [...items];
+    // newItems[index].isActive = !newItems[index].isActive;
+    // setItems(newItems);
   };
   useEffect(() => {
-    console.log(props.unitTypes);
-    console.log(props.data.id);
+    // console.log(props.unitTypes);
+    // console.log(props.data.id);
   }, []);
-  const renderedItems = items.map((item, index) => {
-    return (
-      <Fragment key={index}>
-        <div
-          className={`flex gap-3 items-center text-lg md:text-xl xl:text-2xl border-b border-[red] text-white py-4 cursor-pointer mb-3 font-gillsans`}
-          onClick={() => onClickHandler(index)}
-        >
-          <div>
-            <div
-              className={`circle-plus ${
-                items[index].isActive ? accordianPlus : null
-              }`}
-            >
-              <div className="circle">
-                <div className="horizontal"></div>
-                <div className="vertical"></div>
-              </div>
-            </div>
-            <div
-              className={`circle-plus-two ${
-                items[index].isActive ? accordianPlus : null
-              }`}
-            >
-              <div className={`circle`}>
-                <div className="horizontal"></div>
-                <div className="vertical"></div>
-              </div>
+  return (
+    <Fragment>
+      <div
+        className={`flex gap-3 items-center text-lg md:text-xl xl:text-2xl border-b border-[red] text-white py-4 cursor-pointer mb-3 font-gillsans mt-2 px-2 w-full`}
+        onClick={onClickHandler}
+      >
+        <div>
+          <div className={`circle-plus ${isOpen ? accordianPlus : ""}`}>
+            <div className="circle">
+              <div className="horizontal"></div>
+              <div className="vertical"></div>
             </div>
           </div>
-          <h4>{item.title}</h4>
+          <div className={`circle-plus-two ${isOpen ? accordianPlus : ""}`}>
+            <div className={`circle`}>
+              <div className="horizontal"></div>
+              <div className="vertical"></div>
+            </div>
+          </div>
         </div>
-        {/* <CSSTransition
+        <h4>Unit Types</h4>
+      </div>
+      {/* <CSSTransition
           in={items[index].isActive}
           timeout={200}
           nodeRef={nodeRef}
@@ -70,20 +56,18 @@ const Accordion = (props) => {
           mousntOnEnter
           unmountOnExit
         > */}
+      {props.data && (
         <div
           className={`${
-            items[index].isActive
-              ? "visible translate-y-0"
-              : "invisible -translate-y-8"
+            isOpen ? "visible translate-y-0" : "invisible -translate-y-8"
           } text-gray-50 sm:pl-4 md:pl-8 lg:pl-12 mt-8 transition-all duration-100`}
         >
-          {item.content}
+          <PropertyTabs {...props} />
         </div>
-        {/* </CSSTransition> */}
-      </Fragment>
-    );
-  });
-  return <div className="mt-2 px-2 w-full">{renderedItems}</div>;
+      )}
+      {/* </CSSTransition> */}
+    </Fragment>
+  );
 };
 
 export default Accordion;

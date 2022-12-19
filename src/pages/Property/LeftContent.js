@@ -8,9 +8,11 @@ const LeftContent = (props) => {
         <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[red]">
           Property Highlights
         </h3>
-        <p className="my-5 font-light leading-8 sm:pr-8 md:pr-12 lg:pr-16">
-          {data.id.Description}
-        </p>
+        {data && (
+          <p className="my-5 font-light leading-8 sm:pr-8 md:pr-12 lg:pr-16">
+            {data.id.Description}
+          </p>
+        )}
       </div>
       <Accordion {...props} />
     </div>
