@@ -1,13 +1,9 @@
 import { Fragment, useState, useRef } from "react";
 import PropertyTabs from "./PropertyTabs";
 import { CSSTransition } from "react-transition-group";
-import { useEffect } from "react";
 
 const Accordion = (props) => {
   const [accordianPlus, setAccordianPlus] = useState("closed");
-
-  const nodeRef = useRef(null);
-
   // List items
   const [items, setItems] = useState([
     {
@@ -27,10 +23,7 @@ const Accordion = (props) => {
     newItems[index].isActive = !newItems[index].isActive;
     setItems(newItems);
   };
-  useEffect(() => {
-    console.log(props.unitTypes);
-    console.log(props.data.id);
-  }, []);
+
   const renderedItems = items.map((item, index) => {
     return (
       <Fragment key={index}>

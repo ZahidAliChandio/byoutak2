@@ -2,79 +2,39 @@ import { Fragment, useCallback, useState, useEffect, useRef } from "react";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
 import { Transition } from "react-transition-group";
+import { fCurrency } from "../../utils/formatNumber";
 
 const PropertyTabs = (props) => {
+  console.log(props, "ProperTabl")
+
   const propertyData = props.data;
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSubItemIndex, setActiveSubItemIndex] = useState(null);
 
   const [unitTypes, setUnitTypes] = useState(null);
-  const [subListItem, setSubListItem] = useState(
-    propertyData.id.Unit_PropertyType
-  );
+  const [subListItem, setSubListItem] = useState(propertyData);
+
+  const propertyUnitTypes = props.data?.map(x => x.UnitType)
   // {console.log(propertyData.id.Unit_PropertyType)}
   const nodeRef = useRef(null);
-  // const list = ["Villa", "Townhouse", "Penthouse", "Apartment"];
 
-  //   Sublist data
-  const subList = [
-    {
-      subList: [
-        {
-          title: "Brooks Villa A",
-          content: [
-            { AreaFrom: "992 ㎡", AreaTo: "440 ㎡", Price: "9,900,000 EGP" },
-          ],
-        },
-        {
-          title: "Brooks Villa B",
-          content: [
-            { AreaFrom: "236 ㎡", AreaTo: "380 ㎡", Price: "7,900,000 EGP" },
-          ],
-        },
-      ],
-    },
-    {
-      subList: [
-        {
-          title: "Town House Corner",
-          content: [
-            { AreaFrom: "191 ㎡", AreaTo: "220 ㎡", Price: "5,450,000 EGP" },
-          ],
-        },
-        {
-          title: "Town House Middle",
-          content: [
-            { AreaFrom: "191 ㎡", AreaTo: "200 ㎡", Price: "4,850,000 EGP" },
-          ],
-        },
-      ],
-    },
-    {
-      subList: [
-        {
-          title: "Pent House",
-          content: [{ AreaFrom: "214 ㎡", Price: "3,700,000 EGP" }],
-        },
-        {
-          title: "Pent House",
-          content: [{ AreaFrom: "217 ㎡", Price: "3,800,000 EGP" }],
-        },
-      ],
-    },
-    {
-      subList: [
-        {
-          title: "2 Bedrooms",
-          content: [{ AreaFrom: "115 ㎡", Price: "1,690,000 EGP" }],
-        },
-        {
-          title: "3 Bedrooms",
-          content: [{ AreaFrom: "135 ㎡", Price: "1,990,000 EGP" }],
-        },
-      ],
-    },
-  ];
+  const createSubLists = () => {
+    return propertyUnitTypes.map(type => {
+      return {
+        subList: propertyData.filter(x => x.UnitType === type)
+          .map(y => {
+            return {
+              title: y.UnitName,
+              content: [
+                { AreaFrom: `${y.AreaFrom} ㎡`, AreaTo: `${y.AreaTo} ㎡`, Price: `${fCurrency(y.Price)}`, }
+              ]
+            }
+          })
+      }
+    })
+  }
+  const subList = createSubLists()
+
 
   const activeSubList = subList[activeIndex].subList;
   const onClickHandler = (index) => {
@@ -109,6 +69,7 @@ const PropertyTabs = (props) => {
       <ul className="flex flex-shrink w-fit">
         {unitTypes &&
           unitTypes.map((item, index) => {
+            if (propertyUnitTypes.includes(item._id))
             return (
               <li
                 key={index}

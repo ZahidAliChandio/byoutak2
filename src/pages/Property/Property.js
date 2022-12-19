@@ -20,19 +20,23 @@ const Property = () => {
           const list = [];
           data.forEach((element) => {
             list.push({
-              id: element,
-              img: element.Images.length !== 0 ? element.Images[0] : null,
+              id: element._id,
+              img: element.Images,
               title: element.Name,
               subtitle: element.Type,
-              price: `EGP ${element.Price}`,
-              contient: element.State,
+              price: `${element.Price}`,
+              continent: element.State,
+              type: element.Type,
+              link: element.Link,
               location: `${element.City}, ${element.Country}`,
               bedrooms: `${element.Bedrooms}`,
               bathrooms: `${element.Bathrooms}`,
               area: `${element.Area} m²`,
+              unitTypes: element.Unit_PropertyType,
+              amenities: element._Amenities,
             });
           });
-          setPropertyData(list[1]);
+          setPropertyData(list[3]);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -46,7 +50,7 @@ const Property = () => {
       {propertyData && (
         <Fragment>
           <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
-            <PropertySlider />
+            <PropertySlider data={propertyData.img} />
             <PropertyCard data={propertyData} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-2 sm:px-6 sm:px-10 md:px-16 my-16">

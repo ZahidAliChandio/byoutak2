@@ -10,8 +10,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const PropertySlider = () => {
-  const images = [Image1, Image2, Image3, Image4];
+const PropertySlider = ({ data }) => {
+  const images = data;
   return (
     <div className="relative">
       <Swiper
