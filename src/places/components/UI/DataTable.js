@@ -77,7 +77,7 @@ const DataTable = ({
                                     </td>
                                   ) : (
                                     <>
-                                      <td className="whitespace-nowrap py-4 px-4 text-xs font-medium text-gray-900">
+                                      <td className="py-4 px-4 text-xs font-medium text-gray-900">
                                         {getColumnComponent(col, row)}
                                       </td>
                                     </>

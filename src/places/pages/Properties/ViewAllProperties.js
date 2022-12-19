@@ -18,14 +18,15 @@ function ViewAllProperties() {
   const [count, setCount] = useState(0);
 
   const getProperties = () => {
-    http.get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
-      params: {
-        page: page + 1,
-        limit: limit,
-      },
-    })
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+        params: {
+          page: page + 1,
+          limit: limit,
+        },
+      })
       .then((response) => {
-        const data = response.data
+        const data = response.data;
         if (response.status === 200) {
           setTableBodyList(data);
           setCount(response?.data?.count);
@@ -91,43 +92,49 @@ function ViewAllProperties() {
     { id: "Type", label: "Type" },
     { id: "Description", label: "Description" },
     { id: "Address", label: "Address" },
-    { id: "_Amenities", label: "Amenities", component: (data, setData) => { return <>{data._Amenities.map(x => <>{x.Name}<br /></>)}</> } },
+    {
+      id: "_Amenities",
+      label: "Amenities",
+      component: (data, setData) => {
+        return (
+          <>
+            {data._Amenities.map((x) => (
+              <>
+                {x.Name}
+                <br />
+              </>
+            ))}
+          </>
+        );
+      },
+    },
     // { id: "Unit_PropertyType", label: "Units", component: (data, setData) => { return <>{data.Unit_PropertyType.map(x => <>{x.Name}<br /></>)}</> } },\
   ]);
 
   return (
     <div>
       <MainHeader type="Properties" subtype="View All Properties" />
-      <div className="content p-2">
+      <div className="relative content p-2">
         <AdminCard>
-          <div className="content">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="box box-primary">
-                  <BoxHeader title="Properties List" />
-
-                  <div className="h-fit rounded-lg bg-white mb-6 shadow-md">
-                    <div>
-                      <DataTable
-                        // isLoading={loading}
-                        tableHeadersData={tableHeaders}
-                        setTableHeadersData={setTableHeaders}
-                        tableBodyData={tableBodyList}
-                      />
-                    </div>
-                  </div>
-                  <div className="fixed bottom-0 w-[-webkit-fill-available] z-50">
-                    <Paginator
-                      page={page}
-                      setPage={setPage}
-                      limit={limit}
-                      setLimit={setLimit}
-                      total={0}
-                    />
-                  </div>
-                </div>
-              </div>
+          <BoxHeader title="Properties List" />
+          <div className="h-fit flex w-full rounded-lg bg-white mb-6 shadow-md">
+            <div>
+              <DataTable
+                isLoading={loading}
+                tableHeadersData={tableHeaders}
+                setTableHeadersData={setTableHeaders}
+                tableBodyData={tableBodyList}
+              />
             </div>
+          </div>
+          <div className="fixed bottom-0 w-[-webkit-fill-available] z-50">
+            <Paginator
+              page={page}
+              setPage={setPage}
+              limit={limit}
+              setLimit={setLimit}
+              total={0}
+            />
           </div>
         </AdminCard>
       </div>
