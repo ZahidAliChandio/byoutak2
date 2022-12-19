@@ -14,7 +14,7 @@ const LeftContent = (props) => {
           </p>
         )}
       </div>
-      <Accordion {...props} />
+      <Accordion data={data.unitTypes} />
     </div>
   );
 };

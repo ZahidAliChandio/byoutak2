@@ -20,19 +20,27 @@ const Property = () => {
           const list = [];
           data.forEach((element) => {
             list.push({
-              id: element,
-              img: element.Images.length !== 0 ? element.Images[0] : null,
+              id: element._id,
+              img: element.Images,
               title: element.Name,
               subtitle: element.Type,
-              price: `EGP ${element.Price}`,
-              contient: element.State,
+              price: `${element.Price}`,
+              continent: element.State,
+              type: element.Type,
+              link: element.Link,
               location: `${element.City}, ${element.Country}`,
               bedrooms: `${element.Bedrooms}`,
               bathrooms: `${element.Bathrooms}`,
               area: `${element.Area} m²`,
+              unitTypes: element.Unit_PropertyType,
+              amenities: element._Amenities,
             });
           });
+<<<<<<< HEAD
           setPropertyData(list[0]);
+=======
+          setPropertyData(list[3]);
+>>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
@@ -43,6 +51,7 @@ const Property = () => {
 
   return (
     <Fragment>
+<<<<<<< HEAD
       <Fragment>
         <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
           <PropertySlider />
@@ -54,6 +63,21 @@ const Property = () => {
         </div>
         <ContactUs />
       </Fragment>
+=======
+      {propertyData && (
+        <Fragment>
+          <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
+            <PropertySlider data={propertyData.img} />
+            <PropertyCard data={propertyData} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-2 sm:px-6 sm:px-10 md:px-16 my-16">
+            <LeftContent data={propertyData} />
+            <RightContent data={propertyData} />
+          </div>
+          <ContactUs />
+        </Fragment>
+      )}
+>>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
     </Fragment>
   );
 };

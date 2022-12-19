@@ -2,19 +2,32 @@ import { Fragment, useCallback, useState, useEffect, useRef } from "react";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
 import { Transition } from "react-transition-group";
+import { fCurrency } from "../../utils/formatNumber";
 
 const PropertyTabs = (props) => {
+<<<<<<< HEAD
   const propertyData = props.data.id.Unit_PropertyType;
+=======
+  console.log(props, "ProperTabl")
+
+  const propertyData = props.data;
+>>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSubItemIndex, setActiveSubItemIndex] = useState(null);
 
   const [unitTypes, setUnitTypes] = useState(null);
+<<<<<<< HEAD
   const [subListItem, setSubListItem] = useState("");
   // propertyData.id.Unit_PropertyType
+=======
+  const [subListItem, setSubListItem] = useState(propertyData);
+
+  const propertyUnitTypes = props.data?.map(x => x.UnitType)
+>>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
   // {console.log(propertyData.id.Unit_PropertyType)}
   const nodeRef = useRef(null);
-  // const list = ["Villa", "Townhouse", "Penthouse", "Apartment"];
 
+<<<<<<< HEAD
   const findItems = () => {
     var newArray = [];
     // unitTypes.forEach((item) => {
@@ -102,6 +115,25 @@ const PropertyTabs = (props) => {
       ],
     },
   ];
+=======
+  const createSubLists = () => {
+    return propertyUnitTypes.map(type => {
+      return {
+        subList: propertyData.filter(x => x.UnitType === type)
+          .map(y => {
+            return {
+              title: y.UnitName,
+              content: [
+                { AreaFrom: `${y.AreaFrom} ㎡`, AreaTo: `${y.AreaTo} ㎡`, Price: `${fCurrency(y.Price)}`, }
+              ]
+            }
+          })
+      }
+    })
+  }
+  const subList = createSubLists()
+
+>>>>>>> f8e1d23268ffa861343a5ca60d9e85f86fd9a99e
 
   const activeSubList = subList[activeIndex].subList;
 
@@ -138,6 +170,7 @@ const PropertyTabs = (props) => {
         {unitTypes &&
           findItems() &&
           unitTypes.map((item, index) => {
+            if (propertyUnitTypes.includes(item._id))
             return (
               <li
                 key={index}
