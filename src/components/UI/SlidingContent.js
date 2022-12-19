@@ -47,11 +47,11 @@ const SlidingContent = (props) => {
         >
           <div className="text-white text-center w-full">
             <div className="flex flex-col gap-8 w-full items-center">
-              <h2 className="font-bold  px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-3xl">
+              <h2 className="font-bold px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-3xl">
                 {content.title}
               </h2>
               {content.input && (
-                <div className="grid grid-cols-[4fr,1fr] justify-center w-[90%] lg:w-[70%]">
+                <div className="grid grid-cols-[4fr,1fr] justify-center w-[90%] sm:w-[80%] lg:w-[70%]">
                   <input
                     type="text"
                     id="visitors"
@@ -79,9 +79,9 @@ const SlidingContent = (props) => {
               )}
             </div>
             {content.subtitle && (
-              <p className="mt-6 lg:mt-6 text-gray-300 text-lg md:text-xl">
+              <div className="mt-6 lg:mt-16 text-gray-300 text-lg md:text-xl">
                 {content.subtitle}
-              </p>
+              </div>
             )}
           </div>
 
