@@ -11,10 +11,10 @@ const UnitType = () => {
   const content = {
     pageId: 2,
     title: (
-      <p className="leading-60">
+      <span>
         What is the type of <span className="text-[red]">unit </span>
         are you looking for?
-      </p>
+      </span>
     ),
     lis: data,
     nextLink: "price-range",

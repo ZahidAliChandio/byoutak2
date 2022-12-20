@@ -11,7 +11,44 @@ import ContactUs from "./ContactUs";
 
 const Property = () => {
   const [propertyData, setPropertyData] = useState(null);
+  const [propertyId, setPropertyId] = useState(null);
   const location = useLocation();
+
+  const getPropertyById = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getPropertyById/${propertyId}`)
+      .then((response) => {
+        const data = response.data;
+        if (response.status === 200) {
+          const list = [];
+          data.forEach((element) => {
+            list.push({
+              id: element._id,
+              img: element.Images,
+              title: element.Name,
+              subtitle: element.Type,
+              price: `${element.Price}`,
+              continent: element.State,
+              type: element.Type,
+              link: element.Link,
+              location: `${element.City}, ${element.Country}`,
+              bedrooms: `${element.Bedrooms}`,
+              bathrooms: `${element.Bathrooms}`,
+              area: `${element.Area} m²`,
+              unitTypes: element.Unit_PropertyType,
+              amenities: element._Amenities,
+            });
+          });
+          setPropertyData(list[5]);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+  useEffect(() => {
+    getPropertyById();
+    // console.log("PropertyId: " + location.state);
+    setPropertyId(location.state);
+  }, [getPropertyById]);
 
   const getProperties = useCallback(() => {
     http

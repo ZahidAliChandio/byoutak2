@@ -38,7 +38,7 @@ const SlidingContent = (props) => {
       <div className="w-full overflow-hidden" key="select">
         <motion.div
           className={`flex flex-col items-center justify-center ${
-            !content.subtitle ? "mt:16 md:mt-32" : "mt-16"
+            !content.subtitle ? "mt:16 md:mt-32" : "mt-24"
           } mx-auto w-10/12 md:w-[50%] text-center transition-all duration-300 z-0`}
           initial={{ transform: "translateX(100%)" }}
           animate={{ transform: "translateX(0%)" }}
@@ -46,8 +46,8 @@ const SlidingContent = (props) => {
           transition={{ duration: 0.1, ease: "easeOut" }}
         >
           <div className="text-white text-center w-full">
-            <div className="flex flex-col gap-8 w-full items-center">
-              <h2 className="font-bold px-6 sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-[2.5rem]">
+            <div className="flex flex-col gap-0 w-full items-center">
+              <h2 className="font-bold text-lg sm:text-xl md:text-2xl lg:text-[2.5rem] w-[28rem] !leading-[3rem]">
                 {content.title}
               </h2>
               {content.input && (
@@ -79,7 +79,7 @@ const SlidingContent = (props) => {
               )}
             </div>
             {content.subtitle && (
-              <div className="mt-6 lg:mt-16 text-gray-300 text-lg md:text-3xl">
+              <div className="mt-6 lg:mt-10 text-gray-300 text-lg md:text-3xl">
                 {content.subtitle}
               </div>
             )}
