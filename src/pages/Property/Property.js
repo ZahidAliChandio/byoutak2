@@ -87,19 +87,15 @@ const Property = () => {
 
   return (
     <Fragment>
-      {propertyData && (
-        <Fragment>
-          <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
-            <PropertySlider data={propertyData.img} />
-            <PropertyCard data={propertyData} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-2 sm:px-6 sm:px-10 md:px-16 my-16">
-            <LeftContent data={propertyData} />
-            <RightContent data={propertyData} />
-          </div>
-          <ContactUs />
-        </Fragment>
-      )}
+      <div className="grid grid-cols-1 lg:grid-cols-[60%,40%]">
+        <PropertySlider data={propertyData.img} />
+        <PropertyCard data={propertyData} />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 px-2 sm:px-6 sm:px-10 md:px-16 my-16">
+        <LeftContent data={propertyData} />
+        <RightContent data={propertyData} />
+      </div>
+      <ContactUs />
     </Fragment>
   );
 };

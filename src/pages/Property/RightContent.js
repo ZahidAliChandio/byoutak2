@@ -1,7 +1,7 @@
 const RightContent = (props) => {
   const features = props.data.amenities;
 
-  return (
+  return props.data ? (
     <div className="text-white">
       <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[red]">
         Features
@@ -25,6 +25,8 @@ const RightContent = (props) => {
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
     </div>
+  ) : (
+    <div></div>
   );
 };
 export default RightContent;

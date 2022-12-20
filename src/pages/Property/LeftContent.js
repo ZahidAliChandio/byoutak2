@@ -14,7 +14,7 @@ const LeftContent = (props) => {
           </p>
         )}
       </div>
-      <Accordion data={data.unitTypes} />
+      {data && <Accordion data={data.unitTypes} />}
     </div>
   );
 };
