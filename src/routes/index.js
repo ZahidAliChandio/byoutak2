@@ -1,6 +1,6 @@
 import { useRoutes } from "react-router-dom";
 
-import NewHome from "../pages/Selectional/NewHome";
+import PropertyType from "../pages/Selectional/PropertyType";
 import PriceRange from "../pages/Selectional/PriceRange";
 import Location from "../pages/Selectional/Location";
 import Projects from "../pages/Projects/Projects";
@@ -78,7 +78,7 @@ export default function Router() {
           element: <Location />,
         },
         { path: "price-range", element: <PriceRange /> },
-        { path: "property-type", element: <NewHome /> },
+        { path: "property-type", element: <PropertyType /> },
         { path: "unit-type", element: <UnitType /> },
         { path: "projects", element: <Projects /> },
         { path: "slider", element: <Slider /> },

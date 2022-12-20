@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 import SlidingContent from "../../components/UI/SlidingContent";
 
-const NewHome = () => {
+const PropertyType = () => {
   const content = {
     pageId: 1,
     title: (
@@ -25,4 +25,4 @@ const NewHome = () => {
     </Fragment>
   );
 };
-export default NewHome;
+export default PropertyType;

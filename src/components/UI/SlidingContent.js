@@ -38,7 +38,7 @@ const SlidingContent = (props) => {
       <div className="w-full overflow-hidden" key="select">
         <motion.div
           className={`flex flex-col items-center justify-center ${
-            !content.subtitle ? "mt:16 md:mt-32" : "mt-24"
+            !content.subtitle ? "mt:16 md:mt-28" : "mt-24"
           } mx-auto w-10/12 md:w-[50%] text-center transition-all duration-300 z-0`}
           initial={{ transform: "translateX(100%)" }}
           animate={{ transform: "translateX(0%)" }}

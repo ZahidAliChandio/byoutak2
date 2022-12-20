@@ -4,7 +4,7 @@ const Unit = () => {
   const content = {
     pageId: 3,
     title: (
-      <span className="whitespace-pre">
+      <span>
         What is the <span className="text-[red]"> price</span> range you have in
         mind?
       </span>
