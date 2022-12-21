@@ -4,7 +4,7 @@ import { fCurrency } from "../../utils/formatNumber";
 
 const PropertyCard = (props) => {
   const data = props.data;
-  return data ? (
+  return (
     <div
       className={`${props.className} relative px-4 sm:px-8 xl:px-12 py-5 sm:py-7 rounded-md font-gillsans mx-auto min-h-[400px] w-full text-white`}
     >
@@ -57,8 +57,6 @@ const PropertyCard = (props) => {
         <Contact />
       </div>
     </div>
-  ) : (
-    <div></div>
   );
 };
 export default PropertyCard;
