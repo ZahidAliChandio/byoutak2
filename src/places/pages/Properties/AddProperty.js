@@ -168,9 +168,6 @@ function AddProperty(props) {
       })
       .catch((err) => toast.error(err.message));
   };
-  useEffect(() => {
-    console.log(locationsData);
-  }, [locationsData]);
 
   return (
     <section className="w-full">
@@ -296,7 +293,7 @@ function AddProperty(props) {
                     onInput={inputHandler}
                     required
                   />
-                  {/* <Input                    
+                  <Input
                     type="select"
                     items={locationsData ? locationsData : null}
                     // items={null}
@@ -305,7 +302,7 @@ function AddProperty(props) {
                     name={"location"}
                     onInput={inputHandler}
                     required
-                  /> */}
+                  />
                   <Input
                     type="url"
                     items={["Select", "Cash", "Credit"]}

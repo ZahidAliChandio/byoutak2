@@ -1,9 +1,12 @@
 import { ReactComponent as Bed } from "../../static/icons/bed.svg";
 import Contact from "../../components/UI/Contact";
 import { fCurrency } from "../../utils/formatNumber";
+import yearsOnInstallment from "../../assets/years-on-installment.png";
+import downPayment from "../../assets/down-payment.png";
 
 const PropertyCard = (props) => {
   const data = props.data;
+  console.log(data);
   return (
     <div
       className={`${props.className} relative px-4 sm:px-8 xl:px-12 py-5 sm:py-7 rounded-md font-gillsans mx-auto min-h-[400px] w-full text-white`}
@@ -40,17 +43,29 @@ const PropertyCard = (props) => {
             <span className="text-sm sm:text-base">{data.location}</span>
           </div>
           <div className="flex gap-2 sm:gap-4 pl-0 sm:pl-2">
-            <div className="flex items-center gap-2 py-2 pr-2">
-              <Bed />
-              <span className="text-sm font-semibold">{data.bedrooms}</span>
+            <div className="relative flex items-center gap-2 py-2 pr-2">
+              <img
+                src={yearsOnInstallment}
+                alt="Intallment Years"
+                className="w-10 bg-transparent invert"
+              />
+              <span className="text-lg font-semibold">{data.bedrooms}</span>
             </div>
-            <div className="flex items-center gap-2 py-2 pr-2">
-              <i className="fas fa-bath text-lg"></i>
-              <span className="text-sm font-semibold">{data.bathrooms}</span>
+            <div className="relative flex items-center gap-2 py-2 pr-2">
+              <div className="relative">
+                <img
+                  src={downPayment}
+                  alt="Down Payment"
+                  className="w-6 h-8 bg-transparent"
+                />
+                <span className="absolute -bottom-[0.1rem] -right-[0.1rem] h-1 w-1 bg-[#212020]"></span>
+                <span className="absolute -bottom-[0.1rem] -left-[0.1rem] h-1 w-1 bg-[#212020]"></span>
+              </div>
+              <span className="text-lg font-semibold">{data.bathrooms}</span>
             </div>
             <div className="flex items-center gap-2 py-2 pr-2">
               <i className="far fa-square-full text-lg"></i>
-              <span className="text-sm font-semibold">{data.area}</span>
+              <span className="text-lg font-semibold">{data.area}</span>
             </div>
           </div>
         </div>

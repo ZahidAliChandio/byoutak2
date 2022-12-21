@@ -78,7 +78,7 @@ const ContactUs = () => {
               country={"th"}
               value={phone}
               onChange={phoneChangeHandler}
-              buttonClass="bg-red"
+              buttonclassName="bg-red"
               buttonStyle={{
                 backgroundColor: "transparent",
                 border: "none",

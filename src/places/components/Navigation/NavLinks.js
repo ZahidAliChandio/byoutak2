@@ -1,16 +1,44 @@
 import { NavLink } from "react-router-dom";
 
+import addProperty from "../../../assets/add-property.png";
+import amenity from "../../../assets/amenity.png";
+import unitType from "../../../assets/unit-type.png";
+
 const NavLinks = (props) => {
   const lis = [
-    { title: "Property", linkTo: "addProperty" },
+    {
+      title: "Property",
+      linkTo: "addProperty",
+      // icon: <i className="fas fa-home"></i>,
+      icon: (
+        <img src={addProperty} alt="Add Property" className="w-6 invert"></img>
+      ),
+    },
     {
       title: "View all Properties",
       linkTo: "viewAllProperties",
+      icon: <i className="fas fa-home text-lg"></i>,
     },
-    { title: "Location", linkTo: "addLocation" },
-    { title: "Amenity", linkTo: "addAmenities" },
-    { title: "Unity Type", linkTo: "addUnitType" },
-    { title: "Developer", linkTo: "addDeveloper" },
+    {
+      title: "Location",
+      linkTo: "addLocation",
+      icon: <i className="fas fa-map-marker-alt text-lg mr-2"></i>,
+    },
+    {
+      title: "Amenity",
+      linkTo: "addAmenities",
+      icon: <img src={amenity} alt="Amenity" className="w-5 invert" />,
+    },
+    {
+      title: "Unity Type",
+      linkTo: "addUnitType",
+      icon: <img src={unitType} alt="Unit Type" className="w-5 invert" />,
+    },
+    {
+      title: "Developer",
+      linkTo: "addDeveloper",
+      icon: <i className="fas fa-user-plus text-lg"></i>,
+    },
   ];
 
   return (
@@ -28,10 +56,11 @@ const NavLinks = (props) => {
                   border-[3px] border-transparent  text-xs bg-transparent py-[10px] cursor-pointer font-gillsans px-3 text-white 
                   hover:border-l-[color:var(--red-color)] hover:text-[color:var(--red-color)]  hover:bg-[#070707] hover:pl-[0.88rem]`}
           >
-            <div className="">
+            {/* <div className="">
               <i className="fas fa-chevron-right w-1"></i>
               <i className="fas fa-chevron-right w-1"></i>
-            </div>
+            </div> */}
+            {content.icon}
             <div className="cursor-pointer">{content.title}</div>
           </NavLink>
         </li>

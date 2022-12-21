@@ -99,8 +99,8 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
       </div>
 
       <FormButton
-        buttonClass="!px-2"
-        containerClass="!border-none !p-0 !w-fit justify-self-center"
+        buttonclassName="!px-2"
+        containerclassName="!border-none !p-0 !w-fit justify-self-center"
         // disabled={props.unitFormLength > 0 ? false : true}
         onClick={() => removeUnitFormHandler(index)}
       >
