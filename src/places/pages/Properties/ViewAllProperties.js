@@ -44,7 +44,6 @@ function ViewAllProperties() {
 
   const editHandler = (data) => {
     navigate("/admin/addProperty");
-    // console.log(data);
   };
 
   function deleteFromTable(data) {
