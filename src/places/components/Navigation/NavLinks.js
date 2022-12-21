@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 
-import addProperty from "../../../assets/add-property.png";
-import amenity from "../../../assets/amenity.png";
-import unitType from "../../../assets/unit-type.png";
+import addProperty from "../../../static/icons/add-property.png";
+import amenity from "../../../static/icons/amenity.png";
+import unitType from "../../../static/icons/unit-type.png";
 
 const NavLinks = (props) => {
   const lis = [
@@ -22,7 +22,7 @@ const NavLinks = (props) => {
     {
       title: "Location",
       linkTo: "addLocation",
-      icon: <i className="fas fa-map-marker-alt text-lg mr-2"></i>,
+      icon: <i className="fas fa-map-marker-alt text-lg pl-1"></i>,
     },
     {
       title: "Amenity",

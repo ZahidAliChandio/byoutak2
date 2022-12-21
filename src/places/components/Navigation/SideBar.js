@@ -20,7 +20,7 @@ function SideBar(props) {
   return (
     <aside
       className={`side-drawer relative left-0 top-0 z-20 ${
-        drawerIsOpen ? "w-[250px]" : "w-[44px]"
+        drawerIsOpen ? "w-[265px]" : "w-[44px]"
       } transition-all duration-[900ms] h-screen bg-[#212020] card-shadow overflow-hidden`}
       onClick={props.onClick}
     >

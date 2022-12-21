@@ -1,8 +1,8 @@
 import { ReactComponent as Bed } from "../../static/icons/bed.svg";
 import Contact from "../../components/UI/Contact";
 import { fCurrency } from "../../utils/formatNumber";
-import yearsOnInstallment from "../../assets/years-on-installment.png";
-import downPayment from "../../assets/down-payment.png";
+import yearsOnInstallment from "../../static/icons/years-on-installment.png";
+import downPayment from "../../static/icons/down-payment.png";
 
 const PropertyCard = (props) => {
   const data = props.data;
