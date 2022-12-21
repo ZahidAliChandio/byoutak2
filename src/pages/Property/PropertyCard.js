@@ -12,15 +12,16 @@ const PropertyCard = (props) => {
       className={`${props.className} relative px-4 sm:px-8 xl:px-12 py-5 sm:py-7 rounded-md font-gillsans mx-auto min-h-[400px] w-full text-white`}
     >
       <h2 className="text-6xl font-bold my-5 sm:my-8">{data.title}</h2>
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-0 mb-4">
         <h3 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-[red] mt-5">
           {fCurrency(data.price)}
         </h3>
         <span className="text-2xl md:text-3xl mt-2">{data.type}</span>
       </div>
-      <div className="flex flex-col  absolute bottom-0 gap-8">
+      <div className="flex flex-col absolute -bottom-6 lg:bottom-0 gap-8">
         <div className="space-y-2">
-          <div className="flex gap-0 sm:gap-2">
+          <div className="relative flex gap-0 sm:gap-2 -left-1 lg:left-0">
+            {/* location icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -42,7 +43,7 @@ const PropertyCard = (props) => {
             </svg>
             <span className="text-sm sm:text-base">{data.location}</span>
           </div>
-          <div className="flex gap-2 sm:gap-4 pl-0 sm:pl-2">
+          <div className="relative flex gap-2 sm:gap-4 -left-1 lg:left-0">
             <div className="relative flex items-center gap-2 py-2 pr-2">
               <img
                 src={yearsOnInstallment}

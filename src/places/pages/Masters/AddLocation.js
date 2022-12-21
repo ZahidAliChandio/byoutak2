@@ -20,10 +20,10 @@ function AddLocation() {
   const [count, setCount] = useState(0);
   const [edit, setEdit] = useState(false);
   const [updateName, setUpdateName] = useState("");
-  const [updateCity, setUpdateCity] = useState("");
-  const [updateCountry, setUpdateCountry] = useState("");
-  const [updateEstate, setUpdateEstate] = useState("");
-  const [updateAddress, setUpdateAddress] = useState("");
+  // const [updateCity, setUpdateCity] = useState("");
+  // const [updateCountry, setUpdateCountry] = useState("");
+  // const [updateEstate, setUpdateEstate] = useState("");
+  // const [updateAddress, setUpdateAddress] = useState("");
   const [resetForm, setResetForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
   const [updateData, setUpdateData] = useState(null);
@@ -62,14 +62,14 @@ function AddLocation() {
       .catch((err) => toast.error(err.message));
   };
 
-  const [state, setState] = useState({
-    tableBodyList: [],
-    dialogInfo: {
-      isOpened: false,
-      text: "",
-      type: "",
-    },
-  });
+  // const [state, setState] = useState({
+  //   tableBodyList: [],
+  //   dialogInfo: {
+  //     isOpened: false,
+  //     text: "",
+  //     type: "",
+  //   },
+  // });
 
   function deleteFromTable(data) {
     http
@@ -86,13 +86,14 @@ function AddLocation() {
   const editHandler = (data) => {
     setUpdateForm(true);
     setUpdateData(data);
-    console.log(data);
     setUpdateName(data.Name);
-    setUpdateCity(data.Address.City);
-    setUpdateEstate(data.Address.state);
-    setUpdateCountry(data.Address.Country);
-    setUpdateAddress(data.Address.Address);
     setEdit(true);
+
+    // console.log(data);
+    // setUpdateCity(data.Address.City);
+    // setUpdateEstate(data.Address.state);
+    // setUpdateCountry(data.Address.Country);
+    // setUpdateAddress(data.Address.Address);
   };
   const editCancelHandler = () => {
     if (edit) setEdit(false);

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 // import axios from 'axios'
 
 import DataTable from "../../components/UI/DataTable";
@@ -16,6 +17,8 @@ function ViewAllProperties() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
+
+  const navigate = useNavigate();
 
   const getProperties = () => {
     http
@@ -39,51 +42,21 @@ function ViewAllProperties() {
     getProperties();
   }, [page, limit]);
 
-  useEffect(() => {
-    // console.log("mounted")
-    // axios.get(`${ATLAS_URI}/getProperties/`, configToken)
-    //     .then(response => {
-    //         const propertiesData = response.data;
-    //         if (typeof propertiesData !== 'undefined' && mounted.current) {
-    //             setState(prevState => ({
-    //                 ...prevState,
-    //                 tableBodyList: propertiesData
-    //             }))
-    //         }
-    //     }).catch(err => console.log(err))
-  }, []);
+  const editHandler = (data) => {
+    navigate("/admin/addProperty");
+    // console.log(data);
+  };
 
-  function editRecord(e) {
-    // const temp = e.target.parentElement.parentElement.id;
-    // updateEditDetails({ id: temp, editingActivated: true, redirectFrom: "/Properties/viewAllProperties", redirectTo: "/Properties/addNewProperty" });
-  }
-
-  function openDialog(e) {
-    // const newDialogInfo = {
-    //     isOpened: true,
-    //     delID: e.target.parentElement.parentElement.id,
-    //     text: "Are you sure you want to delete this Property?",
-    //     type: "Confirm"
-    // }
-    // setState(prevState => ({ ...prevState, dialogInfo: newDialogInfo }))
-  }
-
-  function deleteFromTable(e) {
-    // const delID = state.dialogInfo.delID;
-    // console.log(state.tableBodyList)
-    // axios.delete(`${ATLAS_URI}/deleteProperty/` + delID, configToken)
-    //     .then(() => {
-    //         state.tableBodyList.filter(data => data.id.toString() === delID)[0].Images.forEach((image) => {
-    //             axios.delete(`${ATLAS_URI}/file/${image}`, configToken);
-    //         })
-    //         const newTableBodyList = state.tableBodyList.filter(data => data.id.toString() !== delID);
-    //         setState(prevState => ({
-    //             ...prevState,
-    //             tableBodyList: newTableBodyList,
-    //             dialogInfo: { isOpened: false, text: "", delID: "" }
-    //         }))
-    //     })
-    //     .catch(err => alert(err))
+  function deleteFromTable(data) {
+    http
+      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteProperty/${data._id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          getProperties();
+          toast.success(response?.data);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
   }
 
   const [tableHeaders, setTableHeaders] = useState([
@@ -96,21 +69,40 @@ function ViewAllProperties() {
       id: "_Amenities",
       label: "Amenities",
       component: (data, setData) => {
-        return (
-          <>
-            {data._Amenities.map((x) => (
-              <>
-                {x.Name}
-                <br />
-              </>
-            ))}
-          </>
-        );
+        return data._Amenities.map((x, index) => (
+          <Fragment key={index}>
+            {x.Name}
+            <br />
+          </Fragment>
+        ));
       },
+    },
+    {
+      id: "actions",
+      label: "",
+      component: (data, setData) => (
+        <div className="flex space-x-3 !text-right">
+          <button
+            className=" no-focus"
+            title="Edit"
+            onClick={() => {
+              editHandler(data);
+            }}
+          >
+            <i className="fas fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button
+            className=" no-focus"
+            title="Delete"
+            onClick={(e) => deleteFromTable(data)}
+          >
+            <i className="fas fa-times text-red-500" aria-hidden="true"></i>
+          </button>
+        </div>
+      ),
     },
     // { id: "Unit_PropertyType", label: "Units", component: (data, setData) => { return <>{data.Unit_PropertyType.map(x => <>{x.Name}<br /></>)}</> } },\
   ]);
-
   return (
     <div>
       <MainHeader type="Properties" subtype="View All Properties" />
