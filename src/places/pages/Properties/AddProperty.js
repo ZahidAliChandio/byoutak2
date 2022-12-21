@@ -221,24 +221,24 @@ function AddProperty(props) {
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <Input
-                      id={"bedrooms"}
-                      label={"Bedrooms"}
-                      name={"bedrooms"}
+                      id={"IntallmentYears"}
+                      label={"Years On Installment"}
+                      name={"IntallmentYears"}
                       onInput={inputHandler}
                       required
                     />
                     <Input
-                      id="bathrooms"
-                      label={"Bathrooms"}
-                      name="bathrooms"
+                      id="DownPayment"
+                      label={"Down Payment"}
+                      name="DownPayment"
                       required
                       onInput={inputHandler}
                     />
                   </div>
                   <Input
-                    id="area"
-                    label={"Area"}
-                    name="area"
+                    id="Delivery"
+                    label={"Delivery Date"}
+                    name="Delivery"
                     required
                     onInput={inputHandler}
                   />
