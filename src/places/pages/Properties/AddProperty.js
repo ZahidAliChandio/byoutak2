@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import http from "../../../utils/http";
 
@@ -29,6 +30,9 @@ function AddProperty(props) {
   const [locationsName, setLocationsName] = useState([]);
 
   const [projectDevelopersData, setProjectDevelopersData] = useState(null);
+
+  const location = useLocation();
+  const [redirectedData, setRedirectedData] = useState(location.state);
 
   const getProjectDevelopers = useCallback(() => {
     http
