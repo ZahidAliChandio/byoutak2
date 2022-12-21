@@ -64,7 +64,7 @@ const PropertyCard = (props) => {
               <span className="text-lg font-semibold">{data.bathrooms}</span>
             </div>
             <div className="flex items-center gap-2 py-2 pr-2">
-              <i className="far fa-square-full text-lg"></i>
+              <i class="fas fa-calendar-alt text-2xl"></i>
               <span className="text-lg font-semibold">{data.area}</span>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { ReactComponent as Bed } from "../../static/icons/bed.svg";
+import Area from "../../static/icons/area.png";
 
 const SliderCard = (props) => {
   const data = props.data;
@@ -48,18 +49,19 @@ const SliderCard = (props) => {
           </svg>
           <span className="text-sm sm:text-base">{data.location}</span>
         </div>
-        <div className="flex gap-2 sm:gap-4 pl-0 sm:pl-2">
+        <div className="flex items-center gap-3 sm:gap-5 pl-0 sm:pl-2">
           <div className="flex items-center gap-2">
-            <Bed />
-            <span className="text-sm font-semibold">{data.bedrooms}</span>
+            <Bed className="w-8 h-8" />
+            <span className="font-semibold">{data.bedrooms}</span>
           </div>
           <div className="flex items-center gap-2">
-            <i className="fas fa-bath text-lg"></i>
-            <span className="text-sm font-semibold">{data.bathrooms}</span>
+            <i className="fas fa-bath text-2xl"></i>
+            <span className="font-semibold">{data.bathrooms}</span>
           </div>
           <div className="flex items-center gap-2">
-            <i className="far fa-square-full text-lg"></i>
-            <span className="text-sm font-semibold">{data.area}</span>
+            {/* <i className="far fa-square-full text-lg"></i> */}
+            <img src={Area} alt="Area"></img>
+            <span className="font-semibold">{data.area}</span>
           </div>
         </div>
       </div>
