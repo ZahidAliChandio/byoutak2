@@ -22,7 +22,6 @@ function AddAmenities() {
   const [resetForm, setResetForm] = useState(false);
   const [updateName, setUpdateName] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
-  const [updateForm, setUpdateForm] = useState(false);
   const [updateData, setUpdateData] = useState(null);
 
   const [formState, inputHandler] = useForm({
@@ -70,7 +69,6 @@ function AddAmenities() {
   }
 
   const editHandler = (data) => {
-    setUpdateForm(true);
     setUpdateData(data);
     setUpdateName(data.Name);
     setUpdateDescription(data.Description);
@@ -159,9 +157,8 @@ function AddAmenities() {
               label={"Name"}
               id="Name"
               name={"AmenityName"}
-              updateForm={updateForm}
-              setUpdateForm={setUpdateForm}
               updateValue={updateName}
+              setUpdateValue={setUpdateName}
               resetForm={resetForm}
               setResetForm={setResetForm}
               onInput={inputHandler}
@@ -172,9 +169,8 @@ function AddAmenities() {
               label={"Description"}
               id="Description"
               name={"AmenityName"}
-              updateForm={updateForm}
-              setUpdateForm={setUpdateForm}
               updateValue={updateDescription}
+              setUpdateValue={setUpdateDescription}
               resetForm={resetForm}
               setResetForm={setResetForm}
               onInput={inputHandler}

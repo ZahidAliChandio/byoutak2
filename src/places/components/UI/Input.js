@@ -27,9 +27,8 @@ const InputField = (props) => {
     unitIndex,
     resetForm,
     setResetForm,
-    updateForm,
     updateValue,
-    setUpdateForm,
+    setUpdateValue,
   } = props;
   const { value } = inputState;
 
@@ -38,12 +37,12 @@ const InputField = (props) => {
       dispatch({ type: "RESET" });
       setResetForm(false);
     }
-    if (updateForm) {
+    if (updateValue && updateValue.length > 0) {
       dispatch({
         type: "CHANGE",
         val: updateValue,
       });
-      setUpdateForm(false);
+      setUpdateValue("");
     }
     onInput(id, value);
   }, [
@@ -53,9 +52,8 @@ const InputField = (props) => {
     unitIndex,
     resetForm,
     setResetForm,
-    updateForm,
-    setUpdateForm,
     updateValue,
+    setUpdateValue,
   ]);
 
   const onChangeHandler = (e) => {
@@ -99,7 +97,7 @@ const InputField = (props) => {
     ) : (
       <input
         name={props.name}
-        type="text"
+        type={props.inputType || "text"}
         className={`${props.className} py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)]`}
         required={props.required}
         value={props.value || inputState.value}

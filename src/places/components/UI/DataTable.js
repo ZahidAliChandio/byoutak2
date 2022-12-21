@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 const DataTable = ({
   tableHeadersData,
   tableBodyData,
@@ -7,7 +7,6 @@ const DataTable = ({
   rowClickEnabled,
   isLoading,
 }) => {
-  const [hideCheckboxes, setHideCheckboxes] = useState(true);
   const [tableHeaders, setTableHeaders] = useState(tableHeadersData);
   const [tableBody, setTableBody] = useState(tableBodyData);
 

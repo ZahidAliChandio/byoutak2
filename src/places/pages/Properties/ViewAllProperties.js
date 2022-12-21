@@ -43,7 +43,7 @@ function ViewAllProperties() {
   }, [page, limit]);
 
   const editHandler = (data) => {
-    navigate("/admin/addProperty");
+    navigate("/admin/addProperty", { state: data });
   };
 
   function deleteFromTable(data) {

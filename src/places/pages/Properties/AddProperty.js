@@ -8,31 +8,38 @@ import MainHeader from "../../components/Navigation/MainHeader";
 import AdminCard from "../../components/UI/AdminCard";
 import Input from "../../components/UI/Input";
 import { useForm } from "../../hooks/form-hook";
-import { useUnitTypeForm } from "../../hooks/unit-type";
 import FormButton from "../../components/UI/FormButton";
 import UnitTypeForm from "./UnitTypeForm";
-import { Fragment } from "react";
 
 function AddProperty(props) {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
-  // const [updateName, setUpdateName] = useState("");
+  const [updatePropertyTitle, setUpdatePropertyTitle] = useState("");
+  const [updatePropertyType, setUpdatePropertyType] = useState("");
+  const [updateProjectDeveloper, setUpdateProjectDeveloper] = useState("");
+  const [updatePrice, setUpdatePrice] = useState("");
+  const [yearsOnInstallment, setYearsOnInstallment] = useState("");
+  const [downPayment, setDownPayment] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
   const [updateCity, setUpdateCity] = useState("");
   const [updateCountry, setUpdateCountry] = useState("");
   const [updateEstate, setUpdateEstate] = useState("");
   const [updateAddress, setUpdateAddress] = useState("");
+  const [updateLocation, setUpdateLocation] = useState("");
+  const [updateLocationLink, setUpdateLocationLink] = useState("");
+  const [updateDescription, setUpdateDescription] = useState("");
   const [resetForm, setResetForm] = useState(false);
-  const [updateForm, setUpdateForm] = useState(false);
   const [unitTypes, setUnitTypes] = useState([{}]);
   const [images, setImages] = useState([]);
   const [amenitiesData, setAmenitiesData] = useState(null);
 
   const [locationsData, setLocationsData] = useState(null);
-  const [locationsName, setLocationsName] = useState([]);
-
   const [projectDevelopersData, setProjectDevelopersData] = useState(null);
 
   const location = useLocation();
-  const [redirectedData, setRedirectedData] = useState(location.state);
+
+  // Data to be edited from viewAllProperties
+  const [updateData, setUpdateData] = useState(location.state);
+  const [editData, setEditData] = useState(updateData ? true : false);
 
   const getProjectDevelopers = useCallback(() => {
     http
@@ -82,12 +89,30 @@ function AddProperty(props) {
     getAmenities();
   }, [getAmenities]);
 
-  // const removeUnitFormHandler = (formIndex) => {
-  //   const newUnitForm = unitForm.filter(
-  //     (unitForm, index) => index !== formIndex
-  //   );
-  //   setUnitForm(newUnitForm);
-  // };
+  //Cheking if Update Property from viewAllProperties was clicked.
+  useEffect(() => {
+    console.log(updateData);
+    if (updateData) {
+      setUpdatePropertyTitle(updateData.Name);
+      setUpdatePropertyType(updateData.Type);
+      setUpdateProjectDeveloper(updateData.Project_Developer);
+      setUpdatePrice(updateData.Price);
+      const yearsToString = updateData.InstallmentYears.toString();
+      setYearsOnInstallment(yearsToString);
+      const paymentToString = updateData.DownPayment.toString();
+      setDownPayment(paymentToString);
+      setDeliveryDate(updateData.Delivery);
+      setUpdateCity(updateData.City);
+      setUpdateEstate(updateData.State);
+      setUpdateCountry(updateData.Country);
+      setUpdateAddress(updateData.Address);
+      setUpdateLocation(updateData.Location);
+      setUpdateLocationLink(updateData.Link);
+      setUpdateDescription(updateData.Description);
+      // setImages(updateData.Images);
+    }
+    setUpdateData(null);
+  });
 
   const [formState, inputHandler] = useForm({
     propertyTitle: "",
@@ -98,23 +123,11 @@ function AddProperty(props) {
     loanAvailability: "",
     selectedFile: "",
     amenities: [],
-    // UnitTypes: [
-    //   {
-    //     unitType: "",
-    //     name: "",
-    //     areaFrom: "",
-    //     areaTo: "",
-    //     price: "",
-    //   },
-    //   {
-    //     unitType: "",
-    //     name: "",
-    //     areaFrom: "",
-    //     areaTo: "",
-    //     price: "",
-    //   },
-    // ],
   });
+
+  const editCancelHandler = () => {
+    setUpdateData(null);
+  };
 
   const handleCheck = (e) => {
     let updatedList = [...selectedAmenities];
@@ -130,7 +143,7 @@ function AddProperty(props) {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const mergedFormState = { ...formState, unitTypes };
-    console.log(mergedFormState, images);
+    // console.log(mergedFormState, images);
     // console.log(unitTypes);
 
     const formData = new FormData();
@@ -152,21 +165,39 @@ function AddProperty(props) {
       JSON.stringify(mergedFormState.unitTypes)
     );
     formData.append("Price", mergedFormState.price);
+    formData.append("DownPayment", mergedFormState.DownPayment);
+    formData.append("InstallmentYears", mergedFormState.InstallmentYears);
+    formData.append("Delivery", mergedFormState.Delivery);
     formData.append("Bedrooms", mergedFormState.bedrooms);
     formData.append("Bathrooms", mergedFormState.bathrooms);
     formData.append("Area", mergedFormState.area);
-    formData.append("Location", mergedFormState.location);
-    formData.append("Link", mergedFormState.link);
+    formData.append("Location", mergedFormState.Location);
+    formData.append("Link", mergedFormState.Link);
     formData.append("City", mergedFormState.City);
     formData.append("State", mergedFormState.state);
     formData.append("Country", mergedFormState.Country);
     formData.append("Address", mergedFormState.Address);
-
+    console.log(formData);
+    if (!updateData) {
+      http
+        .post(`${process.env.REACT_APP_ATLAS_URI}/addProperty/`, formData)
+        .then((response) => {
+          if (response.status === 200) {
+            setResetForm(true);
+            toast.success(response?.data?.message);
+          } else toast.error(response.data.error.message);
+        })
+        .catch((err) => toast.error(err.message));
+      return;
+    }
     http
-      .post(`${process.env.REACT_APP_ATLAS_URI}/addProperty/`, formData)
+      .post(
+        `${process.env.REACT_APP_ATLAS_URI}/updateProperty/${updateData._id}`,
+        formData
+      )
       .then((response) => {
         if (response.status === 200) {
-          // setResetForm(true);
+          setResetForm(true);
           toast.success(response?.data?.message);
         } else toast.error(response.data.error.message);
       })
@@ -190,6 +221,10 @@ function AddProperty(props) {
                     label={"Property Title"}
                     name={"PropertyTitle"}
                     placeholder="Property title"
+                    updateValue={updatePropertyTitle}
+                    setUpdateValue={setUpdatePropertyTitle}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     onInput={inputHandler}
                     required
                   />
@@ -199,42 +234,63 @@ function AddProperty(props) {
                     id={"PropertyType"}
                     label={"Property Type"}
                     name={"PropertyType"}
+                    updateValue={updatePropertyType}
+                    setUpdateValue={setUpdatePropertyType}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     onInput={inputHandler}
                     required
                   />
                   <Input
-                    object
                     type="select"
-                    items={projectDevelopersData ? projectDevelopersData : null}
+                    items={projectDevelopersData}
                     id={"ProjectDeveloper"}
                     label={"Project Developer"}
                     name={"ProjectDeveloper"}
+                    updateValue={updateProjectDeveloper}
+                    setUpdateValue={setUpdateProjectDeveloper}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     onInput={inputHandler}
                     required
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-20 lg-gap:5 xl:gap-5">
                   <Input
-                    type="number"
+                    inputType="number"
                     id={"price"}
                     label={"Price"}
                     name={"price"}
+                    updateValue={updatePrice}
+                    setUpdateValue={setUpdatePrice}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     onInput={inputHandler}
                     required
                     placeholder="20000"
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <Input
-                      id={"IntallmentYears"}
+                      inputType="number"
+                      id={"InstallmentYears"}
                       label={"Years On Installment"}
-                      name={"IntallmentYears"}
+                      name={"InstallmentYears"}
+                      updateValue={yearsOnInstallment}
+                      setUpdateValue={setYearsOnInstallment}
+                      resetForm={resetForm}
+                      setResetForm={setResetForm}
                       onInput={inputHandler}
                       required
                     />
                     <Input
+                      inputType="number"
                       id="DownPayment"
                       label={"Down Payment"}
                       name="DownPayment"
+                      updateValue={downPayment}
+                      setUpdateValue={setDownPayment}
+                      resetForm={resetForm}
+                      setResetForm={setResetForm}
                       required
                       onInput={inputHandler}
                     />
@@ -243,6 +299,10 @@ function AddProperty(props) {
                     id="Delivery"
                     label={"Delivery Date"}
                     name="Delivery"
+                    updateValue={deliveryDate}
+                    setUpdateValue={setDeliveryDate}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     required
                     onInput={inputHandler}
                   />
@@ -252,9 +312,8 @@ function AddProperty(props) {
                     label={"City"}
                     id={"City"}
                     name={"City"}
-                    updateForm={updateForm}
-                    setUpdateForm={setUpdateForm}
                     updateValue={updateCity}
+                    setUpdateValue={setUpdateCity}
                     resetForm={resetForm}
                     setResetForm={setResetForm}
                     onInput={inputHandler}
@@ -264,9 +323,8 @@ function AddProperty(props) {
                     label={"State"}
                     id={"state"}
                     name={"state"}
-                    updateForm={updateForm}
-                    setUpdateForm={setUpdateForm}
                     updateValue={updateEstate}
+                    setUpdateValue={setUpdateEstate}
                     resetForm={resetForm}
                     setResetForm={setResetForm}
                     onInput={inputHandler}
@@ -276,9 +334,8 @@ function AddProperty(props) {
                     label={"Country"}
                     id={"Country"}
                     name={"Country"}
-                    updateForm={updateForm}
-                    setUpdateForm={setUpdateForm}
                     updateValue={updateCountry}
+                    setUpdateValue={setUpdateCountry}
                     resetForm={resetForm}
                     setResetForm={setResetForm}
                     onInput={inputHandler}
@@ -289,9 +346,8 @@ function AddProperty(props) {
                     label={"Address"}
                     id={"Address"}
                     name={"Address"}
-                    updateForm={updateForm}
-                    setUpdateForm={setUpdateForm}
                     updateValue={updateAddress}
+                    setUpdateValue={setUpdateAddress}
                     resetForm={resetForm}
                     setResetForm={setResetForm}
                     onInput={inputHandler}
@@ -299,20 +355,27 @@ function AddProperty(props) {
                   />
                   <Input
                     type="select"
-                    items={locationsData ? locationsData : null}
-                    // items={null}
-                    id={"location"}
+                    items={locationsData}
+                    id={"Location"}
                     label={"Location"}
-                    name={"location"}
+                    name={"Location"}
+                    updateValue={updateLocation}
+                    setUpdateValue={setUpdateLocation}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     onInput={inputHandler}
                     required
                   />
                   <Input
                     type="url"
                     items={["Select", "Cash", "Credit"]}
-                    id={"link"}
+                    id={"Link"}
                     label={"Location Link"}
-                    name={"locationLink"}
+                    name={"Link"}
+                    updateValue={updateLocationLink}
+                    setUpdateValue={setUpdateLocationLink}
+                    resetForm={resetForm}
+                    setResetForm={setResetForm}
                     onInput={inputHandler}
                     required
                   />
@@ -320,6 +383,7 @@ function AddProperty(props) {
                 <div className="flex flex-col gap[0.18rem]">
                   <label className="font-semibold">Image</label>
                   <input
+                    value={images}
                     id={"ImageSelected"}
                     name="ImageSelected"
                     type="file"
@@ -357,6 +421,10 @@ function AddProperty(props) {
                   id="description"
                   label={"Description"}
                   name={"Description"}
+                  updateValue={updateDescription}
+                  setUpdateValue={setUpdateDescription}
+                  resetForm={resetForm}
+                  setResetForm={setResetForm}
                   onInput={inputHandler}
                 />
 
@@ -425,7 +493,9 @@ function AddProperty(props) {
                   ))}
                 </div>
               </div>
-              <FormButton>Save</FormButton>
+              <FormButton onClick={editCancelHandler}>
+                {editData ? "Update" : "Save"}
+              </FormButton>
             </form>
           </div>
         </AdminCard>

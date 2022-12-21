@@ -18,14 +18,12 @@ function AddLocation() {
   const [limit, setLimit] = useState(5);
   const [tableBodyList, setTableBodyList] = useState([]);
   const [count, setCount] = useState(0);
-  const [edit, setEdit] = useState(false);
   const [updateName, setUpdateName] = useState("");
   // const [updateCity, setUpdateCity] = useState("");
   // const [updateCountry, setUpdateCountry] = useState("");
   // const [updateEstate, setUpdateEstate] = useState("");
   // const [updateAddress, setUpdateAddress] = useState("");
   const [resetForm, setResetForm] = useState(false);
-  const [updateForm, setUpdateForm] = useState(false);
   const [updateData, setUpdateData] = useState(null);
 
   const [formState, inputHandler] = useForm({
@@ -84,10 +82,8 @@ function AddLocation() {
   }
 
   const editHandler = (data) => {
-    setUpdateForm(true);
     setUpdateData(data);
     setUpdateName(data.Name);
-    setEdit(true);
 
     // console.log(data);
     // setUpdateCity(data.Address.City);
@@ -95,10 +91,6 @@ function AddLocation() {
     // setUpdateCountry(data.Address.Country);
     // setUpdateAddress(data.Address.Address);
   };
-  const editCancelHandler = () => {
-    if (edit) setEdit(false);
-  };
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
     updateData
@@ -177,18 +169,15 @@ function AddLocation() {
                 label={"Name"}
                 id={"Location"}
                 name={"Location"}
-                updateForm={updateForm}
-                setUpdateForm={setUpdateForm}
                 updateValue={updateName}
+                setUpdateValue={setUpdateName}
                 resetForm={resetForm}
                 setResetForm={setResetForm}
                 onInput={inputHandler}
                 required
               />
 
-              <FormButton onClick={editCancelHandler}>
-                {updateData ? "Update" : "Save"}
-              </FormButton>
+              <FormButton>{updateData ? "Update" : "Save"}</FormButton>
             </form>
           </div>
         </AdminCard>
