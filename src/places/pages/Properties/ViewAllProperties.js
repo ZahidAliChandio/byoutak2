@@ -107,9 +107,9 @@ function ViewAllProperties() {
       <MainHeader type="Properties" subtype="View All Properties" />
       <div className="relative content p-2">
         <AdminCard>
-          <BoxHeader title="Properties List" />
-          <div className="h-fit flex w-full rounded-lg bg-white mb-6 shadow-md">
-            <div>
+          <div className="relative">
+            <BoxHeader title="Properties List" />
+            <div className="h-fit flex w-full rounded-lg bg-white mb-12 shadow-md">
               <DataTable
                 isLoading={loading}
                 tableHeadersData={tableHeaders}
@@ -117,15 +117,15 @@ function ViewAllProperties() {
                 tableBodyData={tableBodyList}
               />
             </div>
-          </div>
-          <div className="fixed bottom-0 w-[-webkit-fill-available] z-50">
-            <Paginator
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              setLimit={setLimit}
-              total={0}
-            />
+            <div className="fixed bottom-0 w-[-webkit-fill-available] z-50">
+              <Paginator
+                page={page}
+                setPage={setPage}
+                limit={limit}
+                setLimit={setLimit}
+                total={0}
+              />
+            </div>
           </div>
         </AdminCard>
       </div>

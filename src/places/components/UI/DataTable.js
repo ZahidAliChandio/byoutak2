@@ -31,7 +31,7 @@ const DataTable = ({
   }
 
   return (
-    <div className="min-h-[40wh] rounded-lg bg-white pt-4 shadow-md mb-[60px]">
+    <div className="min-h-full rounded-lg bg-white pt-4 shadow-md min-w-full">
       <div className="flex flex-col">
         <div className="overflow-x-auto min-h-[22rem]">
           <div className="flex flex-col">
