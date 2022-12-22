@@ -46,6 +46,7 @@ const DataTable = ({
                       <th
                         scope="col"
                         className="items-center py-3.5 px-4 text-left text-xs font-semibold text-gray-700 uppercase"
+                        key={index}
                       >
                         {header.label}
                       </th>
@@ -102,7 +103,7 @@ const DataTable = ({
                 </tbody>
                 <tbody>
                   {tableBody && tableBody?.length === 0 && !isLoading && (
-                    <>
+                    <Fragment>
                       <tr className="odd">
                         <td
                           valign="top"
@@ -127,7 +128,7 @@ const DataTable = ({
                           </div>
                         </td>
                       </tr>
-                    </>
+                    </Fragment>
                   )}
                 </tbody>
               </table>

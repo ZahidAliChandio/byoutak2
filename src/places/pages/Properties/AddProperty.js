@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useCallback, useEffect, Fragment } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import http from "../../../utils/http";
 
@@ -27,6 +27,7 @@ function AddProperty(props) {
   const [updateLocation, setUpdateLocation] = useState("");
   const [updateLocationLink, setUpdateLocationLink] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
+  const [updateAmenities, setUpdateAmeniteis] = useState([]);
   const [resetForm, setResetForm] = useState(false);
   const [unitTypes, setUnitTypes] = useState([{}]);
   const [images, setImages] = useState([]);
@@ -36,6 +37,7 @@ function AddProperty(props) {
   const [projectDevelopersData, setProjectDevelopersData] = useState(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Data to be edited from viewAllProperties
   const [updateData, setUpdateData] = useState(location.state);
@@ -108,11 +110,13 @@ function AddProperty(props) {
       setUpdateAddress(updateData.Address);
       setUpdateLocation(updateData.Location);
       setUpdateLocationLink(updateData.Link);
-      setUpdateDescription(updateData.Description);
       // setImages(updateData.Images);
+      setUpdateDescription(updateData.Description);
+      setUpdateAmeniteis(updateData._Amenities);
+      setUnitTypes(updateData.Unit_PropertyType);
     }
     setUpdateData(null);
-  });
+  }, [updateData]);
 
   const [formState, inputHandler] = useForm({
     propertyTitle: "",
@@ -127,6 +131,7 @@ function AddProperty(props) {
 
   const editCancelHandler = () => {
     setUpdateData(null);
+    setEditData(false);
   };
 
   const handleCheck = (e) => {
@@ -184,6 +189,7 @@ function AddProperty(props) {
         .then((response) => {
           if (response.status === 200) {
             setResetForm(true);
+            setUnitTypes([{}]);
             toast.success(response?.data?.message);
           } else toast.error(response.data.error.message);
         })
@@ -198,6 +204,10 @@ function AddProperty(props) {
       .then((response) => {
         if (response.status === 200) {
           setResetForm(true);
+          setUnitTypes([{}]);
+          // to reset the location.state
+          navigate("/admin/addProperty", { replace: true });
+
           toast.success(response?.data?.message);
         } else toast.error(response.data.error.message);
       })
@@ -383,7 +393,7 @@ function AddProperty(props) {
                 <div className="flex flex-col gap[0.18rem]">
                   <label className="font-semibold">Image</label>
                   <input
-                    value={images}
+                    // value={images}
                     id={"ImageSelected"}
                     name="ImageSelected"
                     type="file"
@@ -406,13 +416,16 @@ function AddProperty(props) {
                   <div className="inline-flex">
                     {typeof images !== "undefined" &&
                       images.map((image) => (
-                        <img
-                          alt="selected images"
-                          className="w-20 h-20 m-1"
-                          src={URL.createObjectURL(image[0])}
-                          width={60}
-                          height={60}
-                        ></img>
+                        <Fragment>
+                          <img
+                            alt="selected images"
+                            className="w-20 h-20 m-1"
+                            src={URL.createObjectURL(image[0])}
+                            width={60}
+                            height={60}
+                          ></img>
+                          {console.log(image)}
+                        </Fragment>
                       ))}
                   </div>
                 </div>
@@ -442,6 +455,9 @@ function AddProperty(props) {
                           id={`${amenity._id}`}
                           value={amenity._id}
                           onChange={handleCheck}
+                          defaultChecked={updateAmenities.some(
+                            (amty) => amty._id === amenity._id
+                          )}
                           className="w-[0.6rem]"
                         />
                         <label
