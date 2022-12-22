@@ -79,6 +79,7 @@ const InputField = (props) => {
         name="PropertyType"
         value={props.value || inputState.value}
         onChange={props.onChange || onChangeHandler}
+        required={props.required}
       >
         {props.items ? (
           props.items.map((classData, index) => (

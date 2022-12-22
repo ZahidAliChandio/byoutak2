@@ -55,6 +55,7 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
             label={"Unit Type"}
             name={"UnitType"}
             onChange={changeHandler}
+            required
             defaultValue={
               unitType.UnitType &&
               unitTypes.find((ut) => ut._id === unitType.UnitType)._id
@@ -78,9 +79,10 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
             value={unitName}
             type={"text"}
             className={` py-[0.18rem] px-2 outline-none border border-gray-300 focus:border-[color:var(--red-color)] active:border-[color:var(--red-color)] w-full`}
-            id={"name"}
+            id={"UnitName"}
             label={"Unit Name"}
             name={"UnitName"}
+            required
             onChange={changeHandler}
           />
         </div>

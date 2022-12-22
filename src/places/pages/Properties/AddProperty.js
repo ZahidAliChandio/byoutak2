@@ -27,8 +27,9 @@ function AddProperty(props) {
   const [updateLocation, setUpdateLocation] = useState("");
   const [updateLocationLink, setUpdateLocationLink] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
-  const [updateAmenities, setUpdateAmeniteis] = useState([]);
+  const [updateAmenities, setUpdateAmenities] = useState([]);
   const [resetForm, setResetForm] = useState(false);
+  const [updateImages, setUpdateImages] = useState([]);
   const [unitTypes, setUnitTypes] = useState([{}]);
   const [images, setImages] = useState([]);
   const [amenitiesData, setAmenitiesData] = useState(null);
@@ -110,10 +111,16 @@ function AddProperty(props) {
       setUpdateAddress(updateData.Address);
       setUpdateLocation(updateData.Location);
       setUpdateLocationLink(updateData.Link);
-      // setImages(updateData.Images);
+      updateData.Images.forEach((image, index) => {
+        setImages([...images, updateData.Images[index]]);
+      });
       setUpdateDescription(updateData.Description);
-      setUpdateAmeniteis(updateData._Amenities);
+      setUpdateAmenities(updateData._Amenities);
+      console.log(updateData);
       setUnitTypes(updateData.Unit_PropertyType);
+    } else {
+      setImages([]);
+      setUnitTypes([{}]);
     }
     setUpdateData(null);
   }, [updateData]);
@@ -128,11 +135,6 @@ function AddProperty(props) {
     selectedFile: "",
     amenities: [],
   });
-
-  const editCancelHandler = () => {
-    setUpdateData(null);
-    setEditData(false);
-  };
 
   const handleCheck = (e) => {
     let updatedList = [...selectedAmenities];
@@ -190,28 +192,33 @@ function AddProperty(props) {
           if (response.status === 200) {
             setResetForm(true);
             setUnitTypes([{}]);
+            setImages([]);
             toast.success(response?.data?.message);
           } else toast.error(response.data.error.message);
         })
         .catch((err) => toast.error(err.message));
-      return;
-    }
-    http
-      .post(
-        `${process.env.REACT_APP_ATLAS_URI}/updateProperty/${updateData._id}`,
-        formData
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setResetForm(true);
-          setUnitTypes([{}]);
-          // to reset the location.state
-          navigate("/admin/addProperty", { replace: true });
+    } else {
+      http
+        .post(
+          `${process.env.REACT_APP_ATLAS_URI}/updateProperty/${updateData._id}`,
+          formData
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            setResetForm(true);
+            setEditData(false);
+            setUpdateData(null);
+            setUpdateAmenities([]);
+            setImages([]);
+            setUnitTypes([{}]);
+            // to reset the location.state
+            navigate("/admin/addProperty", { replace: true });
 
-          toast.success(response?.data?.message);
-        } else toast.error(response.data.error.message);
-      })
-      .catch((err) => toast.error(err.message));
+            toast.success(response?.data?.message);
+          } else toast.error(response.data.error.message);
+        })
+        .catch((err) => toast.error(err.message));
+    }
   };
 
   return (
@@ -393,7 +400,6 @@ function AddProperty(props) {
                 <div className="flex flex-col gap[0.18rem]">
                   <label className="font-semibold">Image</label>
                   <input
-                    // value={images}
                     id={"ImageSelected"}
                     name="ImageSelected"
                     type="file"
@@ -414,18 +420,20 @@ function AddProperty(props) {
                       </span>
                     )} */}
                   <div className="inline-flex">
-                    {typeof images !== "undefined" &&
-                      images.map((image) => (
-                        <Fragment>
-                          <img
-                            alt="selected images"
-                            className="w-20 h-20 m-1"
-                            src={URL.createObjectURL(image[0])}
-                            width={60}
-                            height={60}
-                          ></img>
-                          {console.log(image)}
-                        </Fragment>
+                    {images.length > 0 &&
+                      images.map((image, index) => (
+                        <img
+                          alt="selected images"
+                          className="w-20 h-20 m-1"
+                          src={
+                            !location.state
+                              ? URL.createObjectURL(image[0])
+                              : `${process.env.REACT_APP_ATLAS_URI}/file/${image}`
+                          }
+                          width={60}
+                          height={60}
+                          key={index}
+                        ></img>
                       ))}
                   </div>
                 </div>
@@ -446,7 +454,7 @@ function AddProperty(props) {
                     Amenities
                   </h3>
 
-                  {amenitiesData ? (
+                  {!resetForm && amenitiesData ? (
                     amenitiesData.map((amenity) => (
                       <div key={amenity._id} className="flex gap-2">
                         <input
@@ -455,9 +463,12 @@ function AddProperty(props) {
                           id={`${amenity._id}`}
                           value={amenity._id}
                           onChange={handleCheck}
-                          defaultChecked={updateAmenities.some(
-                            (amty) => amty._id === amenity._id
-                          )}
+                          defaultChecked={
+                            !resetForm &&
+                            updateAmenities.some(
+                              (amty) => amty._id === amenity._id
+                            )
+                          }
                           className="w-[0.6rem]"
                         />
                         <label
@@ -509,9 +520,7 @@ function AddProperty(props) {
                   ))}
                 </div>
               </div>
-              <FormButton onClick={editCancelHandler}>
-                {editData ? "Update" : "Save"}
-              </FormButton>
+              <FormButton>{editData ? "Update" : "Save"}</FormButton>
             </form>
           </div>
         </AdminCard>
