@@ -34,6 +34,16 @@ function AddProperty(props) {
   const [locationsData, setLocationsData] = useState(null);
   const [projectDevelopersData, setProjectDevelopersData] = useState(null);
 
+  const [isLocationSelected, setIsLocationSelected] = useState(false);
+  const [isUnitTypeSelected, setIsUnitTypeSelected] = useState(false);
+
+  const locationClickHandler = () => {
+    setIsLocationSelected(true);
+  };
+  const unitTypeClickHandler = () => {
+    setIsUnitTypeSelected(true);
+  };
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -108,9 +118,7 @@ function AddProperty(props) {
       setUpdateAddress(updateData.Address);
       setUpdateLocation(updateData.Location);
       setUpdateLocationLink(updateData.Link);
-      updateData.Images.forEach((image, index) => {
-        setImages([updateData.Images[index]]);
-      });
+      setImages([updateData.Images]);
       setUpdateDescription(updateData.Description);
       setSelectedAmenities(updateData.Amenities);
       inputHandler("amenities", updateData.Amenities);
@@ -143,6 +151,15 @@ function AddProperty(props) {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    // If unit type or location was not selected.
+    if (!isLocationSelected) {
+      alert("Please Select Location. ");
+      return;
+    }
+    if (!isUnitTypeSelected) {
+      alert("Please Select Unit Type. ");
+      return;
+    }
     const mergedFormState = { ...formState, unitTypes };
     // console.log(mergedFormState, images);
     // console.log(unitTypes);
@@ -181,7 +198,7 @@ function AddProperty(props) {
 
     console.log(formData);
 
-    if (updateData) {
+    if (!updateData) {
       http
         .post(`${process.env.REACT_APP_ATLAS_URI}/addProperty/`, formData)
         .then((response) => {
@@ -233,6 +250,9 @@ function AddProperty(props) {
         })
         .catch((err) => toast.error(err.message));
     }
+
+    setIsLocationSelected(false);
+    setIsUnitTypeSelected(false);
   };
 
   return (
@@ -386,6 +406,7 @@ function AddProperty(props) {
                   />
                   <Input
                     type="select"
+                    onClick={locationClickHandler}
                     items={locationsData}
                     id={"Location"}
                     label={"Location"}
@@ -538,6 +559,7 @@ function AddProperty(props) {
                       unitType={form}
                       key={index}
                       index={index}
+                      unitTypeClick={unitTypeClickHandler}
                     />
                   ))}
                 </div>

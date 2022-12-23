@@ -4,7 +4,12 @@ import toast from "react-hot-toast";
 
 import FormButton from "../../components/UI/FormButton";
 
-const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
+const UnitTypeForm = ({
+  unitType,
+  removeUnitFormHandler,
+  index,
+  unitTypeClick,
+}) => {
   const [unitTypes, setUnitTypes] = useState(null);
 
   // To rerender component when Any input changes
@@ -60,6 +65,7 @@ const UnitTypeForm = ({ unitType, removeUnitFormHandler, index }) => {
               unitType.UnitType &&
               unitTypes.find((ut) => ut._id === unitType.UnitType)._id
             }
+            onClick={unitTypeClick}
           >
             {unitTypes ? (
               unitTypes.map((UnitType, index) => (

@@ -80,6 +80,7 @@ const InputField = (props) => {
         value={props.value || inputState.value}
         onChange={props.onChange || onChangeHandler}
         required={props.required}
+        onClick={props.onClick}
       >
         {props.items ? (
           props.items.map((classData, index) => (
