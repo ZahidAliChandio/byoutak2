@@ -5,7 +5,6 @@ import downPayment from "../../static/icons/down-payment.png";
 
 const PropertyCard = (props) => {
   const data = props.data;
-  console.log(data);
   return (
     <div
       className={`${props.className} relative px-4 sm:px-8 xl:px-12 py-5 sm:py-7 rounded-md font-gillsans mx-auto min-h-[400px] w-full text-white`}
@@ -17,9 +16,9 @@ const PropertyCard = (props) => {
         </h3>
         <span className="text-2xl md:text-3xl mt-2">{data.type}</span>
       </div>
-      <div className="flex flex-col absolute -bottom-6 lg:bottom-0 gap-8">
-        <div className="space-y-2">
-          <div className="relative flex gap-0 sm:gap-2 -left-1 lg:left-0">
+      <div className="relative flex flex-col gap-7 lg:mt-10">
+        <div className="space-y-3">
+          <div className="relative flex gap-0 sm:gap-2 -left-1 mt-4 lg:left-0">
             {/* location icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -49,23 +48,26 @@ const PropertyCard = (props) => {
                 alt="Intallment Years"
                 className="w-10 bg-transparent invert"
               />
-              <span className="text-lg font-semibold">{data.bedrooms}</span>
+              <span className="text-lg font-semibold">
+                {data.InstallmentYears}
+              </span>
             </div>
             <div className="relative flex items-center gap-2 py-2 pr-2">
               <div className="relative">
-                <img
+                {/* <img
                   src={downPayment}
                   alt="Down Payment"
                   className="w-6 h-8 bg-transparent"
-                />
+                /> */}
+                <i className="fa-solid fa-calculator text-2xl text-gray-300"></i>
                 <span className="absolute -bottom-[0.1rem] -right-[0.1rem] h-1 w-1 bg-[#212020]"></span>
                 <span className="absolute -bottom-[0.1rem] -left-[0.1rem] h-1 w-1 bg-[#212020]"></span>
               </div>
-              <span className="text-lg font-semibold">{data.bathrooms}</span>
+              <span className="text-lg font-semibold">{data.DownPayment}</span>
             </div>
             <div className="flex items-center gap-2 py-2 pr-2">
-              <i class="fas fa-calendar-alt text-2xl"></i>
-              <span className="text-lg font-semibold">{data.area}</span>
+              <i className="fas fa-calendar-alt text-2xl text-gray-300"></i>
+              <span className="text-lg font-semibold">{data.Delivery}</span>
             </div>
           </div>
         </div>

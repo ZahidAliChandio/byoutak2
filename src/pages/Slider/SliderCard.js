@@ -1,5 +1,6 @@
 import { ReactComponent as Bed } from "../../static/icons/bed.svg";
-import Area from "../../static/icons/area.png";
+import yearsOnInstallment from "../../static/icons/years-on-installment.png";
+import downPayment from "../../static/icons/down-payment.png";
 
 const SliderCard = (props) => {
   const data = props.data;
@@ -49,19 +50,26 @@ const SliderCard = (props) => {
           </svg>
           <span className="text-sm sm:text-base">{data.location}</span>
         </div>
-        <div className="flex items-center gap-3 sm:gap-5 pl-0 sm:pl-2">
-          <div className="flex items-center gap-2">
-            <Bed className="w-8 h-8" />
-            <span className="font-semibold">{data.bedrooms}</span>
+        <div className="relative flex gap-2 sm:gap-4 -left-1 lg:left-0">
+          <div className="relative flex items-center gap-2 py-2 pr-2">
+            <img
+              src={yearsOnInstallment}
+              alt="Intallment Years"
+              className="w-8 bg-transparent"
+            />
+            <span className="">{data.InstallmentYears}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <i className="fas fa-bath text-2xl"></i>
-            <span className="font-semibold">{data.bathrooms}</span>
+          <div className="relative flex items-center gap-2 py-2 pr-2">
+            <div className="relative">
+              <i className="fa-solid fa-calculator text-xl text-gray-600"></i>
+              <span className="absolute -bottom-[0.1rem] -right-[0.1rem] h-1 w-1 bg-white"></span>
+              <span className="absolute -bottom-[0.1rem] -left-[0.1rem] h-1 w-1 bg-white"></span>
+            </div>
+            <span className="">{data.DownPayment}</span>
           </div>
-          <div className="flex items-center gap-2">
-            {/* <i className="far fa-square-full text-lg"></i> */}
-            <img src={Area} alt="Area"></img>
-            <span className="font-semibold">{data.area}</span>
+          <div className="flex items-center gap-2 py-2 pr-2">
+            <i className="fas fa-calendar-alt text-xl text-gray-600"></i>
+            <span className="">{data.Delivery}</span>
           </div>
         </div>
       </div>

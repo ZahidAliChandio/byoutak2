@@ -37,9 +37,9 @@ const Slider = (props) => {
                 price: `EGP ${element.Price}`,
                 contient: element.State,
                 location: `${element.City}, ${element.Country}`,
-                bedrooms: `${element.Bedrooms}`,
-                bathrooms: `${element.Bathrooms}`,
-                area: `${element.Area} m²`,
+                InstallmentYears: `${element.InstallmentYears}`,
+                Delivery: `${element.Delivery}`,
+                DownPayment: `${element.DownPayment}`,
               });
             }
             counter++;
