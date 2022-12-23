@@ -1,4 +1,3 @@
-import { ReactComponent as Bed } from "../../static/icons/bed.svg";
 import Contact from "../../components/UI/Contact";
 import { fCurrency } from "../../utils/formatNumber";
 import yearsOnInstallment from "../../static/icons/years-on-installment.png";

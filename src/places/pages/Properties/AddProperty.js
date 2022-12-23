@@ -27,13 +27,10 @@ function AddProperty(props) {
   const [updateLocation, setUpdateLocation] = useState("");
   const [updateLocationLink, setUpdateLocationLink] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
-  const [updateAmenities, setUpdateAmenities] = useState([]);
   const [resetForm, setResetForm] = useState(false);
-  const [updateImages, setUpdateImages] = useState([]);
   const [unitTypes, setUnitTypes] = useState([{}]);
   const [images, setImages] = useState([]);
   const [amenitiesData, setAmenitiesData] = useState(null);
-
   const [locationsData, setLocationsData] = useState(null);
   const [projectDevelopersData, setProjectDevelopersData] = useState(null);
 
@@ -41,8 +38,8 @@ function AddProperty(props) {
   const navigate = useNavigate();
 
   // Data to be edited from viewAllProperties
-  const [updateData, setUpdateData] = useState(location.state);
-  const [editData, setEditData] = useState(updateData ? true : false);
+  const updateData = location.state;
+  const [editData, setEditData] = useState(updateData);
 
   const getProjectDevelopers = useCallback(() => {
     http
@@ -112,17 +109,14 @@ function AddProperty(props) {
       setUpdateLocation(updateData.Location);
       setUpdateLocationLink(updateData.Link);
       updateData.Images.forEach((image, index) => {
-        setImages([...images, updateData.Images[index]]);
+        setImages([updateData.Images[index]]);
       });
       setUpdateDescription(updateData.Description);
-      setUpdateAmenities(updateData._Amenities);
+      setSelectedAmenities(updateData.Amenities);
+      inputHandler("amenities", updateData.Amenities);
       console.log(updateData);
       setUnitTypes(updateData.Unit_PropertyType);
-    } else {
-      setImages([]);
-      setUnitTypes([{}]);
     }
-    setUpdateData(null);
   }, [updateData]);
 
   const [formState, inputHandler] = useForm({
@@ -184,14 +178,26 @@ function AddProperty(props) {
     formData.append("State", mergedFormState.state);
     formData.append("Country", mergedFormState.Country);
     formData.append("Address", mergedFormState.Address);
+
     console.log(formData);
-    if (!updateData) {
+
+    if (updateData) {
       http
         .post(`${process.env.REACT_APP_ATLAS_URI}/addProperty/`, formData)
         .then((response) => {
           if (response.status === 200) {
             setResetForm(true);
-            setUnitTypes([{}]);
+            setEditData(false);
+            setSelectedAmenities([]);
+            setUnitTypes([
+              {
+                UnitType: "",
+                UnitName: "",
+                AreaFrom: "",
+                AreaTo: "",
+                Price: "",
+              },
+            ]);
             setImages([]);
             toast.success(response?.data?.message);
           } else toast.error(response.data.error.message);
@@ -199,18 +205,26 @@ function AddProperty(props) {
         .catch((err) => toast.error(err.message));
     } else {
       http
-        .post(
-          `${process.env.REACT_APP_ATLAS_URI}/updateProperty/${updateData._id}`,
+        .put(
+          `${process.env.REACT_APP_ATLAS_URI}/updateProperty/${updateData._id}/`,
           formData
         )
         .then((response) => {
           if (response.status === 200) {
             setResetForm(true);
             setEditData(false);
-            setUpdateData(null);
-            setUpdateAmenities([]);
+            setSelectedAmenities([]);
+            setUnitTypes([
+              {
+                UnitType: "",
+                UnitName: "",
+                AreaFrom: "",
+                AreaTo: "",
+                Price: "",
+              },
+            ]);
             setImages([]);
-            setUnitTypes([{}]);
+
             // to reset the location.state
             navigate("/admin/addProperty", { replace: true });
 
@@ -405,12 +419,13 @@ function AddProperty(props) {
                     type="file"
                     accept=".png, .jpg, .jpeg"
                     multiple
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setImages((prevState) => [
                         ...prevState,
                         Object.values(e.target.files),
-                      ])
-                    }
+                      ]);
+                      console.log(images);
+                    }}
                     className="form-control border border-gray-300 bg-gray-50 rounded-l-sm"
                   />
                   {/* {typeof images !== 'undefined' && images.map((image, key) =>
@@ -426,15 +441,27 @@ function AddProperty(props) {
                           alt="selected images"
                           className="w-20 h-20 m-1"
                           src={
-                            !location.state
-                              ? URL.createObjectURL(image[0])
-                              : `${process.env.REACT_APP_ATLAS_URI}/file/${image}`
+                            location.state
+                              ? `${process.env.REACT_APP_ATLAS_URI}/file/${image}`
+                              : URL.createObjectURL(image[0])
                           }
                           width={60}
                           height={60}
                           key={index}
                         ></img>
                       ))}
+                    {/* {updateData &&
+                      images.length > 0 &&
+                      images.map((image, index) => (
+                        <img
+                          alt="selected images"
+                          className="w-20 h-20 m-1"
+                          src={`${process.env.REACT_APP_ATLAS_URI}/file/${image}`}
+                          width={60}
+                          height={60}
+                          key={index}
+                        ></img>
+                      ))} */}
                   </div>
                 </div>
                 <Input
@@ -454,7 +481,7 @@ function AddProperty(props) {
                     Amenities
                   </h3>
 
-                  {!resetForm && amenitiesData ? (
+                  {amenitiesData ? (
                     amenitiesData.map((amenity) => (
                       <div key={amenity._id} className="flex gap-2">
                         <input
@@ -463,12 +490,7 @@ function AddProperty(props) {
                           id={`${amenity._id}`}
                           value={amenity._id}
                           onChange={handleCheck}
-                          defaultChecked={
-                            !resetForm &&
-                            updateAmenities.some(
-                              (amty) => amty._id === amenity._id
-                            )
-                          }
+                          checked={selectedAmenities.includes(amenity._id)}
                           className="w-[0.6rem]"
                         />
                         <label
