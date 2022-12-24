@@ -1,13 +1,76 @@
 import { useState } from "react";
 import { ReactComponent as ContactUsSvg } from "../../static/images/contactUsIllustration.svg";
+import toast from "react-hot-toast";
+import http from "../../utils/http";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 import LocationPointer from "../../static/icons/contactlocation.png";
 import Clock from "../../static/icons/clock.png";
 import Phone from "../../static/icons/phone.png";
 import Card from "../../components/UI/Card";
-import PhoneInput from "react-phone-number-input";
+import { useForm } from "../../places/hooks/form-hook";
 
 const ContactUs = () => {
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("+20");
+  const [location, setLocation] = useState("Rawalpindi");
+  const [message, setMessage] = useState("");
+
+  const date = new Date();
+
+  const [formState, inputHandler] = useForm({
+    Name: "",
+    PhoneNumber: "",
+    PreferedLocation: "",
+    Message: "",
+    Date: date.getDate(),
+    Time: date.getSeconds().toLocaleString(),
+  });
+
+  const nameChangeHandler = (e) => {
+    setName(e.target.value);
+    inputHandler(e.target.id, e.target.value);
+  };
+  const locationChangeHandler = (e) => {
+    setLocation(e.target.value);
+    inputHandler(e.target.id, e.target.value);
+  };
+  const messageChangeHandler = (e) => {
+    setMessage(e.target.value);
+    inputHandler(e.target.id, e.target.value);
+  };
+
+  const phoneChangeHandler = (input) => {
+    setPhone(input);
+    inputHandler("PhoneNumber", input);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formState);
+
+    const formData = new FormData();
+    formData.append("Name", formState.Name);
+    formData.append("PhoneNumber", formState.PhoneNumber);
+    formData.append("PreferedLocation", formState.PreferedLocation);
+    formData.append("Message", formState.Message);
+    formData.append("Date", formState.Date);
+    formData.append("Time", formState.Time);
+
+    http
+      .post(`${process.env.REACT_APP_ATLAS_URI}/addContact/`, formData)
+      .then((response) => {
+        if (response.status === 200) {
+          setName("");
+          setLocation("");
+          setMessage("");
+          setPhone("+66");
+          toast.success(response?.data?.message);
+        } else toast.error(response.data.error.message);
+      })
+      .catch((err) => toast.error(err.message));
+  };
 
   return (
     <div className="">
@@ -21,36 +84,56 @@ const ContactUs = () => {
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 w-11/12 md:w-[85%] mx-auto mt-12">
         <Card className="!block !w-full md:!w-4/5 lg:!w-full !bg-white !py-10 px-7 lg:!px-12 !h-fit !m-auto">
           <div className="flex flex-col gap-3">
-            <h2 className="text-xl text-[#FF5E00] font-bold">
+            <h2 className="text-xl text-[red] font-bold">
               We are always eager to hear from you
             </h2>
             <h3 className="text-lg text-[#767676]">
               Need assistance ? Just write us a message
             </h3>
           </div>
-          <form action="" className="w-full mt-12">
+          <form action="" className="w-full mt-12" onSubmit={onSubmitHandler}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               <div className="flex flex-col gap-8">
                 <input
                   type="text"
-                  id="first_name"
-                  className="relative border-[#015C9A] bg-gray-50 border text-base lg:text-lg rounded-lg  block w-full p-2.5 before:content['Name'] before:absolute before:-top-2 before:left-2 before:block before:text-white before:border-red-800 before:border-4 outline-none"
+                  value={name}
+                  id="Name"
+                  className="relative border-gray-300 focus:border-[red] bg-white border text-base lg:text-lg rounded-lg  block w-full p-2.5 before:content['Name'] before:absolute before:-top-2 before:left-2 before:block before:text-white before:border-red-800 before:border-4 outline-none"
                   placeholder="Name"
+                  onChange={nameChangeHandler}
                   required
                 />
-                <div className="border border-[#015C9A] rounded-lg">
+                <div className="rounded border" tabIndex="0">
                   <PhoneInput
-                    placeholder="3012345678"
+                    specialLabel={""}
+                    id={"PhoneNumber"}
                     value={phone}
-                    onChange={setPhone}
-                    defaultCountry="PK"
+                    onChange={phoneChangeHandler}
+                    buttonclassName=""
+                    containerClass="bg-[white] rounded"
+                    buttonStyle={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      fontSize: "1.5rem",
+                      paddingLeft: "0.5rem",
+                    }}
+                    inputStyle={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      width: "100%",
+                      display: "block",
+                      padding: "1.51rem 3rem",
+                      fontSize: "1.125rem",
+                      borderRadius: "0.6rem",
+                    }}
                   />
                 </div>
                 <select
-                  className="block w-full bg-gray-50 border border-[#015C9A] text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="time"
-                  id="time"
-                  defaultValue="9:00 AM"
+                  className="block w-full bg-white border border-gray-300 focus:border-[red] text-[#212020] py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none"
+                  name="PreferedLocation"
+                  id="PreferedLocation"
+                  defaultValue={location}
+                  onChange={locationChangeHandler}
                 >
                   <option value="Lahore" className="text-[gray]">
                     Enter Location
@@ -63,17 +146,19 @@ const ContactUs = () => {
               </div>
               <div>
                 <textarea
-                  name="message"
-                  id="message"
-                  className="border border-[#015C9A] h-full w-full p-2 outline-none rounded-lg"
+                  name="Message"
+                  value={message}
+                  id="Message"
+                  className="border border-gray-300 focus:border-[red] h-full w-full p-2 outline-none rounded-lg"
                   placeholder="Message"
+                  onChange={messageChangeHandler}
                 ></textarea>
               </div>
             </div>
             <div className="text-right mt-6">
               <button
                 type="submit"
-                className="py-2 px-8 bg-[#FF5E00] text-white rounded-lg font-bold"
+                className="py-2 px-8 bg-[red] text-white rounded-lg font-bold"
               >
                 Submit
               </button>
@@ -84,7 +169,7 @@ const ContactUs = () => {
           <div className="flex justify-center">
             <ContactUsSvg transform="scale(1.2)" />
           </div>
-          <h1 className="relative text-[#15314E] text-[1.4rem] font-bold -top-2 left-10">
+          <h1 className="relative text-[#212020] text-[1.4rem] font-bold -top-2 left-10">
             How to reach us
           </h1>
           <div className="flex flex-col gap-4 mt-1">
@@ -92,7 +177,7 @@ const ContactUs = () => {
               <img src={LocationPointer} alt="location" className="h-10" />
 
               <div>
-                <h2 className="text-lg font-bold text-[#15314E]">Address</h2>
+                <h2 className="text-lg font-bold text-[#212020]">Address</h2>
                 <p className="text-base xl:text-lg text-[#767676]">
                   47, North 90 Street, New Cairo, Egypt. <br />
                   Tower 2, Al Guezira Plaza, 6 of October, Egypt.
@@ -102,7 +187,7 @@ const ContactUs = () => {
             <div className="flex items-center text-left gap-6">
               <img src={Phone} alt="phone" className="w-7 h-7" />
               <div>
-                <h2 className="text-lg font-bold text-[#15314E]">Contacts</h2>
+                <h2 className="text-lg font-bold text-[#212020]">Contacts</h2>
                 <p className="text-base xl:text-lg text-[#767676]">
                   +201065888849
                   <br /> info@nawy.com
@@ -112,7 +197,7 @@ const ContactUs = () => {
             <div className="flex items-center text-left gap-4">
               <img src={Clock} alt="phone" className="w-7 h-7" />
               <div>
-                <h2 className="text-lg font-bold text-[#15314E]">
+                <h2 className="text-lg font-bold text-[#212020]">
                   Working Hours
                 </h2>
                 <p className="text-base xl:text-lg text-[#767676]">

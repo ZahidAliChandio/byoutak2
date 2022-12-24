@@ -8,8 +8,8 @@ import "react-phone-input-2/lib/style.css";
 
 const MeetingForm = () => {
   const [phone, setPhone] = useState("");
-  const noOfDays = 12;
   const [country, setCountry] = useState("NL");
+  const noOfDays = 12;
 
   const weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   let monthsArray = [
