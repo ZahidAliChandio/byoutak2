@@ -12,7 +12,9 @@ const DateList = (props) => {
       <Card className="!p-0 box-shadow !inline-block" key={date.id}>
         <ul
           className={`${
-            activeIndex === index ? "bg-gray-700 text-white" : "bg-gray-50 text-gray-800"
+            activeIndex === index
+              ? "bg-[#ff4747] text-white"
+              : "bg-white text-[#212020]"
           } px-2 md:px-4 py-3 sm:py-4 md:py-6 rounded-lg text-sm text-center font-semibold cursor-pointer`}
           onClick={() => onClickHandler(index)}
         >

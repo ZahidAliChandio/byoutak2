@@ -7,7 +7,7 @@ import Card from "../../components/UI/Card";
 import PhoneInput from "react-phone-number-input";
 
 const ContactUs = () => {
-  const [phone, setPhone] = useState();
+  const [phone, setPhone] = useState("");
 
   return (
     <div className="">

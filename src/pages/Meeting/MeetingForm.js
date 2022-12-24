@@ -1,27 +1,77 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Button from "../../components/UI/Button";
-import DateList from "../../components/UI/DateList";
-import PhoneInput from "react-phone-number-input";
+import DateList from "./DateList";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
+// import PhoneInput from "react-phone-number-input";
 
 const MeetingForm = () => {
-  const [phone, setPhone] = useState();
-  const dates = [
-    { id: 0, day: "MON", date: "14 NOV" },
-    { id: 1, day: "TUE", date: " 15 NOV" },
-    { id: 3, day: "WED", date: " 16 NOV" },
-    { id: 4, day: "THU", date: " 17 NOV" },
-    { id: 5, day: "FRI", date: " 18 NOV" },
-    { id: 6, day: "SAT", date: " 19 NOV" },
-    { id: 7, day: "SUN", date: " 20 NOV" },
-    { id: 8, day: "MON", date: " 21 NOV" },
-    { id: 9, day: "TUE", date: " 22 NOV" },
-    { id: 10, day: "WED", date: " 23 NOV" },
-    { id: 11, day: "THU", date: " 24 NOV" },
+  const [phone, setPhone] = useState("");
+  const noOfDays = 12;
+  const [country, setCountry] = useState("NL");
+
+  const weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  let monthsArray = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
   ];
+
+  const date = new Date();
+  var utcTime = date.getTime() + date.getTimezoneOffset() * 60000;
+
+  let pakOffset = 5;
+
+  var PakTimeZone = new Date(utcTime + 3600000 * pakOffset);
+
+  const dates = [];
+  for (let day = 0; day < noOfDays; day++) {
+    dates.push({
+      id: day,
+      day: weekday[
+        date.getDay() + day > 7
+          ? (date.getDay() + day) % 7
+          : date.getDay() + day
+      ],
+      date:
+        date.getDate() + day > 30
+          ? `${(date.getDate() + day) % 30}  ${monthsArray[date.getMonth()]}`
+          : `${date.getDate() + day}  ${monthsArray[date.getMonth()]}`,
+    });
+  }
+
+  const phoneChangeHandler = (input) => {
+    setPhone(input);
+  };
+
+  useEffect(() => {
+    console.log(PakTimeZone.getMonth() + 1);
+  }, []);
+  // create Date object for current location
+  var date2 = new Date();
+
+  // convert to milliseconds, add local time zone offset and get UTC time in milliseconds
+  var utcTime = date2.getTime() + date2.getTimezoneOffset() * 60000;
+
+  // time offset for New Zealand is +12
+  // var timeOffset = 12;
+
+  // create new Date object for a different timezone using supplied its GMT offset.
+  // var NewZealandTime = new Date(utcTime + 3600000 * timeOffset);
 
   return (
     <Fragment>
-      <div className="relative -top-10 md:-top-12 lg:-top-20 sm:left-10 md:left-20 lg:left-16 flex flex-col gap-4 2xl:gap-6 w-[95%] md:w-11/12 lg:w-10/12 px-12 rounded-lg mx-auto form-shadow">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 2xl:gap-6 w-[95%] md:w-11/12 lg:w-10/12 px-12 rounded-lg m-auto form-shadow h-fit">
         <h2 className="text-center font-bold text-white sm:p-0 text-lg sm:text-xl md:text-2xl lg:text-3xl">
           Your Information
         </h2>
@@ -36,20 +86,41 @@ const MeetingForm = () => {
             <input
               type="text"
               id="first_name"
-              className=" border-gray-300 border text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              className="text-lg leading-none border-transparetn border text-[#212020] outline-0 rounded-lg block w-full p-2.5 focus:border-[red]"
               placeholder="John"
               required
             />
           </div>
           <div className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/4">
             <PhoneInput
-              placeholder="Enter phone number"
+              specialLabel={""}
+              id={"phone"}
+              country={"th"}
               value={phone}
-              onChange={setPhone}
-              defaultCountry="NL"
-              className="!z-9999 input-box"
-              style={{ backgroundColor: "white", borderRadius: "8px" }}
+              onChange={phoneChangeHandler}
+              buttonclassName="bg-red"
+              containerClass="bg-[white] rounded-lg border border-[red]"
+              buttonStyle={{
+                backgroundColor: "transparent",
+                border: "none",
+                fontSize: "1.5rem",
+                paddingLeft: "0.5rem",
+              }}
+              inputStyle={{
+                backgroundColor: "transparent",
+                width: "100%",
+                display: "block",
+                padding: "1.3rem 3rem",
+                fontSize: "1.125rem",
+                borderRadius: "0.8rem",
+              }}
             />
+            <label
+              htmlFor="phone"
+              className="absolute text-gray-400 text-xl top-0 z-10 origin-[0] left-5 bg-[#212020] -translate-y-4 px-1"
+            >
+              Phone Number
+            </label>
           </div>
         </div>
         <div>
@@ -108,12 +179,10 @@ const MeetingForm = () => {
           <option value="1:00">1:00 PM</option>
         </select>
         <div className="flex justify-center gap-4 md:gap-8 md:justify-end mt-4 sm:mt-8 md:m-0">
-          <Button className="bg-gray-600 text-gray-100">
+          <Button className="bg-[#ff4747] text-gray-100">
             Request this time
           </Button>
-          <Button className="bg-gray-200 border-gray-700 border !px-3 md:!px-10">
-            Live chat now
-          </Button>
+          <Button className="bg-white !px-3 md:!px-10">Live chat now</Button>
         </div>
       </div>
     </Fragment>
