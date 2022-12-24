@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
 import toast from "react-hot-toast";
 
-import PropertyCard from "../../components/UI/PropertyCard";
+import PropertyCard from "./PropertyCard";
 import Dropdown from "../../components/UI/Dropdown";
 import { SelectContext } from "../../context/user-select";
 import http from "../../utils/http";
@@ -68,6 +68,14 @@ const SearchProperty = () => {
       state: id,
     });
     console.log(id);
+  };
+
+  const leftClickHandler = () => {
+    console.log("Left button clicked");
+  };
+
+  const rightClickHandler = () => {
+    console.log("Right button clicked");
   };
 
   const propertyTypeChangeHandler = (propertyType) => {
@@ -191,18 +199,30 @@ const SearchProperty = () => {
         </h2>
 
         {/* Search Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
-          {data &&
-            data.map((data, index) => {
-              return (
-                <PropertyCard
-                  data={data}
-                  key={index}
-                  className="!w-full"
-                  onClick={onClickHandler}
-                />
-              );
-            })}
+        <div className="flex items-center gap-4">
+          <i
+            className="fa fa-chevron-left fa-2xl text-[red]"
+            aria-hidden="true"
+            onClick={leftClickHandler}
+          ></i>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+            {data &&
+              data.map((data, index) => {
+                return (
+                  <PropertyCard
+                    data={data}
+                    key={index}
+                    className="!w-full"
+                    onClick={onClickHandler}
+                  />
+                );
+              })}
+          </div>
+          <i
+            className="fa fa-chevron-right fa-2xl text-[red]"
+            aria-hidden="true"
+            onClick={rightClickHandler}
+          ></i>
         </div>
 
         {/* Page Numbers */}
