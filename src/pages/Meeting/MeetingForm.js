@@ -28,12 +28,6 @@ const MeetingForm = () => {
   ];
 
   const date = new Date();
-  var utcTime = date.getTime() + date.getTimezoneOffset() * 60000;
-
-  let pakOffset = 5;
-
-  var PakTimeZone = new Date(utcTime + 3600000 * pakOffset);
-
   const dates = [];
   for (let day = 0; day < noOfDays; day++) {
     dates.push({
@@ -53,21 +47,6 @@ const MeetingForm = () => {
   const phoneChangeHandler = (input) => {
     setPhone(input);
   };
-
-  useEffect(() => {
-    console.log(PakTimeZone.getMonth() + 1);
-  }, []);
-  // create Date object for current location
-  var date2 = new Date();
-
-  // convert to milliseconds, add local time zone offset and get UTC time in milliseconds
-  var utcTime = date2.getTime() + date2.getTimezoneOffset() * 60000;
-
-  // time offset for New Zealand is +12
-  // var timeOffset = 12;
-
-  // create new Date object for a different timezone using supplied its GMT offset.
-  // var NewZealandTime = new Date(utcTime + 3600000 * timeOffset);
 
   return (
     <Fragment>

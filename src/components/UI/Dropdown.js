@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Dropdown = (props) => {
   const content = props.content;
@@ -6,7 +6,7 @@ const Dropdown = (props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onClickHandler = (item) => {
-    setSelectedValue(item.value);
+    setSelectedValue(item);
     setIsVisible(false);
   };
 
@@ -17,6 +17,12 @@ const Dropdown = (props) => {
     setIsVisible(false);
   };
 
+  const { onValueChange } = props;
+
+  useEffect(() => {
+    onValueChange(selectedValue);
+  }, [selectedValue, onValueChange]);
+
   return (
     <div className="relative" onBlur={onBlurHandler} tabIndex={0}>
       <div
@@ -25,7 +31,7 @@ const Dropdown = (props) => {
         }
         onClick={toggleVisibility}
       >
-        <span>{selectedValue}</span>
+        <span>{selectedValue.value}</span>
         <i
           className={`fas fa-chevron-down text-[red] ${
             isVisible ? "rotate-180" : "rotate-0"

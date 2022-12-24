@@ -14,7 +14,7 @@ const Unit = () => {
       { _id: 1, Name: "4 Million" },
       { _id: 2, Name: "5 Million" },
     ],
-    nextLink: "slider",
+    nextLink: "search-property",
   };
   return (
     <Fragment>

@@ -1,6 +1,5 @@
-import { ReactComponent as Bed } from "../../static/icons/bed.svg";
 import yearsOnInstallment from "../../static/icons/years-on-installment.png";
-import downPayment from "../../static/icons/down-payment.png";
+// import downPayment from "../../static/icons/down-payment.png";
 
 const SliderCard = (props) => {
   const data = props.data;
