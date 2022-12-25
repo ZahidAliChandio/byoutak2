@@ -55,7 +55,7 @@ const DataTable = ({
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {/* <!-- Selected: "bg-gray-50" --> */}
                   {!isLoading
-                    ? tableBody.length > 0 &&
+                    ? tableBody &&
                       tableBody.map((row, index) => (
                         <tr
                           key={index}

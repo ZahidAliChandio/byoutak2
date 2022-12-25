@@ -31,8 +31,7 @@ function ViewAllProperties() {
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
-          console.log(data);
-          setTableBodyList(data);
+          setTableBodyList(data.results);
           setCount(response?.data?.count);
           setLoading(false);
         } else toast.error(response?.data?.error?.message);

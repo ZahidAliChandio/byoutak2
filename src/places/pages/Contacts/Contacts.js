@@ -29,7 +29,7 @@ const Contacts = () => {
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
-          setTableBodyList(data);
+          setTableBodyList(data.results);
           setCount(response?.data?.count);
           setLoading(false);
         } else toast.error(response?.data?.error?.message);
