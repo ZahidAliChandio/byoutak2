@@ -12,50 +12,54 @@ import "swiper/css/pagination";
 
 const Slider = (props) => {
   const [data, setData] = useState(null);
+  const [pageNo, setPageNo] = useState(1);
+  const [limit, setLimit] = useState(4);
+
   const [activePage, setActivePage] = useState(0);
   const navigate = useNavigate();
 
-  const pageNumbers = ["1", "2", "3", "4"];
+  const [pageNumbers, setPageNumbers] = useState([]);
+
+  useEffect(() => {
+    const pageNos = [];
+    for (let pageNo = 1; pageNo <= limit; pageNo++) {
+      pageNos.push(`${pageNo}`);
+    }
+    setPageNumbers(pageNos);
+  }, [limit]);
 
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
 
-  let capitalize = (strPara) => {
-    let arr = Array.from(strPara);
-    arr[0] = arr[0].toUpperCase();
-    return arr.join("");
-  };
-
   const getProperties = () => {
-    const location = value[0]?._id;
-    const type = capitalize(value[0]?.Name?.toLowerCase());
-    const unitType = value[1]?._id;
-    const price = value[2]?._id;
-
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
-        params: { location, type, unitType, limit: 4, page: 1 },
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+        params: { limit: limit, page: pageNo },
       })
       .then((response) => {
         const data = response.data;
-        let counter = 0;
         if (response.status === 200) {
           const list = [];
-          data.forEach((element) => {
-            console.log(element);
+          data.results.forEach((element) => {
             list.push({
-              id: element,
-              img: element.Images.length !== 0 ? element.Images[0] : null,
+              id: element._id,
+              img: element.Images,
               title: element.Name,
               subtitle: element.Type,
               price: `EGP ${element.Price}`,
-              contient: element.State,
+              continent: element.State,
+              type: element.Type,
+              link: element.Link,
               location: `${element.City}, ${element.Country}`,
               InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
               DownPayment: `${element.DownPayment} EGP`,
+              area: `${element.Area} m²`,
+              unitTypes: element.Unit_PropertyType,
+              amenities: element._Amenities,
             });
           });
+          console.log(data);
           setData(list);
         } else toast.error(response?.data?.error?.message);
       })
@@ -73,11 +77,13 @@ const Slider = (props) => {
   };
 
   const leftClickHandler = () => {
-    console.log("Left button clicked");
+    setPageNo((prev) => prev - 1);
+    setActivePage((prev) => prev - 1);
   };
 
   const rightClickHandler = () => {
-    console.log("Right button clicked");
+    setPageNo((prev) => prev + 1);
+    setActivePage((prev) => prev + 1);
   };
 
   const selectPageHandler = (index) => {
@@ -86,7 +92,7 @@ const Slider = (props) => {
 
   useEffect(() => {
     console.log(value);
-  });
+  }, []);
   return (
     <div className="relative px-2 sm:px-6 md:px-10 lg:px-16 z-0 mt-6 md:mt-8 lg:mt-16">
       <div className="text-white text-center w-full">
@@ -103,7 +109,7 @@ const Slider = (props) => {
           aria-hidden="true"
           onClick={leftClickHandler}
         ></i>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full mt-4">
           {data &&
             data.map((data, index) => {
               return (

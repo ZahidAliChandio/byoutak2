@@ -15,59 +15,107 @@ import "swiper/css/pagination";
 
 const SearchProperty = () => {
   const [data, setData] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
   const [locations, setLocations] = useState([]);
   const [unitTypes, setUnitTypes] = useState([]);
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [pageNo, setPageNo] = useState(1);
+  const [limit, setLimit] = useState(4);
   const [activePage, setActivePage] = useState(0);
 
   const navigate = useNavigate();
 
-  const pageNumbers = ["1", "2", "3", "4"];
-
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
 
-  let capitalize = (strPara) => {
-    let arr = Array.from(strPara);
-    arr[0] = arr[0].toUpperCase();
-    return arr.join("");
-  };
-  const getProperties = () => {
-    const location = value[0]?._id;
-    const type = capitalize(value[0]?.Name?.toLowerCase());
-    const unitType = value[1]?._id;
-    const price = value[2]?._id;
+  const [pageNumbers, setPageNumbers] = useState([]);
 
+  useEffect(() => {
+    const pageNos = [];
+    for (let pageNo = 1; pageNo <= limit; pageNo++) {
+      pageNos.push(`${pageNo}`);
+    }
+    setPageNumbers(pageNos);
+  }, [limit]);
+
+  // let capitalize = (strPara) => {
+  //   let arr = Array.from(strPara);
+  //   arr[0] = arr[0].toUpperCase();
+  //   return arr.join("");
+  // };
+  const getProperties = () => {
+    // const location = value[0]?._id;
+    // const type = capitalize(value[0]?.Name?.toLowerCase());
+    // const unitType = value[1]?._id;
+    // const price = value[2]?._id;
+
+    // This code to be deleted when search works fine.
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
-        params: { location, type, unitType, limit: 4, page: 1 },
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+        params: { limit: limit, page: pageNo },
       })
       .then((response) => {
         const data = response.data;
-        let counter = 0;
         if (response.status === 200) {
           const list = [];
-          data.forEach((element) => {
-            console.log(element);
+          data.results.forEach((element) => {
             list.push({
-              id: element,
-              img: element.Images.length !== 0 ? element.Images[0] : null,
+              id: element._id,
+              img: element.Images,
               title: element.Name,
               subtitle: element.Type,
               price: `EGP ${element.Price}`,
-              contient: element.State,
+              continent: element.State,
+              type: element.Type,
+              link: element.Link,
               location: `${element.City}, ${element.Country}`,
               InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
               DownPayment: `${element.DownPayment} EGP`,
+              area: `${element.Area} m²`,
+              unitTypes: element.Unit_PropertyType,
+              amenities: element._Amenities,
             });
           });
+          console.log(data);
           setData(list);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
   };
+  // Remove from above till this line and uncomment bottom one.
+
+  //   http
+  //     .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
+  // params: { location, type, unitType, limit: limit, page: pageNo },
+  //     })
+  //     .then((response) => {
+  //       const data = response.data;
+  //       let counter = 0;
+  //       if (response.status === 200) {
+  //         const list = [];
+  //         data.results.forEach((element) => {
+  //           console.log(element);
+  //           list.push({
+  //             id: element,
+  //             img: element.Images.length !== 0 ? element.Images[0] : null,
+  //             title: element.Name,
+  //             subtitle: element.Type,
+  //             price: `EGP ${element.Price}`,
+  //             contient: element.State,
+  //             location: `${element.City}, ${element.Country}`,
+  //             InstallmentYears: `${element.InstallmentYears} Years`,
+  //             Delivery: `${element.Delivery}`,
+  //             DownPayment: `${element.DownPayment} EGP`,
+  //           });
+  //         });
+  //         setData(list);
+  //       } else toast.error(response?.data?.error?.message);
+  //     })
+  //     .catch((err) => toast.error(err.message));
+  // }
+
   useEffect(() => {
     getProperties();
   }, []);
@@ -117,34 +165,36 @@ const SearchProperty = () => {
     console.log(id);
   };
 
-  const leftClickHandler = () => {
-    console.log("Left button clicked");
-  };
-
-  const rightClickHandler = () => {
-    console.log("Right button clicked");
+  const searchChangeHandler = (e) => {
+    setSearchValue(e.target.value);
   };
 
   const propertyTypeChangeHandler = (propertyType) => {
     setSelectedPropertyType(propertyType.Name);
-    console.log(propertyType);
   };
 
   const locationChangeHandler = (location) => {
     setSelectedLocation(location.Name);
-    console.log(location);
   };
 
-  const searchChangeHandler = () => {};
-
   const searchClickHandler = () => {};
+
+  const leftClickHandler = () => {
+    setPageNo((prev) => prev - 1);
+    setActivePage((prev) => prev - 1);
+  };
+
+  const rightClickHandler = () => {
+    setPageNo((prev) => prev + 1);
+    setActivePage((prev) => prev + 1);
+  };
+  const selectPageHandler = (index) => {
+    setActivePage(index);
+  };
 
   useEffect(() => {
     console.log(value);
   });
-  const selectPageHandler = (index) => {
-    setActivePage(index);
-  };
 
   return (
     <Fragment>
@@ -154,13 +204,21 @@ const SearchProperty = () => {
           <span className="text-[red] font-bold"> suits</span> you best
         </h2>
         <div className="grid grid-cols-[3fr,3fr] sm:grid-cols-[3fr,3fr,3fr,1fr] md:grid-cols-[4fr,3fr,4fr,1fr] lg:grid-cols-[4fr,3fr,4fr,1fr] gap-4 lg:gap-8 justify-center items-start mt-6 md:mt-8 lg:mt-10 mx-auto">
-          <Dropdown
+          {/* <Dropdown
             content={[
               { _id: 0, value: "Search" },
               { _id: 1, value: "Find" },
               { _id: 2, value: "Navigate" },
             ]}
             selectedValue={{ id: 0, value: "Search" }}
+            onValueChange={searchChangeHandler}
+          /> */}
+          <input
+            type={"text"}
+            id="Search"
+            value={searchValue}
+            className="border-2 rounded-full bg-transparent border-[red] text-lg pl-4 pr-3 py-3 justify-self-center cursor-pointer text-white outline-none w-full"
+            placeholder="Search"
             onValueChange={searchChangeHandler}
           />
           <Dropdown

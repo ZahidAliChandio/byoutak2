@@ -48,7 +48,7 @@ const PropertyCard = (props) => {
           </svg>
           <span className="text-sm sm:text-base">{data.location}</span>
         </div>
-        <div className="flex gap-2 justify-center sm:gap-4 w-full">
+        <div className="flex gap-2 sm:gap-3 w-full">
           <div className="flex items-center gap-2 py-2 pr-2">
             <img
               src={yearsOnInstallment}
@@ -62,7 +62,7 @@ const PropertyCard = (props) => {
             <span className="">{data.DownPayment}</span>
           </div>
         </div>
-        <div className="flex items-center gap-2 py-2 pr-2">
+        <div className="flex items-center gap-2 pl-2 w-full">
           <i className="fas fa-calendar-alt text-xl text-gray-600"></i>
           <span className="">{data.Delivery}</span>
         </div>
