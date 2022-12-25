@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ReactComponent as ContactUsSvg } from "../../static/images/contactUsIllustration.svg";
 import toast from "react-hot-toast";
 import http from "../../utils/http";
@@ -14,8 +14,15 @@ import { useForm } from "../../places/hooks/form-hook";
 const ContactUs = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+20");
-  const [location, setLocation] = useState("Rawalpindi");
+  // It will confirm that actual location is sent not "Enter Location";
+  const [selectedLocation, setSelectedLocation] = useState({
+    id: "default-message",
+    value: "defaultSelected",
+  });
   const [message, setMessage] = useState("");
+
+  // locations from database
+  const [locations, setLocations] = useState(null);
 
   const date = new Date();
 
@@ -28,12 +35,28 @@ const ContactUs = () => {
     Time: date.getSeconds().toLocaleString(),
   });
 
+  const getLocations = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setLocations(results);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+
+  useEffect(() => {
+    getLocations();
+  }, [getLocations]);
+
   const nameChangeHandler = (e) => {
     setName(e.target.value);
     inputHandler(e.target.id, e.target.value);
   };
   const locationChangeHandler = (e) => {
-    setLocation(e.target.value);
+    setSelectedLocation(e.target.value);
     inputHandler(e.target.id, e.target.value);
   };
   const messageChangeHandler = (e) => {
@@ -48,8 +71,13 @@ const ContactUs = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(formState);
 
+    if (selectedLocation.id) {
+      alert("Please select Location");
+      return;
+    }
+
+    console.log(formState);
     const formData = new FormData();
     formData.append("Name", formState.Name);
     formData.append("PhoneNumber", formState.PhoneNumber);
@@ -63,9 +91,12 @@ const ContactUs = () => {
       .then((response) => {
         if (response.status === 200) {
           setName("");
-          setLocation("");
+          setSelectedLocation({
+            id: "default-message",
+            value: "defaultSelected",
+          });
           setMessage("");
-          setPhone("+66");
+          setPhone("+20");
           toast.success(response?.data?.message);
         } else toast.error(response.data.error.message);
       })
@@ -132,16 +163,22 @@ const ContactUs = () => {
                   className="block w-full bg-white border border-gray-300 focus:border-[red] text-[#212020] py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none"
                   name="PreferedLocation"
                   id="PreferedLocation"
-                  defaultValue={location}
+                  defaultValue={selectedLocation.value}
                   onChange={locationChangeHandler}
                 >
-                  <option value="Lahore" className="text-[gray]">
+                  <option
+                    value="defaultSelected"
+                    className="text-[gray]"
+                    id={"default-message"}
+                  >
                     Enter Location
                   </option>
-                  <option value="Rawalpindi">Rawalpindi</option>
-                  <option value="Islamabad">Islamabad</option>
-                  <option value="Karachi">Karachi</option>
-                  <option value="Hyderabad">Hyderabad</option>
+                  {locations &&
+                    locations.map((location) => (
+                      <option value={location.Location} key={location._id}>
+                        {location.Location}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div>

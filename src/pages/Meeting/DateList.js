@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../../components/UI/Card";
 const DateList = (props) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const onClickHandler = (index) => {
-    setActiveIndex(index);
+  const onClickHandler = (item) => {
+    props.dateChangeHandler(item.date);
+    setActiveIndex(item.index);
   };
+
+  const { selectedDate } = props;
+
+  useEffect(() => {
+    if (!selectedDate) {
+      setActiveIndex(null);
+    }
+  }, [selectedDate]);
 
   return props.dates.map((date, index) => {
     return (
@@ -16,9 +25,9 @@ const DateList = (props) => {
               ? "bg-[#ff4747] text-white"
               : "bg-white text-[#212020]"
           } px-2 md:px-4 py-3 sm:py-4 md:py-6 rounded-lg text-sm text-center font-semibold cursor-pointer`}
-          onClick={() => onClickHandler(index)}
+          onClick={() => onClickHandler({ index, date })}
         >
-          <li>{date.day}</li>
+          <li>{date.weekday}</li>
           <li>{date.date}</li>
         </ul>
       </Card>
