@@ -70,6 +70,7 @@ const Slider = (props) => {
   }, []);
 
   const propertyClickHandler = (id) => {
+    console.log(id);
     navigate(`/property`, {
       state: id,
     });

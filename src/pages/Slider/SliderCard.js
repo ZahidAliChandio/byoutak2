@@ -5,7 +5,7 @@ const SliderCard = (props) => {
   return (
     <div
       className={`${props.className} bg-gray-50 px-4 py-7 rounded-md font-gillsans mx-auto w-3/4 sm:w-4/5 md:w-11/12`}
-      onClick={() => props.onClick(data.id._id)}
+      onClick={() => props.onClick(data.id)}
     >
       <img
         className="w-full h-[180px] rounded-md bg-[#EFEFEF]"

@@ -12,7 +12,8 @@ import ContactUs from "./ContactUs";
 const Property = () => {
   const [propertyData, setPropertyData] = useState(null);
   const location = useLocation();
-  const propertyId = location.state ? location.state : "00001";
+  const propertyId = location.state ? location.state : "0001";
+  console.log(location);
 
   const getPropertyById = () => {
     http
@@ -20,6 +21,7 @@ const Property = () => {
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
+          console.log(data);
           const list = [];
           data.forEach((element) => {
             list.push({
@@ -49,7 +51,7 @@ const Property = () => {
 
   useEffect(() => {
     if (propertyId) getPropertyById();
-  }, [propertyId]);
+  }, []);
 
   return (
     <Fragment>

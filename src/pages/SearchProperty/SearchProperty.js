@@ -219,7 +219,7 @@ const SearchProperty = () => {
             value={searchValue}
             className="border-2 rounded-full bg-transparent border-[red] text-lg pl-4 pr-3 py-3 justify-self-center cursor-pointer text-white outline-none w-full"
             placeholder="Search"
-            onValueChange={searchChangeHandler}
+            onChange={searchChangeHandler}
           />
           <Dropdown
             content={unitTypes}
