@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import http from "../../utils/http";
 import toast from "react-hot-toast";
@@ -14,7 +14,7 @@ const Property = () => {
   const location = useLocation();
   const propertyId = location.state ? location.state : "00001";
 
-  const getPropertyById = useCallback(() => {
+  const getPropertyById = () => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getPropertyById/${propertyId}`)
       .then((response) => {
@@ -27,14 +27,14 @@ const Property = () => {
               img: element.Images,
               title: element.Name,
               subtitle: element.Type,
-              price: `${element.Price}`,
+              price: `EGP ${element.Price}`,
               continent: element.State,
               type: element.Type,
               link: element.Link,
               location: `${element.City}, ${element.Country}`,
-              InstallmentYears: `${element.InstallmentYears}`,
+              InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
-              DownPayment: `${element.DownPayment}`,
+              DownPayment: `${element.DownPayment} EGP`,
               area: `${element.Area} m²`,
               unitTypes: element.Unit_PropertyType,
               amenities: element._Amenities,
@@ -45,11 +45,11 @@ const Property = () => {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  }, []);
+  };
 
   useEffect(() => {
     if (propertyId) getPropertyById();
-  }, [getPropertyById]);
+  }, [propertyId]);
 
   return (
     <Fragment>

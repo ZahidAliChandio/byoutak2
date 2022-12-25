@@ -41,8 +41,8 @@ const PropertyCard = (props) => {
             </svg>
             <span className="text-sm sm:text-base">{data.location}</span>
           </div>
-          <div className="relative flex gap-2 sm:gap-4 -left-1 lg:left-0">
-            <div className="relative flex items-center gap-2 py-2 pr-2">
+          <div className="flex gap-2 sm:gap-4 w-full justify-center">
+            <div className="flex items-center gap-2 py-2 pr-2">
               <img
                 src={yearsOnInstallment}
                 alt="Intallment Years"
@@ -52,23 +52,14 @@ const PropertyCard = (props) => {
                 {data.InstallmentYears}
               </span>
             </div>
-            <div className="relative flex items-center gap-2 py-2 pr-2">
-              <div className="relative">
-                {/* <img
-                  src={downPayment}
-                  alt="Down Payment"
-                  className="w-6 h-8 bg-transparent"
-                /> */}
-                <i className="fa-solid fa-calculator text-2xl text-gray-300"></i>
-                <span className="absolute -bottom-[0.1rem] -right-[0.1rem] h-1 w-1 bg-[#212020]"></span>
-                <span className="absolute -bottom-[0.1rem] -left-[0.1rem] h-1 w-1 bg-[#212020]"></span>
-              </div>
+            <div className="flex items-center gap-2 py-2 pr-2">
+              <i className="fa-solid fa-calculator text-2xl text-gray-300"></i>
               <span className="text-lg font-semibold">{data.DownPayment}</span>
             </div>
-            <div className="flex items-center gap-2 py-2 pr-2">
-              <i className="fas fa-calendar-alt text-2xl text-gray-300"></i>
-              <span className="text-lg font-semibold">{data.Delivery}</span>
-            </div>
+          </div>
+          <div className="flex items-center gap-2 py-2 pr-2 w-full justify-center my-2">
+            <i className="fas fa-calendar-alt text-2xl text-gray-300"></i>
+            <span className="text-lg font-semibold">{data.Delivery}</span>
           </div>
         </div>
         <Contact />

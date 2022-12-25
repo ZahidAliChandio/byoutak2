@@ -28,6 +28,50 @@ const SearchProperty = () => {
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
 
+  let capitalize = (strPara) => {
+    let arr = Array.from(strPara);
+    arr[0] = arr[0].toUpperCase();
+    return arr.join("");
+  };
+  const getProperties = () => {
+    const location = value[0]?._id;
+    const type = capitalize(value[0]?.Name?.toLowerCase());
+    const unitType = value[1]?._id;
+    const price = value[2]?._id;
+
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
+        params: { location, type, unitType, limit: 4, page: 1 },
+      })
+      .then((response) => {
+        const data = response.data;
+        let counter = 0;
+        if (response.status === 200) {
+          const list = [];
+          data.forEach((element) => {
+            console.log(element);
+            list.push({
+              id: element,
+              img: element.Images.length !== 0 ? element.Images[0] : null,
+              title: element.Name,
+              subtitle: element.Type,
+              price: `EGP ${element.Price}`,
+              contient: element.State,
+              location: `${element.City}, ${element.Country}`,
+              InstallmentYears: `${element.InstallmentYears} Years`,
+              Delivery: `${element.Delivery}`,
+              DownPayment: `${element.DownPayment} EGP`,
+            });
+          });
+          setData(list);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  };
+  useEffect(() => {
+    getProperties();
+  }, []);
+
   const getUnitTypes = useCallback(() => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`)
@@ -140,7 +184,7 @@ const SearchProperty = () => {
       </div>
       <div className="relative px-2 sm:px-4 lg:px-8">
         <h2 className="font-bold text-lg md:text-xl lg:text-2xl mb-4 lg:mb-4 px-4 sm:p-0 grid-cols-3 w-full text-center text-gray-200">
-          {data.length > 0 && data.length} results
+          {data.length > 0 ? data.length : 0} results
         </h2>
 
         {/* Property Cards */}

@@ -84,7 +84,7 @@ const ContactUs = () => {
         PreferedLocation: formState.PreferedLocation,
         Message: formState.Message,
         Date: new Date(),
-        Time: new Date()
+        Time: new Date(),
       })
       .then((response) => {
         if (response.status === 200) {

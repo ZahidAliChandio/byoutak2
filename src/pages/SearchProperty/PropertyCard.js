@@ -48,8 +48,8 @@ const PropertyCard = (props) => {
           </svg>
           <span className="text-sm sm:text-base">{data.location}</span>
         </div>
-        <div className="relative flex gap-2 sm:gap-4 -left-1 lg:left-0">
-          <div className="relative flex items-center gap-2 py-2 pr-2">
+        <div className="flex gap-2 justify-center sm:gap-4 w-full">
+          <div className="flex items-center gap-2 py-2 pr-2">
             <img
               src={yearsOnInstallment}
               alt="Intallment Years"
@@ -57,18 +57,14 @@ const PropertyCard = (props) => {
             />
             <span className="">{data.InstallmentYears}</span>
           </div>
-          <div className="relative flex items-center gap-2 py-2 pr-2">
-            <div className="relative">
-              <i className="fa-solid fa-calculator text-xl text-gray-600"></i>
-              <span className="absolute -bottom-[0.1rem] -right-[0.1rem] h-1 w-1 bg-white"></span>
-              <span className="absolute -bottom-[0.1rem] -left-[0.1rem] h-1 w-1 bg-white"></span>
-            </div>
+          <div className="flex items-center gap-2 py-2 pr-2">
+            <i className="fa-solid fa-calculator text-xl text-gray-600"></i>
             <span className="">{data.DownPayment}</span>
           </div>
-          <div className="flex items-center gap-2 py-2 pr-2">
-            <i className="fas fa-calendar-alt text-xl text-gray-600"></i>
-            <span className="">{data.Delivery}</span>
-          </div>
+        </div>
+        <div className="flex items-center gap-2 py-2 pr-2">
+          <i className="fas fa-calendar-alt text-xl text-gray-600"></i>
+          <span className="">{data.Delivery}</span>
         </div>
       </div>
     </div>

@@ -51,9 +51,9 @@ const Slider = (props) => {
               price: `EGP ${element.Price}`,
               contient: element.State,
               location: `${element.City}, ${element.Country}`,
-              InstallmentYears: `${element.InstallmentYears}`,
+              InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
-              DownPayment: `${element.DownPayment}`,
+              DownPayment: `${element.DownPayment} EGP`,
             });
           });
           setData(list);
