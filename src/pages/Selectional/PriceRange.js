@@ -10,9 +10,11 @@ const Unit = () => {
       </span>
     ),
     lis: [
-      { _id: 0, Name: "3 Million" },
-      { _id: 1, Name: "4 Million" },
-      { _id: 2, Name: "5 Million" },
+      { _id: 3000000, Name: "3 Million" },
+      { _id: 4000000, Name: "4 Million" },
+      { _id: 5000000, Name: "5 Million" },
+      { _id: 8000000, Name: "8 Million" },
+      { _id: 10000000, Name: "10 Million" },
     ],
     nextLink: "search-property",
   };

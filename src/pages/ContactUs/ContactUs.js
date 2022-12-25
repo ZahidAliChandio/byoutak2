@@ -77,17 +77,15 @@ const ContactUs = () => {
       return;
     }
 
-    console.log(formState);
-    const formData = new FormData();
-    formData.append("Name", formState.Name);
-    formData.append("PhoneNumber", formState.PhoneNumber);
-    formData.append("PreferedLocation", formState.PreferedLocation);
-    formData.append("Message", formState.Message);
-    formData.append("Date", formState.Date);
-    formData.append("Time", formState.Time);
-
     http
-      .post(`${process.env.REACT_APP_ATLAS_URI}/addContact/`, formData)
+      .post(`${process.env.REACT_APP_ATLAS_URI}/addContact/`, {
+        Name: formState.Name,
+        PhoneNumber: formState.PhoneNumber,
+        PreferedLocation: formState.PreferedLocation,
+        Message: formState.Message,
+        Date: new Date(),
+        Time: new Date()
+      })
       .then((response) => {
         if (response.status === 200) {
           setName("");

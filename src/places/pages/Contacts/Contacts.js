@@ -45,8 +45,13 @@ const Contacts = () => {
     { id: "Name", label: "Name" },
     { id: "Message", label: "Message" },
     { id: "PreferedLocation", label: "Prefered Location" },
-    { id: "Date", label: "Date" },
-    { id: "Time", label: "Time" },
+    { id: "Date", label: "Date", component: (data) => <>{data.Date && new Date(data.Date)?.toDateString()}</> },
+    {
+      id: "Time", label: "Time", component: (data) => <>{data.Time && new Date(data.Time)?.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })}</>
+    },
   ]);
   return (
     <div>

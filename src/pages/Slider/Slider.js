@@ -19,16 +19,30 @@ const Slider = (props) => {
 
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
+
+  let capitalize = (strPara) => {
+    let arr = Array.from(strPara);
+    arr[0] = arr[0].toUpperCase();
+    return arr.join("");
+  }
+
   const getProperties = () => {
+
+    const location = value[0]?._id
+    const type = capitalize(value[0]?.Name?.toLowerCase())
+    const unitType = value[1]?._id
+    const price = value[2]?._id
+
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`)
+      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, { params: { location, type, unitType, limit: 4, page: 1 } })
       .then((response) => {
         const data = response.data;
         let counter = 0;
         if (response.status === 200) {
           const list = [];
           data.forEach((element) => {
-            if (counter < 4) {
+            console.log(element)
+            // if (counter < 4) {
               list.push({
                 id: element,
                 img: element.Images.length !== 0 ? element.Images[0] : null,
@@ -41,8 +55,8 @@ const Slider = (props) => {
                 Delivery: `${element.Delivery}`,
                 DownPayment: `${element.DownPayment}`,
               });
-            }
-            counter++;
+            // }
+            // counter++;
           });
           setData(list);
         } else toast.error(response?.data?.error?.message);
@@ -77,6 +91,7 @@ const Slider = (props) => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full mt-10">
+        {console.log(data)}
         {data &&
           data.map((item, index) => (
             <SliderCard

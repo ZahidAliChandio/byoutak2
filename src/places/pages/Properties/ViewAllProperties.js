@@ -123,7 +123,7 @@ function ViewAllProperties() {
                 setPage={setPage}
                 limit={limit}
                 setLimit={setLimit}
-                total={0}
+                total={count}
               />
             </div>
           </div>
