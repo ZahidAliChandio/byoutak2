@@ -1,17 +1,15 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import axios from 'axios'
+import http from "../../../utils/http";
+import toast from "react-hot-toast";
 
 import DataTable from "../../components/UI/DataTable";
-import Dialog from "../../components/UI/Dialog";
 import BoxHeader from "../../components/UI/BoxHeader";
 import Paginator from "../../components/UI/paginator";
 import MainHeader from "../../components/Navigation/MainHeader";
 import AdminCard from "../../components/UI/AdminCard";
-import http from "../../../utils/http";
-import toast from "react-hot-toast";
 
-function ViewAllProperties() {
+const Contacts = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
@@ -20,9 +18,9 @@ function ViewAllProperties() {
 
   const navigate = useNavigate();
 
-  const getProperties = () => {
+  const getContacts = () => {
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getContacts/`, {
         params: {
           page: page + 1,
           limit: limit,
@@ -31,7 +29,6 @@ function ViewAllProperties() {
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
-          console.log(data);
           setTableBodyList(data);
           setCount(response?.data?.count);
           setLoading(false);
@@ -40,68 +37,16 @@ function ViewAllProperties() {
       .catch((err) => toast.error(err.message));
   };
   useEffect(() => {
-    getProperties();
+    getContacts();
   }, [page, limit]);
-
-  const editHandler = (data) => {
-    navigate("/admin/addProperty", { state: data });
-  };
-
-  function deleteFromTable(data) {
-    http
-      .delete(`${process.env.REACT_APP_ATLAS_URI}/deleteProperty/${data._id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          getProperties();
-          toast.success(response?.data);
-        } else toast.error(response?.data?.error?.message);
-      })
-      .catch((err) => toast.error(err.message));
-  }
 
   const [tableHeaders, setTableHeaders] = useState([
     { id: "_id", label: "ID" },
     { id: "Name", label: "Name" },
-    { id: "Type", label: "Type" },
-    { id: "Description", label: "Description" },
-    { id: "Address", label: "Address" },
-    {
-      id: "_Amenities",
-      label: "Amenities",
-      component: (data, setData) => {
-        return data._Amenities.map((x, index) => (
-          <Fragment key={index}>
-            {x.Name}
-            <br />
-          </Fragment>
-        ));
-      },
-    },
-    {
-      id: "actions",
-      label: "",
-      component: (data, setData) => (
-        <div className="flex space-x-3 !text-right">
-          <button
-            className=" no-focus"
-            title="Edit"
-            onClick={() => {
-              editHandler(data);
-            }}
-          >
-            <i className="fas fa-pencil" aria-hidden="true"></i>
-          </button>
-          <button
-            className=" no-focus"
-            title="Delete"
-            onClick={(e) => deleteFromTable(data)}
-          >
-            <i className="fas fa-times text-red-500" aria-hidden="true"></i>
-          </button>
-        </div>
-      ),
-    },
-    // { id: "Unit_PropertyType", label: "Units", component: (data, setData) => { return <>{data.Unit_PropertyType.map(x => <>{x.Name}<br /></>)}</> } },\
+    { id: "Message", label: "Message" },
+    { id: "Location", label: "Prefered Location" },
+    { id: "Date", label: "Date" },
+    { id: "Time", label: "Time" },
   ]);
   return (
     <div>
@@ -132,6 +77,6 @@ function ViewAllProperties() {
       </div>
     </div>
   );
-}
+};
 
-export default ViewAllProperties;
+export default Contacts;

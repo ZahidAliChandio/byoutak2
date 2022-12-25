@@ -22,6 +22,8 @@ import {
   AddUnitType,
 } from "../places/pages/Masters/Masters";
 
+import Contacts from "../places/pages/Contacts/Contacts";
+
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import AddDeveloper from "../places/pages/Masters/AddDeveloper";
@@ -65,6 +67,10 @@ export default function Router() {
         {
           path: "addDeveloper",
           element: <AddDeveloper />,
+        },
+        {
+          path: "contacts",
+          element: <Contacts />,
         },
       ],
     },

@@ -39,6 +39,11 @@ const NavLinks = (props) => {
       linkTo: "addDeveloper",
       icon: <i className="fas fa-user-plus text-lg"></i>,
     },
+    {
+      title: "Contacts",
+      linkTo: "contacts",
+      icon: <i className="fa-regular fa-address-book text-lg"></i>,
+    },
   ];
 
   return (
