@@ -44,7 +44,7 @@ const Contacts = () => {
     { id: "_id", label: "ID" },
     { id: "Name", label: "Name" },
     { id: "Message", label: "Message" },
-    { id: "Location", label: "Prefered Location" },
+    { id: "PreferedLocation", label: "Prefered Location" },
     { id: "Date", label: "Date" },
     { id: "Time", label: "Time" },
   ]);
