@@ -14,37 +14,19 @@ const MeetingForm = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const noOfDays = 12;
 
   const [locations, setLocations] = useState(null);
-  const date = new Date();
 
   const [formState, inputHandler] = useForm({
     Name: "",
     PhoneNumber: "",
     PreferedLocation: "",
-    Message: "",
-    Date: date.getDate(),
-    Time: date.getSeconds().toLocaleString(),
+    // Message: "meeting scheduled",
+    Date: "",
+    Time: "",
   });
-
-  const weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-  let monthsArray = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DEC",
-  ];
-
   const getLocations = useCallback(() => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
@@ -63,20 +45,10 @@ const MeetingForm = () => {
   }, [getLocations]);
 
   const dates = [];
+  const date = new Date();
   for (let day = 0; day < noOfDays; day++) {
     dates.push({
-      id: day,
-      weekday:
-        weekday[
-          date.getDay() + day > 7
-            ? (date.getDay() + day) % 7
-            : date.getDay() + day
-        ],
-      date:
-        date.getDate() + day > 30
-          ? `${(date.getDate() + day) % 30}  ${monthsArray[date.getMonth()]}`
-          : `${date.getDate() + day}  ${monthsArray[date.getMonth()]}`,
-      day: date.getDay() + day,
+      date: date.setDate(date.getDate() + 1),
     });
   }
 
@@ -104,6 +76,10 @@ const MeetingForm = () => {
     inputHandler(e.target.name, e.target.value);
   };
 
+  useEffect(() => {
+    inputHandler("Message", "meeting scheduled");
+  }, []);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -112,14 +88,19 @@ const MeetingForm = () => {
       return;
     }
 
+    const time = selectedTime.split(" ")[0];
+
+    const hours = time.split(":")[0];
+    const minutes = time.split(":")[1];
+    const newTime = new Date(null, null, null, hours, minutes);
     http
       .post(`${process.env.REACT_APP_ATLAS_URI}/addContact/`, {
         Name: formState.Name,
         PhoneNumber: formState.PhoneNumber,
         PreferedLocation: formState.PreferedLocation,
-        Message: formState.message,
+        Message: formState.Message,
         Date: new Date(formState.Date),
-        Time: new Date()
+        Time: new Date(newTime),
       })
       .then((response) => {
         if (response.status === 200) {
@@ -127,8 +108,8 @@ const MeetingForm = () => {
           setSelectedLocation(null);
           setSelectedTime(null);
           setSelectedDate(null);
-          setMessage("");
-          setPhone("+66");
+          // setMessage("");
+          setPhone("+20");
           toast.success(response?.data?.message);
         } else toast.error(response.data.error.message);
       })
@@ -246,13 +227,20 @@ const MeetingForm = () => {
           >
             <option value="9:00 AM">9:00 AM</option>
             <option value="12:00 AM">12:00 AM</option>
-            <option value="3:00 PM">3:00 PM</option>
+            <option value="15:00 PM">3:00 PM</option>
           </select>
           <div className="flex justify-center gap-4 md:gap-8 md:justify-end mt-4 sm:mt-8 md:m-0">
             <Button className="bg-[#ff4747] text-gray-100" type="submit">
               Request this time
             </Button>
-            <Button className="bg-white !px-3 md:!px-10">Live chat now</Button>
+            <a
+              href="whatsapp://send?text=Lets chat!&phone=+923163366566"
+              className="flex flex-col items-center justify-center"
+            >
+              <Button className="bg-white !px-3 md:!px-10">
+                Live chat now
+              </Button>
+            </a>
           </div>
         </form>
       </div>

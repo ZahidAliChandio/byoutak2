@@ -43,7 +43,6 @@ const Slider = (props) => {
           const list = [];
           data.forEach((element) => {
             console.log(element);
-            // if (counter < 4) {
             list.push({
               id: element,
               img: element.Images.length !== 0 ? element.Images[0] : null,
@@ -56,8 +55,6 @@ const Slider = (props) => {
               Delivery: `${element.Delivery}`,
               DownPayment: `${element.DownPayment}`,
             });
-            // }
-            // counter++;
           });
           setData(list);
         } else toast.error(response?.data?.error?.message);
@@ -68,12 +65,21 @@ const Slider = (props) => {
     getProperties();
   }, []);
 
-  const onClickHandler = (id) => {
+  const propertyClickHandler = (id) => {
     navigate(`/property`, {
       state: id,
     });
     console.log(id);
   };
+
+  const leftClickHandler = () => {
+    console.log("Left button clicked");
+  };
+
+  const rightClickHandler = () => {
+    console.log("Right button clicked");
+  };
+
   const selectPageHandler = (index) => {
     setActivePage(index);
   };
@@ -91,17 +97,30 @@ const Slider = (props) => {
           Select one of the options below
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full mt-10">
-        {console.log(data)}
-        {data &&
-          data.map((item, index) => (
-            <SliderCard
-              key={index}
-              data={item}
-              className="!w-11/12 !sm:w-full"
-              onClick={onClickHandler}
-            />
-          ))}
+      <div className="flex items-center gap-4">
+        <i
+          className="fa fa-chevron-left fa-2xl text-[red]"
+          aria-hidden="true"
+          onClick={leftClickHandler}
+        ></i>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
+          {data &&
+            data.map((data, index) => {
+              return (
+                <SliderCard
+                  data={data}
+                  key={index}
+                  className="!w-full"
+                  onClick={propertyClickHandler}
+                />
+              );
+            })}
+        </div>
+        <i
+          className="fa fa-chevron-right fa-2xl text-[red]"
+          aria-hidden="true"
+          onClick={rightClickHandler}
+        ></i>
       </div>
 
       {/* Page Numbers */}

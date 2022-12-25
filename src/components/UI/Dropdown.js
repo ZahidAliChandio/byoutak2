@@ -45,7 +45,7 @@ const Dropdown = (props) => {
       >
         {content.map((item, index) => (
           <li
-            key={item.id}
+            key={item._id}
             className="hover:text-[red] focus:text-[red] cursor-pointer py-1"
             onClick={() => onClickHandler(item)}
           >

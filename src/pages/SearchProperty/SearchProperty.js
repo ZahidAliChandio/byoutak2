@@ -112,9 +112,9 @@ const SearchProperty = () => {
         <div className="grid grid-cols-[3fr,3fr] sm:grid-cols-[3fr,3fr,3fr,1fr] md:grid-cols-[4fr,3fr,4fr,1fr] lg:grid-cols-[4fr,3fr,4fr,1fr] gap-4 lg:gap-8 justify-center items-start mt-6 md:mt-8 lg:mt-10 mx-auto">
           <Dropdown
             content={[
-              { id: 0, value: "Search" },
-              { id: 1, value: "Find" },
-              { id: 2, value: "Navigate" },
+              { _id: 0, value: "Search" },
+              { _id: 1, value: "Find" },
+              { _id: 2, value: "Navigate" },
             ]}
             selectedValue={{ id: 0, value: "Search" }}
             onValueChange={searchChangeHandler}
@@ -129,7 +129,7 @@ const SearchProperty = () => {
             selectedValue={{ id: 0, value: "Location" }}
             onValueChange={locationChangeHandler}
           />
-          {/* Search button(Icon) */}
+          {/* Search button*/}
           <div
             className="border-2 rounded-full border-[red] w-fit px-3 py-2 justify-self-center cursor-pointer"
             onClick={searchClickHandler}
@@ -143,7 +143,7 @@ const SearchProperty = () => {
           {data.length > 0 && data.length} results
         </h2>
 
-        {/* Search Cards */}
+        {/* Property Cards */}
         <div className="flex items-center gap-4">
           <i
             className="fa fa-chevron-left fa-2xl text-[red]"
