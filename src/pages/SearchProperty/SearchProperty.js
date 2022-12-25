@@ -1,4 +1,4 @@
-import { useContext, Fragment, useEffect, useState } from "react";
+import { useContext, Fragment, useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
 import toast from "react-hot-toast";
@@ -15,8 +15,8 @@ import "swiper/css/pagination";
 
 const SearchProperty = () => {
   const [data, setData] = useState([]);
-  const [locations, setLocations] = useState(null);
-  const [properties, setProperties] = useState(null);
+  const [locations, setLocations] = useState([]);
+  const [unitTypes, setUnitTypes] = useState([]);
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [activePage, setActivePage] = useState(0);
@@ -28,40 +28,43 @@ const SearchProperty = () => {
   const selectContext = useContext(SelectContext);
   const { value } = selectContext;
 
-  const getProperties = () => {
+  const getUnitTypes = useCallback(() => {
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`)
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`)
       .then((response) => {
-        const data = response.data;
-        let counter = 0;
         if (response.status === 200) {
-          const list = [];
-          data.forEach((element) => {
-            if (counter < 4) {
-              list.push({
-                id: element,
-                img: element.Images.length !== 0 ? element.Images[0] : null,
-                title: element.Name,
-                subtitle: element.Type,
-                price: `EGP ${element.Price}`,
-                contient: element.State,
-                location: `${element.City}, ${element.Country}`,
-                InstallmentYears: `${element.InstallmentYears}`,
-                Delivery: `${element.Delivery}`,
-                DownPayment: `${element.DownPayment}`,
-              });
-            }
-            counter++;
-          });
-          console.log(data);
-          setData(list);
+          const results = response?.data?.results;
+          setUnitTypes(results);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  };
-  useEffect(() => {
-    getProperties();
   }, []);
+
+  useEffect(() => {
+    getUnitTypes();
+  }, [getUnitTypes]);
+
+  const getLocations = useCallback(() => {
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setLocations(
+            results.map((result) => {
+              result.Name = result.Location;
+              result.id = result._id;
+              return result;
+            })
+          );
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
+  }, []);
+
+  useEffect(() => {
+    getLocations();
+  }, [getLocations]);
 
   const onClickHandler = (id) => {
     navigate(`/property`, {
@@ -90,57 +93,7 @@ const SearchProperty = () => {
 
   const searchChangeHandler = () => {};
 
-  const searchClickHandler = () => {
-    // getting location
-    http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
-      .then((response) => {
-        if (response.status === 200) {
-          const results = response?.data?.results;
-          console.log(results);
-          setLocations(
-            results.map((result) => {
-              result.Name = result.Location;
-              return result;
-            })
-          );
-          console.log(results);
-        } else toast.error(response?.data?.error?.message);
-      })
-      .catch((err) => toast.error(err.message));
-
-    // getting properties
-
-    http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`)
-      .then((response) => {
-        const data = response.data;
-        let counter = 0;
-        if (response.status === 200) {
-          const list = [];
-          data.forEach((element) => {
-            if (counter < 4) {
-              list.push({
-                id: element,
-                img: element.Images.length !== 0 ? element.Images[0] : null,
-                title: element.Name,
-                subtitle: element.Type,
-                price: `EGP ${element.Price}`,
-                contient: element.State,
-                location: `${element.City}, ${element.Country}`,
-                InstallmentYears: `${element.InstallmentYears}`,
-                Delivery: `${element.Delivery}`,
-                DownPayment: `${element.DownPayment}`,
-              });
-            }
-            counter++;
-          });
-          console.log(data);
-          setData(list);
-        } else toast.error(response?.data?.error?.message);
-      })
-      .catch((err) => toast.error(err.message));
-  };
+  const searchClickHandler = () => {};
 
   useEffect(() => {
     console.log(value);
@@ -167,20 +120,12 @@ const SearchProperty = () => {
             onValueChange={searchChangeHandler}
           />
           <Dropdown
-            content={[
-              { id: 0, value: "Property Type" },
-              { id: 1, value: "Find" },
-              { id: 2, value: "Navigate" },
-            ]}
+            content={unitTypes}
             selectedValue={{ id: 0, value: "Property Type" }}
             onValueChange={propertyTypeChangeHandler}
           />
           <Dropdown
-            content={[
-              { id: 0, value: "Location" },
-              { id: 1, value: "Find" },
-              { id: 2, value: "Navigate" },
-            ]}
+            content={locations}
             selectedValue={{ id: 0, value: "Location" }}
             onValueChange={locationChangeHandler}
           />

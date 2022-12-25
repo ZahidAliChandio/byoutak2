@@ -49,7 +49,7 @@ const Dropdown = (props) => {
             className="hover:text-[red] focus:text-[red] cursor-pointer py-1"
             onClick={() => onClickHandler(item)}
           >
-            {item.value}
+            {item.Name}
           </li>
         ))}
       </ul>

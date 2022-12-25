@@ -24,37 +24,38 @@ const Slider = (props) => {
     let arr = Array.from(strPara);
     arr[0] = arr[0].toUpperCase();
     return arr.join("");
-  }
+  };
 
   const getProperties = () => {
-
-    const location = value[0]?._id
-    const type = capitalize(value[0]?.Name?.toLowerCase())
-    const unitType = value[1]?._id
-    const price = value[2]?._id
+    const location = value[0]?._id;
+    const type = capitalize(value[0]?.Name?.toLowerCase());
+    const unitType = value[1]?._id;
+    const price = value[2]?._id;
 
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, { params: { location, type, unitType, limit: 4, page: 1 } })
+      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
+        params: { location, type, unitType, limit: 4, page: 1 },
+      })
       .then((response) => {
         const data = response.data;
         let counter = 0;
         if (response.status === 200) {
           const list = [];
           data.forEach((element) => {
-            console.log(element)
+            console.log(element);
             // if (counter < 4) {
-              list.push({
-                id: element,
-                img: element.Images.length !== 0 ? element.Images[0] : null,
-                title: element.Name,
-                subtitle: element.Type,
-                price: `EGP ${element.Price}`,
-                contient: element.State,
-                location: `${element.City}, ${element.Country}`,
-                InstallmentYears: `${element.InstallmentYears}`,
-                Delivery: `${element.Delivery}`,
-                DownPayment: `${element.DownPayment}`,
-              });
+            list.push({
+              id: element,
+              img: element.Images.length !== 0 ? element.Images[0] : null,
+              title: element.Name,
+              subtitle: element.Type,
+              price: `EGP ${element.Price}`,
+              contient: element.State,
+              location: `${element.City}, ${element.Country}`,
+              InstallmentYears: `${element.InstallmentYears}`,
+              Delivery: `${element.Delivery}`,
+              DownPayment: `${element.DownPayment}`,
+            });
             // }
             // counter++;
           });
