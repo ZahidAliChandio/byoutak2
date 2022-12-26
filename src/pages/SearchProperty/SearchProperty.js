@@ -1,6 +1,5 @@
 import { useContext, Fragment, useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router";
 import toast from "react-hot-toast";
 
 import PropertyCard from "./PropertyCard";
@@ -8,7 +7,6 @@ import Dropdown from "../../components/UI/Dropdown";
 import { SelectContext } from "../../context/user-select";
 import http from "../../utils/http";
 
-import Apartment from "../../static/images/apartment.jpg";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
@@ -48,43 +46,6 @@ const SearchProperty = () => {
     const location = value[0]?._id;
     const type = capitalize(value[0]?.Name?.toLowerCase());
     const unitType = value[1]?._id;
-    const price = value[2]?._id;
-
-    //   // This code to be deleted when search works fine.
-    //   http
-    //     .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
-    //       params: { limit: limit, page: pageNo },
-    //     })
-    //     .then((response) => {
-    //       const data = response.data;
-    //       if (response.status === 200) {
-    //         const list = [];
-    //         data.results.forEach((element) => {
-    //           list.push({
-    //             id: element._id,
-    //             img: element.Images,
-    //             title: element.Name,
-    //             subtitle: element.Type,
-    //             price: `EGP ${element.Price}`,
-    //             continent: element.State,
-    //             type: element.Type,
-    //             link: element.Link,
-    //             location: `${element.City}, ${element.Country}`,
-    //             InstallmentYears: `${element.InstallmentYears} Years`,
-    //             Delivery: `${element.Delivery}`,
-    //             DownPayment: `${element.DownPayment} EGP`,
-    //             area: `${element.Area} m²`,
-    //             unitTypes: element.Unit_PropertyType,
-    //             amenities: element._Amenities,
-    //           });
-    //         });
-    //         console.log(data);
-    //         setData(list);
-    //       } else toast.error(response?.data?.error?.message);
-    //     })
-    //     .catch((err) => toast.error(err.message));
-    // };
-    // // Remove from above till this line and uncomment bottom one.
 
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
@@ -204,15 +165,6 @@ const SearchProperty = () => {
           <span className="text-[red] font-bold"> suits</span> you best
         </h2>
         <div className="grid grid-cols-[3fr,3fr] sm:grid-cols-[3fr,3fr,3fr,1fr] md:grid-cols-[4fr,3fr,4fr,1fr] lg:grid-cols-[4fr,3fr,4fr,1fr] gap-4 lg:gap-8 justify-center items-start mt-6 md:mt-8 lg:mt-10 mx-auto">
-          {/* <Dropdown
-            content={[
-              { _id: 0, value: "Search" },
-              { _id: 1, value: "Find" },
-              { _id: 2, value: "Navigate" },
-            ]}
-            selectedValue={{ id: 0, value: "Search" }}
-            onValueChange={searchChangeHandler}
-          /> */}
           <input
             type={"text"}
             id="Search"
