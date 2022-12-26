@@ -39,82 +39,81 @@ const SearchProperty = () => {
     setPageNumbers(pageNos);
   }, [limit]);
 
-  // let capitalize = (strPara) => {
-  //   let arr = Array.from(strPara);
-  //   arr[0] = arr[0].toUpperCase();
-  //   return arr.join("");
-  // };
+  let capitalize = (strPara) => {
+    let arr = Array.from(strPara);
+    arr[0] = arr[0].toUpperCase();
+    return arr.join("");
+  };
   const getProperties = () => {
-    // const location = value[0]?._id;
-    // const type = capitalize(value[0]?.Name?.toLowerCase());
-    // const unitType = value[1]?._id;
-    // const price = value[2]?._id;
+    const location = value[0]?._id;
+    const type = capitalize(value[0]?.Name?.toLowerCase());
+    const unitType = value[1]?._id;
+    const price = value[2]?._id;
 
-    // This code to be deleted when search works fine.
+    //   // This code to be deleted when search works fine.
+    //   http
+    //     .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+    //       params: { limit: limit, page: pageNo },
+    //     })
+    //     .then((response) => {
+    //       const data = response.data;
+    //       if (response.status === 200) {
+    //         const list = [];
+    //         data.results.forEach((element) => {
+    //           list.push({
+    //             id: element._id,
+    //             img: element.Images,
+    //             title: element.Name,
+    //             subtitle: element.Type,
+    //             price: `EGP ${element.Price}`,
+    //             continent: element.State,
+    //             type: element.Type,
+    //             link: element.Link,
+    //             location: `${element.City}, ${element.Country}`,
+    //             InstallmentYears: `${element.InstallmentYears} Years`,
+    //             Delivery: `${element.Delivery}`,
+    //             DownPayment: `${element.DownPayment} EGP`,
+    //             area: `${element.Area} m²`,
+    //             unitTypes: element.Unit_PropertyType,
+    //             amenities: element._Amenities,
+    //           });
+    //         });
+    //         console.log(data);
+    //         setData(list);
+    //       } else toast.error(response?.data?.error?.message);
+    //     })
+    //     .catch((err) => toast.error(err.message));
+    // };
+    // // Remove from above till this line and uncomment bottom one.
+
     http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
-        params: { limit: limit, page: pageNo },
+      .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
+        params: { location, type, unitType, limit: limit, page: pageNo },
       })
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
           const list = [];
           data.results.forEach((element) => {
+            console.log(element);
             list.push({
-              id: element._id,
-              img: element.Images,
+              id: element,
+              img: element.Images.length !== 0 ? element.Images[0] : null,
               title: element.Name,
               subtitle: element.Type,
               price: `EGP ${element.Price}`,
-              continent: element.State,
-              type: element.Type,
-              link: element.Link,
+              contient: element.State,
               location: `${element.City}, ${element.Country}`,
               InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
               DownPayment: `${element.DownPayment} EGP`,
-              area: `${element.Area} m²`,
-              unitTypes: element.Unit_PropertyType,
-              amenities: element._Amenities,
             });
           });
-          console.log(data);
           setData(list);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
   };
-  // Remove from above till this line and uncomment bottom one.
-
-  //   http
-  //     .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
-  // params: { location, type, unitType, limit: limit, page: pageNo },
-  //     })
-  //     .then((response) => {
-  //       const data = response.data;
-  //       let counter = 0;
-  //       if (response.status === 200) {
-  //         const list = [];
-  //         data.results.forEach((element) => {
-  //           console.log(element);
-  //           list.push({
-  //             id: element,
-  //             img: element.Images.length !== 0 ? element.Images[0] : null,
-  //             title: element.Name,
-  //             subtitle: element.Type,
-  //             price: `EGP ${element.Price}`,
-  //             contient: element.State,
-  //             location: `${element.City}, ${element.Country}`,
-  //             InstallmentYears: `${element.InstallmentYears} Years`,
-  //             Delivery: `${element.Delivery}`,
-  //             DownPayment: `${element.DownPayment} EGP`,
-  //           });
-  //         });
-  //         setData(list);
-  //       } else toast.error(response?.data?.error?.message);
-  //     })
-  //     .catch((err) => toast.error(err.message));
-  // }
 
   useEffect(() => {
     getProperties();
@@ -174,6 +173,7 @@ const SearchProperty = () => {
   };
 
   const locationChangeHandler = (location) => {
+    console.log(location);
     setSelectedLocation(location.Name);
   };
 
@@ -223,12 +223,12 @@ const SearchProperty = () => {
           />
           <Dropdown
             content={unitTypes}
-            selectedValue={{ id: 0, value: "Property Type" }}
+            selectedValue={{ id: 0, Name: "Property Type" }}
             onValueChange={propertyTypeChangeHandler}
           />
           <Dropdown
             content={locations}
-            selectedValue={{ id: 0, value: "Location" }}
+            selectedValue={{ id: 0, Name: "Location" }}
             onValueChange={locationChangeHandler}
           />
           {/* Search button*/}
