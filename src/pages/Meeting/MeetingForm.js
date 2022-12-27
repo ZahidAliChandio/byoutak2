@@ -32,7 +32,6 @@ const MeetingForm = () => {
     Name: "",
     PhoneNumber: "",
     PreferedLocation: "",
-    // Message: "meeting scheduled",
     Date: "",
     Time: "",
   });
@@ -42,7 +41,6 @@ const MeetingForm = () => {
       .then((response) => {
         if (response.status === 200) {
           const results = response?.data?.results;
-          console.log(results);
           setLocations(results);
         } else toast.error(response?.data?.error?.message);
       })
@@ -161,8 +159,8 @@ const MeetingForm = () => {
                 country={"th"}
                 value={phone}
                 onChange={phoneChangeHandler}
-                buttonclassName="bg-red"
-                containerClass="bg-[white] rounded-lg border border-[red]"
+                containerClass="bg-[white]"
+                inputClass="focus:border-[red] border"
                 buttonStyle={{
                   backgroundColor: "transparent",
                   border: "none",
@@ -173,9 +171,9 @@ const MeetingForm = () => {
                   backgroundColor: "transparent",
                   width: "100%",
                   display: "block",
-                  padding: "1.3rem 3rem",
+                  padding: "1.4rem 3rem",
                   fontSize: "1.125rem",
-                  borderRadius: "0.8rem",
+                  borderRadius: "0.5rem",
                 }}
               />
               <label
@@ -198,49 +196,53 @@ const MeetingForm = () => {
               selectedDate={selectedDate}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-white">
-              Select location
-            </h3>
-            <div className="flex gap-4">
-              {locations &&
-                locations.map((location) => (
-                  <div className="flex items-center gap-2" key={location._id}>
-                    <input
-                      type="radio"
-                      id={location._id}
-                      className="h-4 w-4"
-                      name="PreferedLocation"
-                      value={location.Location}
-                      onChange={locationChangeHandler}
-                    />
-                    <label
-                      htmlFor={location._id}
-                      className="text-xs sm:text-sm lg:text-base font-semibold text-white"
-                    >
-                      {location.Location}
-                    </label>
-                  </div>
+          <div className="flex flex-row-reverse gap-8 justify-between items-center mb-6">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-sm sm:text-base md:text-lg font-semibold text-white">
+                Select location
+              </h3>
+              <div className="flex gap-4">
+                {locations &&
+                  locations.map((location) => (
+                    <div className="flex items-center gap-2" key={location._id}>
+                      <input
+                        type="radio"
+                        id={location._id}
+                        className="h-4 w-4"
+                        name="PreferedLocation"
+                        value={location.Location}
+                        onChange={locationChangeHandler}
+                      />
+                      <label
+                        htmlFor={location._id}
+                        className="text-xs sm:text-sm lg:text-base font-semibold text-white"
+                      >
+                        {location.Location}
+                      </label>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <h2 className="text-sm sm:text-base md:text-lg font-semibold text-gray-100">
+                Select time
+              </h2>
+
+              <select
+                className="block bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-800 w-fit"
+                name="Time"
+                id="Time"
+                defaultValue="9:00 AM"
+                onChange={timeChangeHandler}
+              >
+                {timings.map((time, index) => (
+                  <option value={time.value} key={index}>
+                    {time.time}
+                  </option>
                 ))}
+              </select>
             </div>
           </div>
-          <h2 className="text-sm sm:text-base md:text-lg font-semibold text-gray-100">
-            Select time
-          </h2>
-
-          <select
-            className="block bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-800 w-fit"
-            name="Time"
-            id="Time"
-            defaultValue="9:00 AM"
-            onChange={timeChangeHandler}
-          >
-            {timings.map((time, index) => (
-              <option value={time.value} key={index}>
-                {time.time}
-              </option>
-            ))}
-          </select>
           <div className="flex justify-center gap-4 md:gap-8 md:justify-end mt-4 sm:mt-8 md:m-0">
             <Button className="bg-[#ff4747] text-gray-100" type="submit">
               Request this time

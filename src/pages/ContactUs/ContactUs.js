@@ -132,33 +132,30 @@ const ContactUs = () => {
                   onChange={nameChangeHandler}
                   required
                 />
-                <div className="rounded border" tabIndex="0">
-                  <PhoneInput
-                    specialLabel={""}
-                    id={"PhoneNumber"}
-                    value={phone}
-                    onChange={phoneChangeHandler}
-                    buttonclassName=""
-                    containerClass="bg-[white] rounded"
-                    buttonStyle={{
-                      backgroundColor: "transparent",
-                      border: "none",
-                      fontSize: "1.5rem",
-                      paddingLeft: "0.5rem",
-                    }}
-                    inputStyle={{
-                      backgroundColor: "transparent",
-                      border: "none",
-                      width: "100%",
-                      display: "block",
-                      padding: "1.51rem 3rem",
-                      fontSize: "1.125rem",
-                      borderRadius: "0.6rem",
-                    }}
-                  />
-                </div>
+                <PhoneInput
+                  specialLabel={""}
+                  id={"PhoneNumber"}
+                  value={phone}
+                  onChange={phoneChangeHandler}
+                  containerClass="bg-[white] rounded-lg"
+                  inputClass="focus:border-[red] border border-gray-300"
+                  buttonStyle={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontSize: "1.5rem",
+                    paddingLeft: "0.5rem",
+                  }}
+                  inputStyle={{
+                    backgroundColor: "transparent",
+                    width: "100%",
+                    display: "block",
+                    padding: "1.51rem 3rem",
+                    fontSize: "1.125rem",
+                    borderRadius: "0.5rem",
+                  }}
+                />
                 <select
-                  className="block w-full bg-white border border-gray-300 focus:border-[red] text-[#212020] py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none"
+                  className="block w-full bg-white border   border-gray-300 focus:border-[red] text-[#212020] py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none"
                   name="PreferedLocation"
                   id="PreferedLocation"
                   defaultValue={selectedLocation.value}
