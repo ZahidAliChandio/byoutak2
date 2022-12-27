@@ -19,7 +19,6 @@ const SearchProperty = () => {
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [pageNo, setPageNo] = useState(1);
-  const [limit, setLimit] = useState(4);
   const [activePage, setActivePage] = useState(0);
 
   const navigate = useNavigate();
@@ -29,33 +28,63 @@ const SearchProperty = () => {
 
   const [pageNumbers, setPageNumbers] = useState([]);
 
-  useEffect(() => {
-    const pageNos = [];
-    for (let pageNo = 1; pageNo <= limit; pageNo++) {
-      pageNos.push(`${pageNo}`);
-    }
-    setPageNumbers(pageNos);
-  }, [limit]);
 
   let capitalize = (strPara) => {
     let arr = Array.from(strPara);
     arr[0] = arr[0].toUpperCase();
     return arr.join("");
   };
-  const getProperties = () => {
-    const location = value[0]?._id;
-    const type = capitalize(value[0]?.Name?.toLowerCase());
-    const unitType = value[1]?._id;
+  const getProperties = (params) => {
+
+    // This code to be deleted when search works fine.
+    //   http
+    //     .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
+    //       params: { limit: limit, page: pageNo },
+    //     })
+    //     .then((response) => {
+    //       const data = response.data;
+    //       if (response.status === 200) {
+    //         const list = [];
+    //         data.results.forEach((element) => {
+    //           list.push({
+    //             id: element._id,
+    //             img: element.Images,
+    //             title: element.Name,
+    //             subtitle: element.Type,
+    //             price: `EGP ${element.Price}`,
+    //             continent: element.State,
+    //             type: element.Type,
+    //             link: element.Link,
+    //             location: `${element.City}, ${element.Country}`,
+    //             InstallmentYears: `${element.InstallmentYears} Years`,
+    //             Delivery: `${element.Delivery}`,
+    //             DownPayment: `${element.DownPayment} EGP`,
+    //             area: `${element.Area} m²`,
+    //             unitTypes: element.Unit_PropertyType,
+    //             amenities: element._Amenities,
+    //           });
+    //         });
+    //         console.log(data);
+    //         setData(list);
+    //       } else toast.error(response?.data?.error?.message);
+    //     })
+    //     .catch((err) => toast.error(err.message));
+    // };
+    // Remove from above till this line and uncomment bottom one.
 
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
-        params: { location, type, unitType, limit: limit, page: pageNo },
+        params: { ...params, limit: 16, page: pageNo },
       })
       .then((response) => {
         const data = response.data;
+        let counter = 0;
+        console.log(response)
         if (response.status === 200) {
           const list = [];
-          data.results.forEach((element) => {
+          // setPageNumbers([...Array(Math.ceil(data.count / 4))])
+          console.log(data)
+          data.forEach((element) => {
             console.log(element);
             list.push({
               id: element,
@@ -74,29 +103,14 @@ const SearchProperty = () => {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  };
+  }
 
   useEffect(() => {
-    getProperties();
-  }, []);
+    getProperties({});
+  }, [activePage, pageNo]);
 
-  const getUnitTypes = useCallback(() => {
-    http
-      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`)
-      .then((response) => {
-        if (response.status === 200) {
-          const results = response?.data?.results;
-          setUnitTypes(results);
-        } else toast.error(response?.data?.error?.message);
-      })
-      .catch((err) => toast.error(err.message));
-  }, []);
 
   useEffect(() => {
-    getUnitTypes();
-  }, [getUnitTypes]);
-
-  const getLocations = useCallback(() => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/getLocations/`)
       .then((response) => {
@@ -112,11 +126,16 @@ const SearchProperty = () => {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
+    http
+      .get(`${process.env.REACT_APP_ATLAS_URI}/getUnitTypes/`)
+      .then((response) => {
+        if (response.status === 200) {
+          const results = response?.data?.results;
+          setUnitTypes(results);
+        } else toast.error(response?.data?.error?.message);
+      })
+      .catch((err) => toast.error(err.message));
   }, []);
-
-  useEffect(() => {
-    getLocations();
-  }, [getLocations]);
 
   const onClickHandler = (id) => {
     navigate(`/property`, {
@@ -130,15 +149,17 @@ const SearchProperty = () => {
   };
 
   const propertyTypeChangeHandler = (propertyType) => {
-    setSelectedPropertyType(propertyType.Name);
+    setSelectedPropertyType(propertyType);
   };
 
   const locationChangeHandler = (location) => {
-    console.log(location);
-    setSelectedLocation(location.Name);
+    setSelectedLocation(location);
   };
 
-  const searchClickHandler = () => {};
+  const searchClickHandler = (e) => {
+    console.log(selectedLocation, selectedPropertyType, searchValue)
+    getProperties({ page: 1, location: selectedLocation._id, unitType: selectedPropertyType._id });
+  };
 
   const leftClickHandler = () => {
     setPageNo((prev) => prev - 1);
@@ -230,11 +251,10 @@ const SearchProperty = () => {
             return (
               <button
                 key={index}
-                className={`${
-                  activePage === index
+                className={`${activePage === index
                     ? "bg-[red] text-gray-50"
                     : "bg-gray-50 text-[#212020]"
-                } rounded-full font-semibold`}
+                  } rounded-full font-semibold`}
                 onClick={() => selectPageHandler(index)}
               >
                 <span className="p-2">{pageNumber}</span>
