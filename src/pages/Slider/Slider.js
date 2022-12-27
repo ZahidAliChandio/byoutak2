@@ -40,6 +40,7 @@ const Slider = (props) => {
         const data = response.data;
         if (response.status === 200) {
           const list = [];
+          setPageNumbers([...Array(Math.ceil(data.count / 4))])
           data.results.forEach((element) => {
             list.push({
               id: element._id,
@@ -67,7 +68,7 @@ const Slider = (props) => {
   };
   useEffect(() => {
     getProperties();
-  }, []);
+  }, [pageNo, activePage]);
 
   const propertyClickHandler = (id) => {
     console.log(id);
