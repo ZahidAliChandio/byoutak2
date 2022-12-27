@@ -200,7 +200,7 @@ const SearchProperty = () => {
         {/* Property Cards */}
         <div className="flex items-center gap-4">
           <i
-            className="fa fa-chevron-left fa-2xl text-[red]"
+            className="fa fa-chevron-left fa-2xl text-[red] cursor-pointer"
             aria-hidden="true"
             onClick={leftClickHandler}
           ></i>
@@ -218,7 +218,7 @@ const SearchProperty = () => {
               })}
           </div>
           <i
-            className="fa fa-chevron-right fa-2xl text-[red]"
+            className="fa fa-chevron-right fa-2xl text-[red] cursor-pointer"
             aria-hidden="true"
             onClick={rightClickHandler}
           ></i>
