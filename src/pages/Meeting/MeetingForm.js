@@ -14,7 +14,16 @@ const MeetingForm = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  // const [message, setMessage] = useState("");
+
+  const [timings, setTimings] = useState([
+    { time: "9:00 AM", value: "9:00 AM" },
+    { time: "10:00 AM", value: "10:00 AM" },
+    { time: "11:00 AM", value: "11:00 AM" },
+    { time: "12:00 PM", value: "12:00 PM" },
+    { time: "3:00 PM", value: "15:00 PM" },
+    { time: "5:00 PM", value: "17:00 PM" },
+  ]);
+
   const noOfDays = 12;
 
   const [locations, setLocations] = useState(null);
@@ -218,6 +227,7 @@ const MeetingForm = () => {
           <h2 className="text-sm sm:text-base md:text-lg font-semibold text-gray-100">
             Select time
           </h2>
+
           <select
             className="block bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-800 w-fit"
             name="Time"
@@ -225,9 +235,11 @@ const MeetingForm = () => {
             defaultValue="9:00 AM"
             onChange={timeChangeHandler}
           >
-            <option value="9:00 AM">9:00 AM</option>
-            <option value="12:00 AM">12:00 AM</option>
-            <option value="15:00 PM">3:00 PM</option>
+            {timings.map((time, index) => (
+              <option value={time.value} key={index}>
+                {time.time}
+              </option>
+            ))}
           </select>
           <div className="flex justify-center gap-4 md:gap-8 md:justify-end mt-4 sm:mt-8 md:m-0">
             <Button className="bg-[#ff4747] text-gray-100" type="submit">
@@ -235,11 +247,9 @@ const MeetingForm = () => {
             </Button>
             <a
               href="whatsapp://send?text=Lets chat!&phone=+923163366566"
-              className="flex flex-col items-center justify-center"
+              className="bg-white px-3 sm:px-7 md:!px-10 py-2 md:py-3 rounded-lg text-sm md:text-base font-bold"
             >
-              <Button className="bg-white !px-3 md:!px-10">
-                Live chat now
-              </Button>
+              Live chat now
             </a>
           </div>
         </form>
