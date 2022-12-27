@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="fixed bottom-0 py-2 flex items-center justify-center w-full gap-4 sm:gap-8 md:gap-12 lg:gap-24 xl:gap-32 bg-[#212020] z-[80]">
       <a
-        href="tel:03482146022"
+        href="tel:03163366566"
         className="flex flex-col items-center justify-center"
       >
         <span>

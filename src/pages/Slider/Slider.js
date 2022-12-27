@@ -15,7 +15,6 @@ const Slider = (props) => {
   const [pageNo, setPageNo] = useState(1);
   const [limit, setLimit] = useState(4);
 
-  const [activePage, setActivePage] = useState(0);
   const navigate = useNavigate();
 
   const [pageNumbers, setPageNumbers] = useState([]);
@@ -40,7 +39,7 @@ const Slider = (props) => {
         const data = response.data;
         if (response.status === 200) {
           const list = [];
-          setPageNumbers([...Array(Math.ceil(data.count / 4))])
+          setPageNumbers([...Array(Math.ceil(data.count / 4))]);
           data.results.forEach((element) => {
             list.push({
               id: element._id,
@@ -68,7 +67,7 @@ const Slider = (props) => {
   };
   useEffect(() => {
     getProperties();
-  }, [pageNo, activePage]);
+  }, [pageNo]);
 
   const propertyClickHandler = (id) => {
     console.log(id);
@@ -80,16 +79,14 @@ const Slider = (props) => {
 
   const leftClickHandler = () => {
     setPageNo((prev) => prev - 1);
-    setActivePage((prev) => prev - 1);
   };
 
   const rightClickHandler = () => {
     setPageNo((prev) => prev + 1);
-    setActivePage((prev) => prev + 1);
   };
 
   const selectPageHandler = (index) => {
-    setActivePage(index);
+    setPageNo(index + 1);
   };
 
   useEffect(() => {
@@ -138,14 +135,12 @@ const Slider = (props) => {
             <button
               key={index}
               className={`${
-                activePage === index
+                pageNo - 1 === index
                   ? "bg-[red] text-gray-50"
                   : "bg-gray-50 text-[#212020]"
-              } rounded-full font-semibold`}
+              } rounded-full font-semibold p-2`}
               onClick={() => selectPageHandler(index)}
-            >
-              <span className="p-2">{pageNumber}</span>
-            </button>
+            ></button>
           );
         })}
       </div>

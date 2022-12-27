@@ -1,4 +1,4 @@
-import Phone from "../../static/icons/phone.png";
+import { Link } from "react-router-dom";
 
 const Contact = (props) => {
   return (
@@ -18,7 +18,7 @@ const Contact = (props) => {
       </a>
 
       <a
-        href="tel:03482146022"
+        href="tel:03163366566"
         className="flex items-center gap-2 px-4 sm:px-8 justify-center cursor-pointer bg-[red] text-white rounded-3xl py-1"
       >
         <span>
@@ -30,11 +30,13 @@ const Contact = (props) => {
           Call
         </span>
       </a>
-
-      <div className="flex gap-2 px-4 sm:px-8 items-center cursor-pointer justify-center bg-[red] text-white rounded-3xl py-1">
+      <Link
+        to="/meeting"
+        className="flex gap-2 px-4 sm:px-8 items-center cursor-pointer justify-center bg-[red] text-white rounded-3xl py-1"
+      >
         <i className="fa-sharp fa-solid fa-video text-white"></i>
         <span className={`${props.text} text-white`}>Meeting</span>
-      </div>
+      </Link>
     </div>
   );
 };
