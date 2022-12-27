@@ -6,6 +6,7 @@ const Dropdown = (props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const onClickHandler = (item) => {
+    console.log(item);
     setSelectedValue(item);
     setIsVisible(false);
   };
@@ -31,7 +32,7 @@ const Dropdown = (props) => {
         }
         onClick={toggleVisibility}
       >
-        <span>{selectedValue.value}</span>
+        <span>{selectedValue.Name}</span>
         <i
           className={`fas fa-chevron-down text-[red] ${
             isVisible ? "rotate-180" : "rotate-0"
