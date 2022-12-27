@@ -13,7 +13,6 @@ const Property = () => {
   const [propertyData, setPropertyData] = useState(null);
   const location = useLocation();
   const propertyId = location.state ? location.state : "0001";
-  console.log(location);
 
   const getPropertyById = () => {
     http
@@ -21,7 +20,6 @@ const Property = () => {
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
-          console.log(data);
           const list = [];
           data.forEach((element) => {
             list.push({
@@ -42,7 +40,6 @@ const Property = () => {
               amenities: element._Amenities,
             });
           });
-          console.log(data);
           setPropertyData(list[0]);
         } else toast.error(response?.data?.error?.message);
       })
