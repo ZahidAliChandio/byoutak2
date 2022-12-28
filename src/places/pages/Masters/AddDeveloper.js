@@ -21,7 +21,6 @@ function AddDeveloper() {
   const [edit, setEdit] = useState(false);
   const [resetForm, setResetForm] = useState(false);
   const [updateName, setUpdateName] = useState("");
-  const [updateIcon, setUpdateIcon] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
   const [updateData, setUpdateData] = useState(null);
@@ -75,7 +74,6 @@ function AddDeveloper() {
     setUpdateForm(true);
     setUpdateData(data);
     setUpdateName(data.Name);
-    setUpdateIcon(data.Icon);
     setUpdateDescription(data.Description);
     setEdit(true);
   };
@@ -122,7 +120,6 @@ function AddDeveloper() {
     { id: "_id", label: "ID" },
     { id: "Name", label: "Name" },
     { id: "Description", label: "Description" },
-    { id: "Icon", label: "Icon" },
     {
       id: "actions",
       label: "",
@@ -165,18 +162,6 @@ function AddDeveloper() {
                 id={"Name"}
                 name={"DeveloperName"}
                 updateValue={updateName}
-                updateForm={updateForm}
-                setUpdateForm={setUpdateForm}
-                resetForm={resetForm}
-                setResetForm={setResetForm}
-                onInput={inputHandler}
-                required
-              />
-              <Input
-                label={"Icon"}
-                id={"Icon"}
-                name={"DeveloperIcon"}
-                updateValue={updateIcon}
                 updateForm={updateForm}
                 setUpdateForm={setUpdateForm}
                 resetForm={resetForm}

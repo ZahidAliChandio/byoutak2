@@ -19,7 +19,6 @@ const SearchProperty = () => {
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [pageNo, setPageNo] = useState(1);
-  const [activePage, setActivePage] = useState(0);
 
   const navigate = useNavigate();
 
@@ -28,62 +27,23 @@ const SearchProperty = () => {
 
   const [pageNumbers, setPageNumbers] = useState([]);
 
-
   let capitalize = (strPara) => {
     let arr = Array.from(strPara);
     arr[0] = arr[0].toUpperCase();
     return arr.join("");
   };
   const getProperties = (params) => {
-
-    // This code to be deleted when search works fine.
-    //   http
-    //     .get(`${process.env.REACT_APP_ATLAS_URI}/getProperties/`, {
-    //       params: { limit: limit, page: pageNo },
-    //     })
-    //     .then((response) => {
-    //       const data = response.data;
-    //       if (response.status === 200) {
-    //         const list = [];
-    //         data.results.forEach((element) => {
-    //           list.push({
-    //             id: element._id,
-    //             img: element.Images,
-    //             title: element.Name,
-    //             subtitle: element.Type,
-    //             price: `EGP ${element.Price}`,
-    //             continent: element.State,
-    //             type: element.Type,
-    //             link: element.Link,
-    //             location: `${element.City}, ${element.Country}`,
-    //             InstallmentYears: `${element.InstallmentYears} Years`,
-    //             Delivery: `${element.Delivery}`,
-    //             DownPayment: `${element.DownPayment} EGP`,
-    //             area: `${element.Area} m²`,
-    //             unitTypes: element.Unit_PropertyType,
-    //             amenities: element._Amenities,
-    //           });
-    //         });
-    //         console.log(data);
-    //         setData(list);
-    //       } else toast.error(response?.data?.error?.message);
-    //     })
-    //     .catch((err) => toast.error(err.message));
-    // };
-    // Remove from above till this line and uncomment bottom one.
-
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
         params: { ...params, limit: 16, page: pageNo },
       })
       .then((response) => {
         const data = response.data;
-        let counter = 0;
-        console.log(response)
+        console.log(response);
         if (response.status === 200) {
           const list = [];
           // setPageNumbers([...Array(Math.ceil(data.count / 4))])
-          console.log(data)
+          console.log(data);
           data.forEach((element) => {
             console.log(element);
             list.push({
@@ -103,12 +63,11 @@ const SearchProperty = () => {
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
-  }
+  };
 
   useEffect(() => {
     getProperties({});
-  }, [activePage, pageNo]);
-
+  }, [pageNo]);
 
   useEffect(() => {
     http
@@ -157,26 +116,28 @@ const SearchProperty = () => {
   };
 
   const searchClickHandler = (e) => {
-    console.log(selectedLocation, selectedPropertyType, searchValue)
-    getProperties({ page: 1, location: selectedLocation._id, unitType: selectedPropertyType._id });
+    console.log(selectedLocation, selectedPropertyType, searchValue);
+    getProperties({
+      page: 1,
+      location: selectedLocation._id,
+      unitType: selectedPropertyType._id,
+    });
   };
 
   const leftClickHandler = () => {
     setPageNo((prev) => prev - 1);
-    setActivePage((prev) => prev - 1);
   };
 
   const rightClickHandler = () => {
     setPageNo((prev) => prev + 1);
-    setActivePage((prev) => prev + 1);
   };
   const selectPageHandler = (index) => {
-    setActivePage(index);
+    setPageNo(index + 1);
   };
 
   useEffect(() => {
     console.log(value);
-  });
+  }, []);
 
   return (
     <Fragment>
@@ -221,7 +182,7 @@ const SearchProperty = () => {
         {/* Property Cards */}
         <div className="flex items-center gap-4">
           <i
-            className="fa fa-chevron-left fa-2xl text-[red]"
+            className="fa fa-chevron-left fa-2xl text-[red] cursor-pointer"
             aria-hidden="true"
             onClick={leftClickHandler}
           ></i>
@@ -239,26 +200,25 @@ const SearchProperty = () => {
               })}
           </div>
           <i
-            className="fa fa-chevron-right fa-2xl text-[red]"
+            className="fa fa-chevron-right fa-2xl text-[red] cursor-pointer"
             aria-hidden="true"
             onClick={rightClickHandler}
           ></i>
         </div>
 
         {/* Page Numbers */}
-        <div className="flex items-center justify-center gap-4 w-full mt-5">
+        <div className="flex items-center justify-center gap-4 w-full mt-4">
           {pageNumbers.map((pageNumber, index) => {
             return (
               <button
                 key={index}
-                className={`${activePage === index
+                className={`${
+                  pageNo - 1 === index
                     ? "bg-[red] text-gray-50"
                     : "bg-gray-50 text-[#212020]"
-                  } rounded-full font-semibold`}
+                } rounded-full font-semibold p-2`}
                 onClick={() => selectPageHandler(index)}
-              >
-                <span className="p-2">{pageNumber}</span>
-              </button>
+              ></button>
             );
           })}
         </div>
