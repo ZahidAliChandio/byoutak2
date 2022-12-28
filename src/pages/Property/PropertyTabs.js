@@ -7,7 +7,7 @@ import { fCurrency } from "../../utils/formatNumber";
 const PropertyTabs = (props) => {
   const propertyData = props.data;
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeSubItemIndex, setActiveSubItemIndex] = useState(null);
+  const [activeSubItemIndex, setActiveSubItemIndex] = useState(0);
 
   const [unitTypes, setUnitTypes] = useState(null);
 
