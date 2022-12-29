@@ -17,7 +17,7 @@ const UnitType = () => {
       </span>
     ),
     lis: data,
-    nextLink: "price-range",
+    // nextLink: "price-range",
   };
 
   const getUnitTypes = useCallback(() => {

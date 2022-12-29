@@ -16,7 +16,7 @@ const PropertyType = () => {
       { _id: 1, Name: "COMMERCIAL" },
       { _id: 2, Name: "ADMIN" },
     ],
-    nextLink: "unit-type",
+    nextLink: "price-range",
   };
 
   return (
