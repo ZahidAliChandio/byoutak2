@@ -1,27 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import stateContext from '../../context/StateContext'
 // import { ATLAS_URI } from '../../Constants'
 import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
-
-  const [Name, setName] = useState()
-  const [Password, setPassword] = useState()
-  const navigate = useNavigate()
+  const [Name, setName] = useState();
+  const [Password, setPassword] = useState();
+  const navigate = useNavigate();
 
   const loginOperator = (e) => {
     e.preventDefault();
-    axios.post(`${process.env.REACT_APP_ATLAS_URI}/Authenticate`, { Name, Password })
-      .then(res1 => {
-        localStorage.setItem('byoutakToken', res1.data.token)
-        toast.success("Authentication Successful")
-        navigate("/admin/addProperty")
-      }).catch(err => toast.error("Not Authorized"))
+    axios
+      .post(`${process.env.REACT_APP_ATLAS_URI}/Authenticate`, {
+        Name,
+        Password,
+      })
+      .then((res1) => {
+        localStorage.setItem("byoutakToken", res1.data.token);
+        toast.success("Authentication Successful");
+        navigate("/admin/addProperty");
+      })
+      .catch((err) => toast.error("Not Authorized"));
   };
-
-
 
   return (
     <React.Fragment>
@@ -54,17 +56,17 @@ function Login() {
         <div className="login_container flex flex-col items-center w-full">
           <div className="flex flex-col justify gap-12 w-11/12 sm:w-3/4 md:w-1/2 lg:w-[30%]">
             <div className="flex flex-col gap-1 text-gray-50 font-sans-serif font-semibold">
-              <p className="login_heading text-lg">
-                Byoutak : Admin
+              <p className="login_heading text-lg">Byoutak : Admin</p>
+              <p className="login_subHeading text-sm font-semibold">
+                CRM Login
               </p>
-              <p className="login_subHeading text-sm font-semibold">CRM Login</p>
             </div>
             <div className="login_card relative bg-white flex border-t-4 border-[color:var(--red-color)] flex-col gap-4 px-10 rounded-tr-none rounded-sm form-signin-logo pt-12 pb-6 box-shadow">
               <form
                 onSubmit={loginOperator}
                 autoComplete="off"
                 className="flex flex-col"
-              >                
+              >
                 <div className="relative z-0 mb-1 w-full group">
                   <input
                     type="text"
@@ -77,12 +79,14 @@ function Login() {
                     required
                   />
                   <label
-                    for="floating_email"
+                    htmlFor="floating_email"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform scale-75 top-3 -z-10 origin-[0] left-2 peer-focus:text-[#212020] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-2"
                   >
                     Username
                   </label>
-                  <i className={`inputIcon fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 peer-focus:text-[color:var(--red-color)]`}></i>
+                  <i
+                    className={`inputIcon fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 peer-focus:text-[color:var(--red-color)]`}
+                  ></i>
                 </div>
                 <div className="relative z-0 mb-4 w-full group">
                   <input
@@ -96,7 +100,7 @@ function Login() {
                     required
                   />
                   <label
-                    for="floating_password"
+                    htmlFor="floating_password"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform scale-75 top-3 -z-10 origin-[0] left-2 peer-focus:text-[#212020] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-2"
                   >
                     Password
@@ -112,7 +116,7 @@ function Login() {
                     Sign in
                   </button>
                 </div>
-              </form>              
+              </form>
               <div className="flex items-center gap-1 justify-center absolute -top-10 right-0 w-fit px-[0.7rem] h-9 bg-[color:var(--red-color)] text-white rounded-t-sm font-open-sans">
                 <i className="far fa-user text-sm"></i>
                 <span className="text-sm">Sign in</span>

@@ -9,13 +9,8 @@ const MainHeader = (props) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    axios
-      .post(`${process.env.REACT_APP_ATLAS_URI}/`, {})
-      .then(() => {
-        localStorage.setItem("byoutakToken", null);
-        navigate("/admin/login");
-      })
-      .catch((err) => console.log(err));
+    localStorage.setItem("byoutakToken", null);
+    navigate("/admin/login");
   };
   return (
     <header className="main-header flex items-center w-full h-10 z-20 bg-[#212020] card-shadow">
