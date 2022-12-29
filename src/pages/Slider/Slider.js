@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import SliderCard from "./SliderCard";
 import { SelectContext } from "../../context/user-select";
+import { fCurrency } from "../../utils/formatNumber";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -46,25 +47,25 @@ const Slider = (props) => {
               img: element.Images[0],
               title: element.Name,
               subtitle: element.Type,
-              price: `EGP ${element.Price}`,
+              price: `EGP ${fCurrency(element.Price)}`,
               continent: element.State,
               type: element.Type,
               link: element.Link,
               location: `${element.City}, ${element.Country}`,
               InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
-              DownPayment: `${element.DownPayment} EGP`,
+              DownPayment: `${fCurrency(element.DownPayment)} EGP`,
               area: `${element.Area} m²`,
               unitTypes: element.Unit_PropertyType,
               amenities: element._Amenities,
             });
           });
-          console.log(data);
           setData(list);
         } else toast.error(response?.data?.error?.message);
       })
       .catch((err) => toast.error(err.message));
   };
+  // Price: `${fCurrency(y.Price)}`,
   useEffect(() => {
     getProperties();
   }, [pageNo]);

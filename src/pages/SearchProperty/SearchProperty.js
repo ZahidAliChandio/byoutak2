@@ -6,6 +6,7 @@ import PropertyCard from "./PropertyCard";
 import Dropdown from "../../components/UI/Dropdown";
 import { SelectContext } from "../../context/user-select";
 import http from "../../utils/http";
+import { fCurrency } from "../../utils/formatNumber";
 
 import "swiper/css";
 import "swiper/css/grid";
@@ -35,11 +36,10 @@ const SearchProperty = () => {
   const getProperties = (params) => {
     http
       .get(`${process.env.REACT_APP_ATLAS_URI}/searchProperty/`, {
-        params: { ...params, limit: 16, page: pageNo },
+        params: { ...params, limit: 4, page: pageNo },
       })
       .then((response) => {
         const data = response.data;
-        console.log(response);
         if (response.status === 200) {
           const list = [];
           // setPageNumbers([...Array(Math.ceil(data.count / 4))])
@@ -51,12 +51,12 @@ const SearchProperty = () => {
               img: element.Images.length !== 0 ? element.Images[0] : null,
               title: element.Name,
               subtitle: element.Type,
-              price: `EGP ${element.Price}`,
+              price: `EGP ${fCurrency(element.Price)}`,
               contient: element.State,
               location: `${element.City}, ${element.Country}`,
               InstallmentYears: `${element.InstallmentYears} Years`,
               Delivery: `${element.Delivery}`,
-              DownPayment: `${element.DownPayment} EGP`,
+              DownPayment: `${fCurrency(element.DownPayment)} EGP`,
             });
           });
           setData(list);
