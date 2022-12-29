@@ -43,7 +43,7 @@ const Slider = (props) => {
           data.results.forEach((element) => {
             list.push({
               id: element._id,
-              img: element.Images,
+              img: element.Images[0],
               title: element.Name,
               subtitle: element.Type,
               price: `EGP ${element.Price}`,
