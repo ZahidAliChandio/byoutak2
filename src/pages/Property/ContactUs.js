@@ -9,7 +9,7 @@ const ContactUs = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+20");
 
   const [formState, inputHandler] = useForm({
     Name: "",
@@ -75,7 +75,6 @@ const ContactUs = () => {
             <PhoneInput
               specialLabel={""}
               id={"phone"}
-              country={"th"}
               value={phone}
               onChange={phoneChangeHandler}
               buttonclassName="bg-red"

@@ -1,20 +1,15 @@
-import { Fragment, useState, useRef } from "react";
+import { Fragment, useState } from "react";
 import PropertyTabs from "./PropertyTabs";
-import { CSSTransition } from "react-transition-group";
-import { useEffect } from "react";
 
 const Accordion = (props) => {
   const [accordianPlus, setAccordianPlus] = useState("closed");
-  const [isOpen, setIsOpen] = useState(false);
-
-  const nodeRef = useRef(null);
 
   // List items
   const [items, setItems] = useState([
     {
       title: "Unit Types",
       content: <PropertyTabs {...props} />,
-      isActive: false,
+      isActive: true,
     },
   ]);
 
@@ -37,44 +32,15 @@ const Accordion = (props) => {
           onClick={() => onClickHandler(index)}
         >
           <div>
-            <div
-              className={`circle-plus ${items[index].isActive ? accordianPlus : null
-                }`}
-            >
-              <div className="circle">
-                <div className="horizontal"></div>
-                <div className="vertical"></div>
-              </div>
-            </div>
-            <div
-              className={`circle-plus-two ${items[index].isActive ? accordianPlus : null
-                }`}
-            >
-              <div className={`circle`}>
-                <div className="horizontal"></div>
-                <div className="vertical"></div>
-              </div>
-            </div>
+            <i class="fa-sharp fa-solid fa-minus text-[red]"></i>
           </div>
           <h4>{item.title}</h4>
         </div>
-        {/* <CSSTransition
-          in={items[index].isActive}
-          timeout={200}
-          nodeRef={nodeRef}
-          classNames="accordian"
-          mousntOnEnter
-          unmountOnExit
-        > */}
         <div
-          className={`${items[index].isActive
-              ? "visible translate-y-0"
-              : "invisible -translate-y-8"
-            } text-gray-50 sm:pl-4 md:pl-8 lg:pl-12 mt-8 transition-all duration-100`}
+          className={`text-white sm:pl-4 md:pl-8 lg:pl-12 mt-8 transition-all duration-100`}
         >
           {item.content}
         </div>
-        {/* </CSSTransition> */}
       </Fragment>
     );
   });

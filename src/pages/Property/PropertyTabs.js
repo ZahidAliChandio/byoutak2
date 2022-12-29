@@ -25,8 +25,8 @@ const PropertyTabs = (props) => {
               title: y.UnitName,
               content: [
                 {
-                  AreaFrom: `${y.AreaFrom} m²`,
-                  AreaTo: `${y.AreaTo} m²`,
+                  AreaFrom: `${y.AreaFrom ? y.AreaFrom : null}`,
+                  AreaTo: `${y.AreaTo ? y.AreaFrom : null}`,
                   Price: `${fCurrency(y.Price)}`,
                 },
               ],
@@ -94,7 +94,7 @@ const PropertyTabs = (props) => {
         return (
           <Fragment key={index}>
             <div
-              className={`relative border flex items-center justify-between text-sm md:text-base 2xl:text-lg border bg-gray-300 py-2 cursor-pointer font-gillsans px-4 mt-4 text-[#212020] w-full`}
+              className={`relative flex items-center justify-between text-sm md:text-base 2xl:text-lg border bg-gray-300 py-2 cursor-pointer font-gillsans px-4 mt-4 text-[#212020] w-full`}
               onClick={() => subListClickHandler(index)}
             >
               <span>{item.title}</span>
@@ -126,16 +126,18 @@ const PropertyTabs = (props) => {
                   {item.content.map((subitem, index) => {
                     return (
                       <ul className="text-white" key={index}>
-                        <li>
-                          <div className="inline-block w-2 h-2 bg-gray-300 mr-3 border border-[#212020] rounded-full"></div>
-                          <span>Area From: </span>
-                          <span>{subitem.AreaFrom}</span>
-                        </li>
-                        {subitem.AreaTo && (
+                        {subitem.AreaTo !== "null" && (
+                          <li>
+                            <div className="inline-block w-2 h-2 bg-gray-300 mr-3 border border-[#212020] rounded-full"></div>
+                            <span>Area From: </span>
+                            <span>{subitem.AreaFrom} m²</span>
+                          </li>
+                        )}
+                        {subitem.AreaTo !== "null" && (
                           <li>
                             <div className="inline-block w-2 h-2 bg-gray-300 mr-3 border border-[#212020] rounded-full"></div>
                             <span>Area To: </span>
-                            <span>{subitem.AreaTo}</span>
+                            <span>{subitem.AreaTo} m²</span>
                           </li>
                         )}
                         <li>
